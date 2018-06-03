@@ -1,10 +1,12 @@
 package ru.vood.Plugin.dialogs;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
@@ -106,23 +108,23 @@ public class NewOrEditRefArr extends JAddDialog {
                 VBdTableEntity table = new VBdTableEntity();
                 table.setCode(codeField.getText());
                 table.setName(nameField.getText());
-                VBdObjectTypeEntity bdObjType = new VBdObjectTypeEntity();
-                VBdObjectTypeEntityService vBdObjectTypeEntityService = bdObjType.getServise();
-                VBdObjectEntityService vBdObjectEntityService = parent.getServise();
+                VBdObjectTypeEntity bdObjType;
                 if (isRef) {
-                    bdObjType = vBdObjectTypeEntityService.findByCodeS("REFERENCE").iterator().next();
-                    parent = vBdObjectEntityService.findByTypeObjectCodeIn("REFERENCE").iterator().next();
+                    bdObjType = ObjectTypes.getREFERENCE();
+                    parent = Tables.getREFERENCE();
                 } else {
-                    bdObjType = vBdObjectTypeEntityService.findByCodeS("ARRAY").iterator().next();
-                    parent = vBdObjectEntityService.findByTypeObjectCodeIn("ARRAY").iterator().next();
+                    bdObjType = ObjectTypes.getARRAY();
+                    parent = Tables.getARRAY();
                 }
                 table.setTypeObject(bdObjType);
                 table.setJavaClass(table.getClass().toString());
                 table.setParent(parent);
                 table.setToType((VBdTableEntity) bdTable);
-                table.save();
 
-                this.setAddedObj(table);
+                VBdObjectTypeEntityService colomnsEntityService = LoadedCTX.getService(VBdObjectTypeEntityService.class);
+                VBdTableEntity newTableEntity = (VBdTableEntity) colomnsEntityService.save(table);
+
+                this.setAddedObj(newTableEntity);
                 dispose();
             } else {
                 new MessageWin("Тип объекта " + bdTable.getTypeObject().getName() + " не предполагает создание ссылки или массива.");

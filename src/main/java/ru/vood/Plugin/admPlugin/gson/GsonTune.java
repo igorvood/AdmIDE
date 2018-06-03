@@ -1,4 +1,4 @@
-package ru.vood.Plugin.admPlugin.spring.gson;
+package ru.vood.Plugin.admPlugin.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

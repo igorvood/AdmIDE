@@ -20,7 +20,7 @@
     <defaultCache maxElementsInMemory="500" eternal="false"
                   overflowToDisk="false" memoryStoreEvictionPolicy="LFU"/>
 
-    <cache name="сacheFromDB" maxElementsInMemory="100" eternal="true"
+    <cache name="сacheFromDBTree" maxElementsInMemory="100" eternal="true"
            overflowToDisk="false" memoryStoreEvictionPolicy="LFU"/>
 
 </ehcache>

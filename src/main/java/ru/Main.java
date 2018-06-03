@@ -3,12 +3,12 @@ package ru;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException;
-import ru.vood.Plugin.admPlugin.spring.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
@@ -27,10 +27,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ctx = new GenericXmlApplicationContext();
-        ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
-        ctx.refresh();
-        VBdObjectTypeEntityService entityService = ctx.getBean("jpaVBdObjectTypeEntityService", VBdObjectTypeEntityService.class);
 
         VBdObjectTypeEntity typeEntity_9;
         typeEntity_9 = entityService.findByCode("TABLE");

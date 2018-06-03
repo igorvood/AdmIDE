@@ -19,14 +19,13 @@ import java.util.List;
 @Service("jpaVBdObjectEntityService")
 @Repository
 @Transactional
-
 public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEntityService {
 
     @Autowired
-    private VBdObjectEntityRepository vBdObjectEntityRepository;
+    protected VBdObjectEntityRepository vBdObjectEntityRepository;
 
     @Autowired
-    private EntityManager em;
+    protected EntityManager em;
 
     public ParentForAll findOne(BigDecimal bigDecimal) {
         return vBdObjectEntityRepository.findOne(bigDecimal);
@@ -44,7 +43,7 @@ public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEn
         vBdObjectEntityRepository.delete((Iterable<? extends VBdObjectEntity>) iterable);
     }
 
-    @Cacheable("сacheFromDB")
+    @Cacheable("сacheFromDBTree")
     public ArrayList<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS) {
 
         List<String> stringList = new ArrayList<>(codeS.length);
@@ -61,7 +60,7 @@ public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEn
         List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
         return (ArrayList<VBdObjectEntity>) list1;
     }
-
+/*
     public ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent(String code, String typeObjectCode, VBdObjectEntity parent) {
         Query query = em.createQuery("select a2 from VBdObjectTypeEntity a1, VBdObjectEntity a2 where a1.code = :codeType " +
                 "and a2.typeObject = a1.id and a2.code = :code and a2.parent = :parentId", VBdObjectEntity.class)
@@ -69,44 +68,31 @@ public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEn
                 .setParameter("code", code)
                 .setParameter("parentId", parent);
 
-/*        String s = "select a2.* from " + ParentForAll.SCHEMA + ".V_BD_OBJECT_TYPE a1, " + ParentForAll.SCHEMA + ".V_BD_OBJECT a2 " + " where " +
-                "a1.code = '" + typeObjectCode + "' and a2.TYPE_OBJECT = a1.id and a2.CODE = '" + code + "' and a2.PARENT = " + parent.getId();
-        Query query = em.createNativeQuery(s, VBdObjectEntity.class);*/
         List list = query.getResultList();
         return (ArrayList<VBdObjectEntity>) list;
     }
+    */
 
     public EntityManager getEntityManager() {
         return em;
     }
 
-    public <S extends ParentForAll> S save(S s) {
-        return (S) vBdObjectEntityRepository.save((VBdObjectEntity) s);
-    }
-
+    /*
     public List<VBdObjectEntity> findByCode(String code) {
         return vBdObjectEntityRepository.findByCode(code);
+    }*/
+
+    public VBdObjectEntity save(ParentForAll parentForAll) {
+        return vBdObjectEntityRepository.save((VBdObjectEntity) parentForAll);
     }
 
-    public ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent_TEST(String code, String typeObjectCode, VBdObjectEntity parent) {
-        Query query;
-/*      Работает такой запрос
-        query = em.createQuery("select a2 from VBdObjectEntity a2 where a2.code = :code1 and a2.parent = :parentId1")
-                .setParameter("code1", code)
-                .setParameter("parentId1", parent);
-*/
+    public void delete(ParentForAll parentForAll) {
+        vBdObjectEntityRepository.delete((VBdObjectEntity) parentForAll);
+    }
 
-/*      Работает такой запрос
-        query = em.createQuery("select a2 from VBdObjectEntity a2 where a2.code = :code1 and a2.parent = :parentId1");
-        List list = query.getResultList();
-*/
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("DATE");
-        arrayList.add("REFERENCE");
-        arrayList.add("TABLE");
-        query = em.createQuery("select a2 from VBdObjectEntity a2 where a2.code in :code1").setParameter("code1", arrayList);
-        List list = query.getResultList();
 
-        return (ArrayList<VBdObjectEntity>) list;
+    @Override
+    public List<VBdObjectEntity> findByParent(VBdObjectEntity parent) {
+        return vBdObjectEntityRepository.findByParent(parent);
     }
 }

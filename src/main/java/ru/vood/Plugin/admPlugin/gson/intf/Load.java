@@ -1,4 +1,4 @@
-package ru.vood.Plugin.admPlugin.spring.gson.intf;
+package ru.vood.Plugin.admPlugin.gson.intf;
 
 import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 

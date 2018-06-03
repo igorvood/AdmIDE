@@ -1,5 +1,6 @@
 package ru.vood.Plugin.dialogs.ExtSwing;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.logging.Log;
@@ -69,9 +70,9 @@ public class JDBTree extends JTree {
         if (loaded) {
             return;
         }
-        VBdObjectEntityService sdds = (VBdObjectEntityService) VBdObjectEntity.getServise(VBdObjectEntity.class);
+//        VBdObjectEntityService sdds = (VBdObjectEntityService) VBdObjectEntity.getServise(VBdObjectEntity.class);
 //        VBdObjectEntityService bdObjectEntityService = ADMMain.getCtx().getBean("jpaVBdObjectEntityService", VBdObjectEntityService.class);
-        VBdObjectEntityService bdObjectEntityService = (VBdObjectEntityService) VBdObjectEntity.getServise(VBdObjectEntity.class);
+        VBdObjectEntityService bdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
 
         String[] typeObjectCodeS = {"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN"};
 

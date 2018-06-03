@@ -6,11 +6,30 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface VBdObjectEntityRepository extends CrudRepository<VBdObjectEntity, BigDecimal> {
 
-    <S extends VBdObjectEntity> S save(S s);
+public interface VBdObjectEntityRepository<T extends VBdObjectEntity> extends CrudRepository<T, BigDecimal> {
 
-    <S extends VBdObjectEntity> Iterable<S> save(Iterable<S> iterable);
+    @Override
+    T save(T entity);
+
+    @Override
+    default <S extends T> Iterable<S> save(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    default void delete(Iterable<? extends T> entities) {
+
+    }
+
+    @Override
+    default void deleteAll() {
+
+    }
+
+    T save(T s);
+
+    Iterable<T> save(Iterable<T> iterable);
 
     VBdObjectEntity findOne(BigDecimal bigDecimal);
 
@@ -29,5 +48,9 @@ public interface VBdObjectEntityRepository extends CrudRepository<VBdObjectEntit
     void delete(Iterable<? extends VBdObjectEntity> iterable);
 
     //---------------------------individual
+    //List<VBdObjectEntity> findByTypeObject(VBdObjectTypeEntity typeObject);
     List<VBdObjectEntity> findByCode(String code);
+
+    List<VBdObjectEntity> findByParent(VBdObjectEntity parent);
+
 }

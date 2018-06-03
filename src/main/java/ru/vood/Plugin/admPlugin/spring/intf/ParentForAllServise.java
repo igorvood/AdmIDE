@@ -5,13 +5,13 @@ import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 
-public interface ParentForAllServise {
+public interface ParentForAllServise<S extends ParentForAll> {
 
     EntityManager getEntityManager();
 
-    <S extends ParentForAll> S save(S s);
+    S save(S s);
 
-    <S extends ParentForAll> S findOne(BigDecimal bigDecimal);
+    S findOne(BigDecimal bigDecimal);
 
     boolean exists(BigDecimal bigDecimal);
 
@@ -19,9 +19,8 @@ public interface ParentForAllServise {
 
     //void delete(BigDecimal bigDecimal);
 
-    <S extends ParentForAll> void delete(S s);
+    void delete(S s);
 
-    void delete(Iterable<? extends ParentForAll> iterable);
 
     //--------------------------------individual------------------------------------
 

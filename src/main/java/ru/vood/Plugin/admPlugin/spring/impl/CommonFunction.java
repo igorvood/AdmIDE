@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 
 import javax.persistence.EntityManager;
@@ -19,6 +18,8 @@ public class CommonFunction implements CommonFunctionService {
     private EntityManager em;
 
     public BigDecimal nextId() {
-        return ParentForAll.nextId(em);
+        return (BigDecimal) em.createNativeQuery("SELECT SEQ_ID.nextval from dual").getResultList().get(0);
     }
+
+
 }

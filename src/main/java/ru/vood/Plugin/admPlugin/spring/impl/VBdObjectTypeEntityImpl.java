@@ -6,16 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException;
-import ru.vood.Plugin.admPlugin.spring.except.TooManyRowsException;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectTypeEntityRepository;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.util.List;
-
-import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 
 @Service("jpaVBdObjectTypeEntityService")
 @Repository
@@ -27,10 +22,6 @@ public class VBdObjectTypeEntityImpl extends ParentForAllImpl implements VBdObje
 
     @Autowired
     private EntityManager em;
-
-   /* public <S extends ParentForAll> S save(S s) {
-        return (S) s.save();
-    }*/
 
     public ParentForAll findOne(BigDecimal bigDecimal) {
         return bdObjectTypeEntityRepository.findOne(bigDecimal);
@@ -49,7 +40,7 @@ public class VBdObjectTypeEntityImpl extends ParentForAllImpl implements VBdObje
     }
 
     //----------------------------------------induvidual---------------------------------------
-    public List<VBdObjectTypeEntity> findByCodeS(String... codeS) {
+/*    public List<VBdObjectTypeEntity> findByCodeS(String... codeS) {
         String s = "select a2.* " +
                 "from " + SCHEMA + ".V_BD_OBJECT_TYPE a2 where a2.code in (";
         for (int i = 0; i < codeS.length; i++) {
@@ -63,9 +54,9 @@ public class VBdObjectTypeEntityImpl extends ParentForAllImpl implements VBdObje
         List<VBdObjectTypeEntity> list = em.createNativeQuery(s, VBdObjectTypeEntity.class).getResultList();
 
         return list;
-    }
+    }*/
 
-    public List<VBdObjectTypeEntity> findByCodeIn(String... code) {
+    /*public List<VBdObjectTypeEntity> findByCodeIn(String... code) {
         return bdObjectTypeEntityRepository.findByCodeIn(code);
     }
 
@@ -78,14 +69,28 @@ public class VBdObjectTypeEntityImpl extends ParentForAllImpl implements VBdObje
             throw new TooManyRowsException();
         }
         return typeEntities.get(0);
-    }
+    }*/
 
     public EntityManager getEntityManager() {
         return em;
     }
 
-
+/*
     public <S extends ParentForAll> S save(S s) {
         return (S) bdObjectTypeEntityRepository.save((VBdObjectTypeEntity) s);
+    }
+    */
+
+    public VBdObjectTypeEntity save(ParentForAll parentForAll) {
+        return bdObjectTypeEntityRepository.save((VBdObjectTypeEntity) parentForAll);
+    }
+
+    public void delete(ParentForAll parentForAll) {
+        bdObjectTypeEntityRepository.delete((VBdObjectTypeEntity) parentForAll);
+    }
+
+    @Override
+    public VBdObjectTypeEntity findByCode(String code) {
+        return bdObjectTypeEntityRepository.findByCode(code).get(0);
     }
 }

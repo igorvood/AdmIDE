@@ -1,5 +1,6 @@
 package ru.vood.Plugin.dialogs.ExtSwing;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
@@ -7,6 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JDBTableModel extends AbstractTableModel {
     ArrayList<VBdObjectEntity> rows = new ArrayList<VBdObjectEntity>();
@@ -130,8 +132,8 @@ public class JDBTableModel extends AbstractTableModel {
         Query<VBdColomnsEntity> bdColomnsResultSetToObject = new Query<VBdColomnsEntity>(bdColomns, AppConst.getTune(ListTunes.PREFIX_COLOMN));
         TreeSet<VBdColomnsEntity> colomnsTreeSet = bdColomnsResultSetToObject.viewToSet(SystemObject.VW_COLOMN_FOR_TABLE, new NameValuePair("PARENT", bdObject.getId().toString()));*/
 
-        VBdColomnsEntityService vBdColomnsEntityService = (VBdColomnsEntityService) VBdColomnsEntity.getServise(VBdColomnsEntity.class);
-        ArrayList<VBdColomnsEntity> colomns = (ArrayList<VBdColomnsEntity>) vBdColomnsEntityService.findByParent(bdObject);
+        VBdColomnsEntityService vBdColomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
+        List<VBdObjectEntity> colomns = vBdColomnsEntityService.findByParent(bdObject).stream();
 
         for (VBdColomnsEntity col : colomns) {
             rows.add(col);

@@ -1,10 +1,11 @@
 package ru.vood.Plugin.dialogs;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
@@ -90,13 +91,11 @@ public class NewOrEditColumn extends JAddDialog {
             colomns.setName(nameField.getText());
             colomns.setNotNull(((notNullCheckBox.isSelected()) ? "1" : "0"));
 
-            VBdObjectTypeEntity objType = new VBdObjectTypeEntity();
-            VBdObjectTypeEntityService vBdObjectTypeEntityService = objType.getServise();
-            objType = vBdObjectTypeEntityService.findByCodeS("COLOMN").iterator().next();
-            colomns.setTypeObject(objType);
+            colomns.setTypeObject(ObjectTypes.getCOLOMN());
             colomns.setTypeValue((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
-            colomns.save();
-            this.setAddedObj(colomns);
+            VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
+            VBdColomnsEntity newColomn = (VBdColomnsEntity) colomnsEntityService.save(colomns);
+            this.setAddedObj(newColomn);
 
             dispose();
         } else {

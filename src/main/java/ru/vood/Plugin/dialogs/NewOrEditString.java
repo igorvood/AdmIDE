@@ -1,13 +1,14 @@
 package ru.vood.Plugin.dialogs;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.List;
 
 public class NewOrEditString extends JAddDialog {
     private JPanel contentPane;
@@ -59,11 +60,7 @@ public class NewOrEditString extends JAddDialog {
     }
 
     private void onOK() {
-        VBdObjectEntity num = new VBdObjectEntity();
-
-        VBdObjectEntityService objectEntityServ = num.getServise();
-        List<VBdObjectEntity> vBdObjectEntityList = (List<VBdObjectEntity>) objectEntityServ.findByTypeObjectCodeIn("STRING");
-        num = vBdObjectEntityList.get(0);
+        VBdObjectEntity num = Tables.getSTRING();
 
         VBdTableEntity newBDTable = new VBdTableEntity();
         newBDTable.setParent(num);
@@ -72,8 +69,11 @@ public class NewOrEditString extends JAddDialog {
         newBDTable.setName(this.nameField.getText().trim());
         newBDTable.setJavaClass(newBDTable.getClass().toString());
         newBDTable.setLength(Long.getLong(lengthField.getText()));
-        newBDTable = newBDTable.save();
-        this.setAddedObj(newBDTable);
+
+        VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+        VBdTableEntity newNum = (VBdTableEntity) tableEntityService.save(newBDTable);
+
+        this.setAddedObj(newNum);
         dispose();
     }
 
