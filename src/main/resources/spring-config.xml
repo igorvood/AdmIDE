@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+    <!--    Включение кеша Spring-->
+    <cache:annotation-driven/>
+
+    <!--    Объявление менеджера кеша -->
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager">
+            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+                <property name="configLocation" value="classpath:ehcache.xml"/>
+                <property name="shared" value="true"/>
+            </bean>
+        </property>
+    </bean>
+
+
+    <!--@Transaction annotation support -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+    <tx:advice id="transactionManagerTune" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="attributesType" propagation="REQUIRED" rollback-for="java.lang.RuntimeException"
+                       read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--Обеспечивает работу с транзакциями в Spring -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf"/>
+    </bean>
+
+    <!-- EntityManagerFactory -->
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--Поставщик данных - hibernate-->
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <!--поиск сущностей в этом пакете-->
+        <property name="packagesToScan"
+                  value="ru.vood"/>
+
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <!--Устанавливает максимальную "глубину" для дерева выбора внешнего соединения для однократного ассоциаций
+                (один к одному, много-к-одному). A 0 отключает внешнюю внешнюю присоедините выборку. например рекомендуемые значения между 0 и 3 -->
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.jdbc.fetch_size">50</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.show_sql">true</prop>
+
+                <!--default_batch_fetch_size: Это свойство очень низкого уровня, которое определяет, сколько строк Hibernate будет запрашивать драйвер JDBC для
+                извлечения/загрузки при запросе ассоциации коллекции. Если вы будете запрашивать все города в стране (предыдущий пример), то,
+                загружая данные партиями через соединение JDBC, процесс получения данных через и в память как объекты будет более упорядоченным.
+                По сравнению с кольцом для выполнения запроса для приложения для обработки данных потребуется, однако, как правило, он незначителен.
+                Обычно оставить свойство конфигурации значением по умолчанию будет правильным. -->
+                <!--<prop key="hibernate.default_batch_fetch_size">true</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <!-- Datasource. Источник данных - база MySQL -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:vood"/>
+        <property name="username" value="vood"/>
+        <property name="password" value="vood"/>
+        <!--
+                <property name="url" value="jdbc:oracle:thin:@//devtest.ftc.ru:1548/b0t1529"/>
+                <property name="username" value="ibs"/>
+                <property name="password" value="ibs"/>-->
+    </bean>
+
+    <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
+    <context:annotation-config/>
+
+    <!--Scanning components in base-package (look for annotations) -->
+    <context:component-scan base-package="ru.vood"/>
+
+    <!-- Need for Repository abstraction -->
+    <jpa:repositories base-package="ru.vood" entity-manager-factory-ref="emf"
+                      transaction-manager-ref="transactionManager"/>
+
+
+</beans>
