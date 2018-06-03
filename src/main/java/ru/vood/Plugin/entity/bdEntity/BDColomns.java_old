@@ -1,0 +1,45 @@
+package ru.vood.Plugin.entity.bdEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "V_BD_COLOMNS")
+@Deprecated
+public class BDColomns extends BDObject {
+
+    @Column(name = "NOT_NULL", length = 1)
+    private String notNull;
+
+    @JoinColumn(name = "TYPE_COLOMN", nullable = false)
+    private BDObjType typeColomn;
+
+    @JoinColumn(name = "TYPE_VALUE", nullable = false)
+    private BDTable typeValue;
+
+    public String getNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(String notNull) {
+        this.notNull = notNull;
+    }
+
+    public BDObjType getTypeColomn() {
+        return typeColomn;
+    }
+
+    public void setTypeColomn(BDObjType typeColomn) {
+        this.typeColomn = typeColomn;
+    }
+
+    public BDTable getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue(BDTable typeValue) {
+        this.typeValue = typeValue;
+    }
+}

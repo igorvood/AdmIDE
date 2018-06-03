@@ -1,0 +1,310 @@
+package ru.vood.Plugin.dinamicCall_2.dbms.oracle;
+
+import ru.vood.core.runtime.type.Number;
+import ru.vood.core.runtime.type.Varchar2;
+import ru.vood.Plugin.db.QueryTable;
+import ru.vood.Plugin.dinamicCall_2.sqlInterface.SQLFistrLoadShemeInterface;
+
+import java.math.BigDecimal;
+
+public class SQLFistrLoadShemeOra implements SQLFistrLoadShemeInterface {
+
+    public QueryTable getSQLForCreate(String owner, String storage, String tableName, String context) {
+        QueryTable queryes = new QueryTable();
+        //StringBuffer res = new StringBuffer();
+
+        Varchar2 qw = new Varchar2("CREATE TABLE " + owner + "." + tableName + "\n" +
+                "(ID_NUM NUMBER  not null," + "\n" +
+                "ID VARCHAR2(50)  not null," + "\n" +
+                "NAME VARCHAR2(250)  not null," + "\n" +
+                "PARENT_CLASS NUMBER," + "\n" +
+                "TYPE VARCHAR2(100)  /* not null*/, " + "\n" +
+                "has_instances   VARCHAR2(1) default '0',\n" +
+                "is_collection   VARCHAR2(1) default '0',\n" +
+                "ref_CLASS NUMBER," + "\n" +
+                "arr_CLASS NUMBER" + "\n" +
+                ")" + "\n" +
+                storage + "\n" +
+                "\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+
+        qw.assign("alter table " + tableName + "\n" +
+                "add constraint PK#" + tableName + "_ID primary key (ID_NUM)" + "\n" +
+                "using index" + "\n" +
+                storage + "\n" + "\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "\n" +
+                "add constraint FK#" + tableName + "_PARENT_CLASS foreign key (PARENT_CLASS)\n" +
+                "references " + tableName + " (ID_NUM)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "\n" +
+                "add constraint FK#" + tableName + "_ref_CLASS foreign key (ref_CLASS)\n" +
+                "references " + tableName + " (ID_NUM)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "\n" +
+                "add constraint FK#" + tableName + "_arr_CLASS foreign key (arr_CLASS)\n" +
+                "references " + tableName + " (ID_NUM)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("create or replace trigger tr_seq_ID#" + tableName + "_id " +
+                " before insert or update on " + tableName + " " + " for each row             begin\n" +
+                " if :new.ID_NUM is null then select SEQ_ID.nextval into :new.ID_NUM from dual;" + " end if;\n" +
+                " end;\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("create unique index IDX#" + tableName + "_CODE on " + owner + "." + tableName + " (ID) " + storage + "\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("CREATE TABLE " + owner + "." + tableName + "_property" + "\n" +
+                "(    ID NUMBER  not null," + "\n" +
+                "CODE VARCHAR2(50)  not null," + "\n" +
+                "NAME VARCHAR2(250)  not null," + "\n" +
+                "CLASS NUMBER   not null," + "\n" +
+                "num NUMBER           not null," + "\n" +
+                "TYPE NUMBER   not null " + "\n" +
+                ")" + "\n" +
+                storage + "" + "\n" +
+                "\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "_property" + "\n" +
+                "add constraint PK#" + tableName + "_property_ID primary key (ID)" + "\n" +
+                "using index" + "\n" +
+                storage + "" + "\n" +
+                "\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "_property\n" +
+                "add constraint FK#" + tableName + "_property_" + "CLASS" + " foreign key (CLASS)\n" +
+                "references " + tableName + " (ID_NUM)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("alter table " + tableName + "_property\n" +
+                "add constraint FK#" + tableName + "_property_" + "TYPE" + " foreign key (TYPE)\n" +
+                "references " + tableName + " (ID_NUM)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        if (!DbConst._username.equalsIgnoreCase("IBS")) {
+            SystemObject.SEQ_ID.setScript("CREATE SEQUENCE  " + owner + ".SEQ_ID  MINVALUE 1 MAXVALUE 9999999999999999999999999999 " +
+                    "INCREMENT BY 1 START WITH 61 CACHE 20 NOORDER  NOCYCLE");
+        }
+
+        qw.assign("create or replace trigger tr_seq_ID#" + tableName + "_property_id " +
+                " before insert or update on " + tableName + "_property " + " for each row             begin\n" +
+                " if :new.ID is null then select SEQ_ID.nextval into :new.ID from dual;" + " end if;\n" +
+                " end;\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        SystemObject.VW_VD_VCLASS_ALL_PARENT.setScript("\n" +
+                "CREATE OR REPLACE VIEW VW_VD_VCLASS_all_parent AS\n" +
+                "-- поиск всех родителей для класса который передается через контекст через параметр ID\n" +
+                "SELECT\n" +
+                "  level                c_level,\n" +
+                "  a1.*\n" +
+                "from " + owner + "." + tableName + " a1\n" +
+                "CONNECT BY PRIOR a1.PARENT_CLASS=a1.ID_NUM\n" +
+                "start with upper(a1.id) =  upper(SYS_CONTEXT('IBS_USER','ID'))\n" +
+                "order by level desc\n");
+
+        SystemObject.VW_VD_VCLASS_DEPENDENCE.setScript("\n" +
+                "CREATE OR REPLACE VIEW VW_VD_VCLASS_DEPENDENCE AS \n" +
+                "-- поиск всех зависимостей для класс который передается через контекст через параметр ID\n" +
+                "-- так же через параметр TYPE_DEPEND передается тип зависимости, которую нужно получить, null значит все зависимости\n" +
+                "--поиск всех потомком для текущего класса\n" +
+                "SELECT\n" +
+                "  'Parent class for'   c_type_depend,\n" +
+                "  a1.id                c_id,\n" +
+                "  a1.name              c_name,\n" +
+                "  a1.parent_class      c_parent_class,\n" +
+                "  a1.type              c_type,\n" +
+                "  a1.has_instances     c_has_instances,\n" +
+                "  a1.is_collection     c_is_collection,\n" +
+                "  a1.ref_class         c_ref_class,\n" +
+                "  a1.arr_class         c_arr_class,\n" +
+                "  null                 c_code_field,\n" +
+                "  null                 c_name_field\n" +
+                "from " + owner + "." + tableName + " a1\n" +
+                "where nvl(upper(SYS_CONTEXT('IBS_USER','TYPE_DEPEND')),'PARENT CLASS FOR' )='PARENT CLASS FOR'\n" +
+                "CONNECT BY PRIOR a1.ID=a1.PARENT_CLASS\n" +
+                "start with upper(a1.PARENT_CLASS) = upper(SYS_CONTEXT('" + context + "','ID'))\n" +
+                "union all\n" +
+                "--поиск всех ссылок для текущего класса\n" +
+                "SELECT\n" +
+                "  'Reference' c_type_depend,\n" +
+                "  a1.id c_id,\n" +
+                "  a1.name c_name,\n" +
+                "  a1.parent_class  c_parent_class,\n" +
+                "  a1.type          c_type,\n" +
+                "  a1.has_instances c_has_instances,\n" +
+                "  a1.is_collection c_is_collection,\n" +
+                "  a1.ref_class     c_ref_class,\n" +
+                "  a1.arr_class     c_arr_class,\n" +
+                "  null             c_code_field,\n" +
+                "  null             c_name_field\n" +
+                "from vclass a1\n" +
+                "where upper(a1.ref_class) = upper(SYS_CONTEXT('" + context + "','ID'))\n" +
+                "      and nvl(upper(SYS_CONTEXT('IBS_USER','TYPE_DEPEND')),'REFERENCE' )='REFERENCE'\n" +
+                "--поиск всех массивов для текущего класса\n" +
+                "union all\n" +
+                "SELECT\n" +
+                "  'Array' c_type_depend,\n" +
+                "  a1.id c_id,\n" +
+                "  a1.name c_name,\n" +
+                "  a1.parent_class  c_parent_class,\n" +
+                "  a1.type          c_type,\n" +
+                "  a1.has_instances c_has_instances,\n" +
+                "  a1.is_collection c_is_collection,\n" +
+                "  a1.ref_class     c_ref_class,\n" +
+                "  a1.arr_class     c_arr_class,\n" +
+                "  null             c_code_field,\n" +
+                "  null             c_name_field\n" +
+                "from " + owner + "." + tableName + " a1\n" +
+                "where upper(a1.arr_class) = upper(SYS_CONTEXT('" + context + "','ID'))\n" +
+                "      and nvl(upper(SYS_CONTEXT('IBS_USER','TYPE_DEPEND')),'ARRAY')='ARRAY'" + "union all\n" +
+                "--поиск всех полей типом которых является текущий класс\n" +
+                "select\n" +
+                "  'Depend by field' c_type_depend,\n" +
+                "  a1.id c_id,\n" +
+                "  a1.name c_name,\n" +
+                "  a1.parent_class  c_parent_class,\n" +
+                "  a1.type          c_type,\n" +
+                "  a1.has_instances c_has_instances,\n" +
+                "  a1.is_collection c_is_collection,\n" +
+                "  a1.ref_class     c_ref_class,\n" +
+                "  a1.arr_class     c_arr_class,\n" +
+                "  a2.code          c_code_field,\n" +
+                "  a2.name          c_name_field\n" +
+                "from " + owner + "." + tableName + " a1, " + owner + "." + tableName + "_property a2\n" +
+                "where upper(a2.type) = upper(SYS_CONTEXT('" + context + "','ID'))\n" +
+                "      and nvl(upper(SYS_CONTEXT('IBS_USER','TYPE_DEPEND')),'DEPEND BY FIELD' )='DEPEND BY FIELD'" +
+                "and a2.class=a1.id\n");
+
+        /*SystemObject.VW_VD_DEPEND_FOR_STUCTURE.setScript("CREATE OR REPLACE VIEW VW_VD_DEPEND_FOR_STUCTURE AS\n" +
+                "-- представление отображает все реквизиты сложного типа в случае когда тип текущего реквизита - сложный реквизит \n" +
+                "-- тип передается через контекст TYPE\n" +
+                "select a2.code, \n" +
+                "a2.name, \n" +
+                "a2.class, \n" +
+                "a2.type, \n" +
+                "a.c_level \n" +
+                "from " + owner + "." + tableName + "_PROPERTY a2,\n" +
+                "(select level as c_level, \n" +
+                "a1.HAS_INSTANCES as c_HAS_INSTANCES, \n" +
+                "a1.id as C_ID, \n" +
+                "a1.IS_COLLECTION as C_IS_COLLECTION, \n" +
+                "a1.name as C_name, \n" +
+                "a1.PARENT_CLASS as C_PARENT_CLASS, \n" +
+                "a1.type as C_type, \n" +
+                "a1.ARR_CLASS as C_ARR_CLASS, \n" +
+                "a1.REF_CLASS as C_REF_CLASS \n" +
+                "from " + owner + "." + tableName + " a1 \n" +
+                "CONNECT BY prior a1.PARENT_CLASS = a1.ID \n" +
+                "start with upper(a1.id) =upper(SYS_CONTEXT('" + context + "','TYPE'))) a\n" +
+                "where a2.class = a.C_ID\n" +
+                "order by a.c_level\n");*/
+        SystemObject.VW_VD_DEPEND_FOR_STUCTURE.setScript("CREATE OR REPLACE VIEW VW_VD_DEPEND_FOR_STUCTURE AS\n" +
+                "-- представление отображает все реквизиты сложного типа в случае когда тип текущего реквизита - сложный реквизит \n" +
+                "-- тип передается через контекст TYPE\n" +
+                "select a2.*, \n" +
+                "a.c_level \n" +
+                "from " + owner + "." + tableName + "_PROPERTY a2,\n" +
+                "(select level as c_level, \n" +
+                "a1.* \n" +
+                "from " + owner + "." + tableName + " a1 \n" +
+                "CONNECT BY prior a1.PARENT_CLASS = a1.ID_NUM \n" +
+                "start with upper(a1.id) =upper(SYS_CONTEXT('" + context + "','TYPE'))) a\n" +
+                "where a2.class = a.ID_NUM\n" +
+                "order by a.c_level\n");
+
+
+        SystemObject.VW_VD_CLASS_PROP_FOR_CL.setScript("CREATE OR REPLACE VIEW VW_VD_CLASS_PROP_FOR_CL AS\n" +
+                "-- представление отображает все реквизиты переданного типа \n" +
+                "-- тип передается через контекст TYPE\n" +
+                "select a2.* \n" +
+                "from " + owner + "." + tableName + "_PROPERTY a2\n" +
+                "where a2.class = upper(SYS_CONTEXT('" + context + "','TYPE'))\n" +
+                "\n");
+        SystemObject.VW_VD_VCLASS_FOR_TREE.setScript("CREATE OR REPLACE VIEW VW_VD_VCLASS_FOR_TREE AS\n" +
+                "select level as c_level, a1.*\n" +
+                "                from " + owner + "." + tableName + " a1 \n" +
+                "                CONNECT BY PRIOR a1.ID_NUM=a1.PARENT_CLASS \n" +
+                "                start with a1.PARENT_CLASS is null ORDER SIBLINGS by id desc\n");
+        SystemObject.VW_VD_VCLASS_COLUMN_TABLE.setScript("CREATE OR REPLACE VIEW VW_VD_VCLASS_COLUMN_TABLE AS \n" +
+                //"select a2.code, a2.name, a2.class, a2.type, a2.num, a2.id, a.c_CURENT_CLASS from IBS.VCLASS_PROPERTY a2,\n" +
+                "select a2.* from " + owner + "." + tableName + "_PROPERTY a2,\n" +
+                "(select distinct \n" +
+                "a1.HAS_INSTANCES as c_HAS_INSTANCES, \n" +
+                "a1.id_num as C_id_num, \n" +
+                "a1.id as C_id, \n" +
+                "a1.IS_COLLECTION as C_IS_COLLECTION, \n" +
+                "a1.name as C_name, \n" +
+                "a1.PARENT_CLASS as C_PARENT_CLASS, \n" +
+                "a1.type as C_type, \n" +
+                "a1.ARR_CLASS as C_ARR_CLASS, \n" +
+                "a1.REF_CLASS as C_REF_CLASS,\n" +
+                "(case when (a1.id=upper(SYS_CONTEXT('" + context + "','TYPE')))\n" +
+                "  then '1'\n" +
+                "  else '0'\n" +
+                "end) as c_CURENT_CLASS\n" +
+                " from \n" +
+                owner + "." + tableName + " a1 \n" +
+                "CONNECT BY prior a1.PARENT_CLASS = a1.id_num \n" +
+                "start with a1.id=upper(SYS_CONTEXT('" + context + "','TYPE'))) a \n" +
+                "where a2.class = a.C_id_num\n" +
+                "order by a.c_CURENT_CLASS \n");
+
+
+        SystemObject[] arr = SystemObject.values();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].getScript() != null && arr[i].getScript().length() > 0) {
+                qw.assign(arr[i].getScript());
+                queryes.get(queryes.count().add(1), true).assign(qw);
+            }
+        }
+        return queryes;
+    }
+
+    public QueryTable getSQLForCreate() {
+        return getSQLForCreate(DbConst.OWNER_DICT, DbConst.STOGAGE_DICT, DbConst.MAIN_TABLE, DbConst.CONTEXT);
+    }
+
+    public QueryTable getSQLForInsertData(String owner, String tableName) {
+        StringBuffer res = new StringBuffer();
+        QueryTable queryes = new QueryTable();
+
+        Number id = SQLFactory.getInstance().getNextId();
+        BigDecimal iid = id.getValue();
+        Varchar2 qw = new Varchar2("INSERT INTO " + owner + "." + tableName +
+                " (ID_NUM, ID, NAME, TYPE) VALUES (" + iid + ",'OBJECT', 'Объекты', NULL)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('REFERENCE', 'Ссылки', " + iid + ", 'NUMBER')\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('ARRAY', 'Массивы', " + iid + ", 'NUMBER')\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('STRING', 'Строки', " + iid + ", 'varchar2(32)')\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('NUMBER', 'Числа', " + iid + ", 'NUMBER')\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('DATE', 'Даты', " + iid + ", 'DATE')\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+        qw.assign("INSERT INTO " + owner + "." + tableName +
+                " (ID, NAME, PARENT_CLASS, TYPE) VALUES ('SPR', 'Справочники', " + iid + ", null)\n");
+        queryes.get(queryes.count().add(1), true).assign(qw);
+        return queryes;
+    }
+
+    public QueryTable getSQLForInsertData() {
+        return getSQLForInsertData(DbConst.OWNER_DICT, DbConst.MAIN_TABLE);
+    }
+}

@@ -1,0 +1,170 @@
+package ru.vood.Plugin.entity.bdEntity;
+
+import ru.vood.core.runtime.exception.NoDataFoundException;
+import ru.vood.core.runtime.type.i.Clonable;
+import ru.vood.Plugin.db.QueryTable;
+import ru.vood.Plugin.dinamicCall_2.CopyObject;
+import ru.vood.Plugin.Refactoring.Query;
+import ru.vood.Plugin.dinamicCall_2.ToSql;
+import ru.vood.Plugin.runtimeAdm.NameValuePair;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
+
+import java.util.HashMap;
+
+@Deprecated
+abstract public class BDParentForAllObj implements Clonable<BDParentForAllObj> {
+
+    private boolean loaded = false;
+    private boolean saveded = false;
+
+    @Override
+    public BDParentForAllObj copy() {
+        return (BDParentForAllObj) CopyObject.copy(this);
+    }
+
+    /**
+     * сохраняет текущий объкт в базу данных, объккт должен бфть новым
+     *
+     * @return в случае успеха возращает истину
+     */
+    public boolean insertOnBase() {
+        boolean sucsess = true;
+        /*if (!saveded) {
+            if (!loaded) {*/
+
+        ToSql sql = new ToSql();
+        QueryTable queryTable = sql.getInsert(this);
+        sucsess = Query.executeCreate(queryTable);
+        TuneChainStepsCreate.runChain(this, null);
+        this.setLoaded(sucsess);
+        setSaveded(sucsess);
+
+          /*  } else {
+                //Todo после реализации запуститть апдейт
+                //sucsess = DbQuery.executeCreate(ToSql.getInsert(this));
+            }
+            saveded = true;
+            loaded = true;
+        }*/
+        return sucsess;
+    }
+
+
+    /**
+     * @return true - если id пустое, false - иначе
+     */
+    abstract boolean nullId();
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * <p>
+     * The {@code equals} method implements an equivalence relation
+     * on non-null object references:
+     * <ul>
+     * <li>It is <i>reflexive</i>: for any non-null reference value
+     * {@code x}, {@code x.equals(x)} should return
+     * {@code true}.
+     * <li>It is <i>symmetric</i>: for any non-null reference values
+     * {@code x} and {@code y}, {@code x.equals(y)}
+     * should return {@code true} if and only if
+     * {@code y.equals(x)} returns {@code true}.
+     * <li>It is <i>transitive</i>: for any non-null reference values
+     * {@code x}, {@code y}, and {@code z}, if
+     * {@code x.equals(y)} returns {@code true} and
+     * {@code y.equals(z)} returns {@code true}, then
+     * {@code x.equals(z)} should return {@code true}.
+     * <li>It is <i>consistent</i>: for any non-null reference values
+     * {@code x} and {@code y}, multiple invocations of
+     * {@code x.equals(y)} consistently return {@code true}
+     * or consistently return {@code false}, provided no
+     * information used in {@code equals} comparisons on the
+     * objects is modified.
+     * <li>For any non-null reference value {@code x},
+     * {@code x.equals(null)} should return {@code false}.
+     * </ul>
+     * <p>
+     * The {@code equals} method for class {@code Object} implements
+     * the most discriminating possible equivalence relation on objects;
+     * that is, for any non-null reference values {@code x} and
+     * {@code y}, this method returns {@code true} if and only
+     * if {@code x} and {@code y} refer to the same object
+     * ({@code x == y} has the value {@code true}).
+     * <p>
+     * Note that it is generally necessary to override the {@code hashCode}
+     * method whenever this method is overridden, so as to maintain the
+     * general contract for the {@code hashCode} method, which states
+     * that equal objects must have equal hash codes.
+     *
+     * @param obj the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     * argument; {@code false} otherwise.
+     * @see #hashCode()
+     * @see HashMap
+     */
+    @Override
+    public abstract boolean equals(Object obj);
+
+    public boolean selectFromBase() {
+
+        if (nullId() && !loaded) {
+            throw new NoDataFoundException();
+        }
+
+        boolean sucsess = true;
+        if (!loaded) {
+            Query setToObject = new Query<>(this, "");
+            setToObject.getOneObjById(this, false);
+            setLoaded(true);
+        }
+
+        return sucsess;
+    }
+
+    public BDParentForAllObj selectFromBase(NameValuePair pair) {
+        if (!loaded) {
+            Query setToObject = new Query<>(this, "");
+            BDParentForAllObj obj = setToObject.getOneObj(false, pair);
+            setLoaded(true);
+            return obj;
+        }
+        return this;
+    }
+
+    public BDParentForAllObj selectFromBase(String name, String val) {
+        NameValuePair valuePair = new NameValuePair(name, val);
+        return selectFromBase(valuePair);
+    }
+
+
+    public boolean deleteFromBase() {
+        boolean sucsess = true;
+
+        return sucsess;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        /*if (this instanceof BDObjType) {
+            if (!nullId()) {
+                BDObjType bdObjType = (BDObjType) this;
+                if (bdObjType.getId().longValue() == 4655805204L) {
+                    System.out.println("4655805204");
+                }
+            }
+        }*/
+        this.loaded = loaded;
+
+    }
+
+    public boolean isSaveded() {
+        return saveded;
+    }
+
+    public void setSaveded(boolean saveded) {
+        this.saveded = saveded;
+    }
+
+}

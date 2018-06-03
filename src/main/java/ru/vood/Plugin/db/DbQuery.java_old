@@ -1,0 +1,112 @@
+package ru.vood.Plugin.db;
+
+import ru.vood.Plugin.admPlugin.tune.ListTunes;
+import ru.vood.Plugin.applicationConst.AppConst;
+import ru.vood.core.runtime.exception.ApplicationErrorException;
+import ru.vood.core.runtime.type.Number;
+import ru.vood.Plugin.dialogs.ErrWin;
+import ru.vood.Plugin.logging.Log;
+
+import java.sql.*;
+import java.util.logging.Level;
+
+public class DbQuery {
+    private static Log log = Log.getLogger(DbQuery.class);
+
+    public static boolean executeCreate(QueryTable query) {
+        boolean retVal = true;
+        Number key = query.first();
+        ResultSet r = null;
+        while (!key.isNull_booleanValue()) {
+            r = executeSelectQuery(query.get(key).getValue());
+            retVal = retVal && (r != null);
+            key = query.next(key);
+        }
+        return retVal;
+    }
+
+    @Deprecated
+    public static ResultSet executeSelectQuery(String query) {
+        Connection conn;
+        Statement stmt;
+        ResultSet r = null;
+        try {
+            conn = DBConnect.getConnection();
+            if (!conn.isClosed()) {
+                stmt = conn.createStatement();
+                r = stmt.executeQuery(query);
+                log.putToLog(" Выполнен запрос. " + query + " Результат " + r, Level.FINEST);
+
+            } else {
+                log.putToLog(" Нет соединения. ", Level.WARNING);
+            }
+        } catch (SQLException e) {
+            String s = " Не удалось Выполнить запроос: ";
+            new ErrWin(null, s, true, s + query, e);
+            r = null;
+        }
+        return r;
+    }
+
+    /*public static ResultSet executeVW(String vw) {
+        return executeQuery("select * from " + vw);
+    }*/
+
+    public static ResultSet executeQuery(String query) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        ResultSet r = null;
+        conn = DBConnect.getConnection();
+        if (conn != null) {
+            try {
+                if (!conn.isClosed()) {
+                    stmt = conn.prepareStatement(query);
+                    r = stmt.executeQuery();
+                    log.putToLog(" Выполнен запрос. " + query + " Результат " + r, Level.FINEST);
+                } else {
+                    log.putToLog(" Нет соединения. ", Level.WARNING);
+                }
+            } catch (SQLException e) {
+                throw new ApplicationErrorException(" Не удалось Выполнить запроос: " + query + " Причина " + e.getMessage(), e);
+            }
+        }
+        return r;
+    }
+
+    public static void setContext(String par, String val) {
+        if (AppConst.getTune(ListTunes.USER).toUpperCase().equals("IBS")) {
+            DbQuery.executeSelectQuery("call executor.SET_CONTEXT('" + par + "','" + val + "') ");
+        } else {
+            DbQuery.executeSelectQuery("call sys.set_voodcontext_value('" + par + "','" + val + "') ");
+        }
+    }
+
+    /**
+     * выполняет запрос query и проверяет если экземряры в БД
+     *
+     * @param query запрос должен возращать кол-во записей
+     * @return true - если экземпляры есть, иначе  - false
+     */
+    public static int isExists(String query) {
+        ResultSet r;
+        int contRec = 0;
+        r = executeSelectQuery(query);
+        try {
+            r.next();
+            contRec = r.getInt(1);
+        } catch (SQLException e) {
+            contRec = -1;
+        }
+        return contRec;
+    }
+
+    public static void closeCursor(ResultSet resultSet) {
+        try {
+            resultSet.getStatement().close();
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new ApplicationErrorException("Не удалось закрыть курсор", e);
+        }
+    }
+
+}
