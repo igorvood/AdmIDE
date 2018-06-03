@@ -1,8 +1,8 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.VBdObjectTypeEntityService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.db.QueryTable;
 
 public class LObjectInsert extends StepsFirstLoad {

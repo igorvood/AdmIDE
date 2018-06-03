@@ -1,10 +1,10 @@
 package ru.vood.Plugin.dialogs;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdColomnsEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.VBdObjectTypeEntityService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;

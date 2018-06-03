@@ -1,6 +1,6 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.tune.ListTunes;
 import ru.vood.Plugin.applicationConst.AppConst;
 import ru.vood.Plugin.applicationConst.TypeObject;

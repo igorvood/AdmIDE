@@ -1,8 +1,8 @@
 package ru.vood.Plugin.dialogs;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.VBdObjectEntityService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
 import javax.swing.*;

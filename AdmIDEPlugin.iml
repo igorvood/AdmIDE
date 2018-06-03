@@ -8,6 +8,9 @@
         </fileset>
       </configuration>
     </facet>
+    <facet type="AspectJ" name="AspectJ">
+      <configuration />
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -20,6 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.13" level="project" />
     <orderEntry type="library" name="Maven: p6spy:p6spy:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: jfork:nProperty:1.0" level="project" />
@@ -61,7 +65,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.17.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.3.17.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.17.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.7.12" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.17.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.9" level="project" />

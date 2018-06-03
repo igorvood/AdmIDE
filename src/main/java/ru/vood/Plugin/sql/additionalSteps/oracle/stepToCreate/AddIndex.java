@@ -1,6 +1,6 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdIndexEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.db.QueryTable;
 
 

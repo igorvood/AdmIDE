@@ -2,7 +2,7 @@ package ru.vood.Plugin.dialogs;
 
 import com.google.gson.Gson;
 import jfork.nproperty.ConfigParser;
-import ru.vood.Plugin.admPlugin.entityHiber.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.spring.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.db.SupportedDBMS;

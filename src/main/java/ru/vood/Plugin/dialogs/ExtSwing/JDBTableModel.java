@@ -1,8 +1,8 @@
 package ru.vood.Plugin.dialogs.ExtSwing;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdColomnsEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.VBdColomnsEntityService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

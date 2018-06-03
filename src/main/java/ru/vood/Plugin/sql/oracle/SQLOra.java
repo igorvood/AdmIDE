@@ -1,8 +1,8 @@
 package ru.vood.Plugin.sql.oracle;
 
-import ru.vood.Plugin.admPlugin.entityHiber.ParentForAll;
-import ru.vood.Plugin.admPlugin.entityHiber.impl.CommonFunction;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.CommonFunctionService;
+import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
+import ru.vood.Plugin.admPlugin.spring.impl.CommonFunction;
+import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.tune.ListTunes;
 import ru.vood.Plugin.applicationConst.AppConst;
 import ru.vood.Plugin.applicationConst.SystemObject;

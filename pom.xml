@@ -8,24 +8,58 @@
     <artifactId>AdmIDE</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <properties>
         <hibernate-version>5.0.1.Final</hibernate-version>
         <spring-framework-version>4.3.17.RELEASE</spring-framework-version>
         <spring-data-version>Gosling-RELEASE</spring-data-version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <build>
+        <plugins>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-compiler-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<source>1.8</source>-->
+            <!--<target>1.8</target>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
+
+            <!--Плугин для сборки проекта с использованием AspectJ, Нужно так же настроить компилятор AJC-->
+            <!--его можно скать отсюда-->
+            <!--http://www.eclipse.org/aspectj/downloads.php-->
+            <!--Инструкция для настройки в IDEA-->
+            <!--http://www.jetbrains.com/help/idea/using-the-aspectj-ajc-compiler.html-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.11</version>
+                <!--<configuration>-->
+                <!--<complianceLevel>1.6</complianceLevel>-->
+                <!--<aspectLibraries>-->
+                <!--<aspectLibrary>-->
+                <!--<groupId>org.springframework</groupId>-->
+                <!--<artifactId>spring-aspects</artifactId>-->
+                <!--</aspectLibrary>-->
+                <!--</aspectLibraries>-->
+                <!--<verbose>true</verbose>-->
+                <!--</configuration>-->
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
 
     <dependencyManagement>
         <dependencies>
@@ -62,6 +96,13 @@
     </dependencyManagement>
 
     <dependencies>
+        <!--Эта зависимость для возможности использовать AspectJ-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.13</version>
+        </dependency>
+
 
         <!-- P6Spy  прокси для для отладки в тестовом окружении для сбора статистики hibernate-->
         <dependency>

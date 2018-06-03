@@ -1,6 +1,6 @@
 package ru.vood.Plugin.dialogs.ExtSwing;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 
 import javax.swing.*;
 import java.awt.*;

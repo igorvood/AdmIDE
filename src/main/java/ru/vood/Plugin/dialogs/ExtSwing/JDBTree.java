@@ -1,7 +1,7 @@
 package ru.vood.Plugin.dialogs.ExtSwing;
 
-import ru.vood.Plugin.admPlugin.entityHiber.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.entityHiber.intf.VBdObjectEntityService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.logging.Log;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 

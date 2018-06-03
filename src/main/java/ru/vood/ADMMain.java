@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import ru.vood.Plugin.admPlugin.entityHiber.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.spring.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
