@@ -20,6 +20,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: p6spy:p6spy:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: jfork:nProperty:1.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache:2.10.4" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />

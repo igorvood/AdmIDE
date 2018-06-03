@@ -65,9 +65,14 @@
                 <!--Устанавливает максимальную "глубину" для дерева выбора внешнего соединения для однократного ассоциаций
                 (один к одному, много-к-одному). A 0 отключает внешнюю внешнюю присоедините выборку. например рекомендуемые значения между 0 и 3 -->
                 <prop key="hibernate.max_fetch_depth">3</prop>
+                <!--Какими пачками вычитывать из БД-->
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
+                <!--Какими пачками Вставлять в базу-->
                 <prop key="hibernate.jdbc.batch_size">10</prop>
                 <prop key="hibernate.show_sql">true</prop>
+
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
 
                 <!--default_batch_fetch_size: Это свойство очень низкого уровня, которое определяет, сколько строк Hibernate будет запрашивать драйвер JDBC для
                 извлечения/загрузки при запросе ассоциации коллекции. Если вы будете запрашивать все города в стране (предыдущий пример), то,
@@ -81,7 +86,8 @@
 
     <!-- Datasource. Источник данных - база MySQL -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <!--<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>-->
+        <property name="driverClassName" value="com.p6spy.engine.spy.P6SpyDriver"/>
         <property name="url" value="jdbc:oracle:thin:@localhost:1521:vood"/>
         <property name="username" value="vood"/>
         <property name="password" value="vood"/>

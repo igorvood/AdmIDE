@@ -51,10 +51,13 @@ public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEn
         for (int i = 0; i < codeS.length; i++) {
             stringList.add(codeS[i]);
         }
-        Query query = em.createQuery("select a2 from VBdObjectTypeEntity a1, VBdObjectEntity a2 where a1.code in :codeTypeS " +
-                " and a2.typeObject = a1.id " +
+        Query query = em.createQuery("select a2 from VBdObjectEntity a2 " +
+                "  join fetch a2.typeObject a1 " + //" on a1.code in :codeTypeS  " +
+                "  left join a2.parent a3  " +
+                " where a1.code in :codeTypeS " +
                 " order by a2.id ")
                 .setParameter("codeTypeS", stringList);
+
         List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
         return (ArrayList<VBdObjectEntity>) list1;
     }

@@ -62,7 +62,15 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--Р”Р»СЏ СѓРґРѕР±РЅРѕР№ СЂР°Р±РѕС‚С‹ СЃ С„Р°Р№Р»Р°РјРё properties-->
+
+        <!-- P6Spy  прокси для для отладки в тестовом окружении для сбора статистики hibernate-->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <!--For easy use properties-->
         <dependency>
             <groupId>jfork</groupId>
             <artifactId>nProperty</artifactId>

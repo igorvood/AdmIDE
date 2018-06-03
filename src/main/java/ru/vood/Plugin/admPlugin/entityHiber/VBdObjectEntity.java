@@ -50,7 +50,7 @@ public class VBdObjectEntity extends ParentForAll {
         this.name = name;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     public VBdObjectEntity getParent() {
         return parent;
@@ -60,7 +60,7 @@ public class VBdObjectEntity extends ParentForAll {
         this.parent = parent;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TYPE_OBJECT", referencedColumnName = "ID", nullable = false)
     public VBdObjectTypeEntity getTypeObject() {
         return typeObject;
