@@ -73,6 +73,9 @@
 
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.use_sql_comments">true</prop>
+                <prop key="hibernate.SQL">debug</prop>
+                <prop key="hibernate.type">trace</prop>
+
 
                 <!--default_batch_fetch_size: Это свойство очень низкого уровня, которое определяет, сколько строк Hibernate будет запрашивать драйвер JDBC для
                 извлечения/загрузки при запросе ассоциации коллекции. Если вы будете запрашивать все города в стране (предыдущий пример), то,

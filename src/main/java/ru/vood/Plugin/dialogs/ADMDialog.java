@@ -99,8 +99,6 @@ public class ADMDialog extends JAddDialog {
 
                         ((JDBTableModel) table1.getModel()).loadTableByObj((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
                         table1.updateUI();
-
-                        System.out.println(this.getClass() + " Выбрали " + ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
                     }
 
                 } catch (CoreRuntimeException qw) {
@@ -388,10 +386,11 @@ public class ADMDialog extends JAddDialog {
         table1.setComponentPopupMenu(jPopupMenuTable);
     }
 
-    private void addOrEdit(VBdObjectEntity object, boolean adding) {
+    public VBdObjectEntity addOrEdit(VBdObjectEntity object, boolean adding) {
         /*if (object != null) {
             object.setLoaded(true);
         }*/
+
         JAddDialog dialog = null;
         if (object.getTypeObject() != null && object.getTypeObject().getCode().equals(TypeObject.DATE.getName())) {
             new MessageWin("Это же какую новую дату хотите добавить?");
@@ -434,12 +433,13 @@ public class ADMDialog extends JAddDialog {
                 dialog.pack();
                 dialog.setVisible(true);
                 if ((object instanceof VBdTableEntity)) {
-                    //VBdObjectEntity bdParentForAllObj = dialog.getAddedObj();
                     tree1.addToTree(dialog.getAddedObj());
-                    //tree1.loadTree();
                 }
+                return dialog.getAddedObj();
             }
         }
+
+        return null;
     }
 
     private void createUIComponents() {

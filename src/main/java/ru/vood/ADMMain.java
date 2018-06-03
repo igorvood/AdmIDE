@@ -2,8 +2,6 @@ package ru.vood;
 
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import ru.vood.Plugin.admPlugin.spring.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
@@ -58,15 +56,15 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
-        System.out.println("----------------------------------------");
-        DriverManagerDataSource dataSource = ADMMain.getCtx().getBean(DriverManagerDataSource.class);
-        System.out.println(dataSource + " - " + dataSource.getUrl());
-
-        LocalContainerEntityManagerFactoryBean factoryBean = ADMMain.getCtx().getBean(LocalContainerEntityManagerFactoryBean.class);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        factoryBean.getJpaPropertyMap().entrySet().stream().peek(e -> System.out.println(e.getKey() + " -" + e.getValue()));
-
-        System.out.println("----------------------------------------");
+//        System.out.println("----------------------------------------");
+//        DriverManagerDataSource dataSource = ADMMain.getCtx().getBean(DriverManagerDataSource.class);
+//        System.out.println(dataSource + " - " + dataSource.getUrl());
+//
+//        LocalContainerEntityManagerFactoryBean factoryBean = ADMMain.getCtx().getBean(LocalContainerEntityManagerFactoryBean.class);
+//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        factoryBean.getJpaPropertyMap().entrySet().stream().peek(e -> System.out.println(e.getKey() + " -" + e.getValue()));
+//
+//        System.out.println("----------------------------------------");
         try {
             new ADMMain();
         } catch (CoreRuntimeException e) {
