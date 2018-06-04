@@ -4,21 +4,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdTableEntityRepository;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Service("jpaVBdTableEntityService")
 @Repository
 @Transactional
-public class VBdTableEntityImpl extends VBdObjectEntityImpl/*ParentForAllImpl*/ implements VBdTableEntityService {
+public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*/ implements VBdTableEntityService {
 
     @Autowired
     private VBdTableEntityRepository bdTableEntityRepository;
 
+    @Override
+    public VBdTableEntity save(VBdTableEntity entity) {
+        return bdTableEntityRepository.save(entity);
+    }
+
+    @Override
+    public void delete(VBdTableEntity entity) {
+        bdTableEntityRepository.delete(entity);
+    }
+
+    @Override
+    public List<VBdTableEntity> findByTypeObjectCodeIn(String... codeS) {
+        return bdTableEntityRepository.findByTypeObjectCodeIn(codeS);
+    }
+
+    @Override
+    public List<VBdTableEntity> findByParent(VBdObjectEntity parent) {
+        return bdTableEntityRepository.findByParent(parent);
+    }
+
+    /*
     public ParentForAll findOne(BigDecimal bigDecimal) {
         return bdTableEntityRepository.findOne(bigDecimal);
     }
@@ -43,9 +64,8 @@ public class VBdTableEntityImpl extends VBdObjectEntityImpl/*ParentForAllImpl*/ 
     public void delete(ParentForAll parentForAll) {
         bdTableEntityRepository.delete((VBdTableEntity) parentForAll);
     }
-
+*/
 //------------------------------
-
 
 
 }

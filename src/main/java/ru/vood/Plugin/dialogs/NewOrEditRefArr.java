@@ -4,7 +4,7 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
@@ -121,7 +121,7 @@ public class NewOrEditRefArr extends JAddDialog {
                 table.setParent(parent);
                 table.setToType((VBdTableEntity) bdTable);
 
-                VBdObjectTypeEntityService colomnsEntityService = LoadedCTX.getService(VBdObjectTypeEntityService.class);
+                VBdObjectEntityService colomnsEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
                 VBdTableEntity newTableEntity = (VBdTableEntity) colomnsEntityService.save(table);
 
                 this.setAddedObj(newTableEntity);

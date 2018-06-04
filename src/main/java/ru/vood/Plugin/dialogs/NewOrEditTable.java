@@ -1,7 +1,9 @@
 package ru.vood.Plugin.dialogs;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.tune.ListTunes;
 import ru.vood.Plugin.applicationConst.AppConst;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
@@ -70,7 +72,8 @@ public class NewOrEditTable extends JAddDialog {
         newBDTable.setJavaClass(newBDTable.getClass().toString());
         newBDTable.setTableSpace(AppConst.getTune(ListTunes.TABLE_SPASE_USER_TABLE));
         newBDTable.setStorage(AppConst.getTune(ListTunes.STORAGE_TABLE));
-        newBDTable.save();
+        VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+        tableEntityService.save(newBDTable);
         this.setAddedObj(newBDTable);
         dispose();
     }

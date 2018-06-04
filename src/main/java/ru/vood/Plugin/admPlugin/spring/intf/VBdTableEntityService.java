@@ -1,5 +1,17 @@
 package ru.vood.Plugin.admPlugin.spring.intf;
 
-public interface VBdTableEntityService extends VBdObjectEntityService {
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 
+import java.util.List;
+
+public interface VBdTableEntityService/*<S extends VBdTableEntity> extends VBdObjectEntityService*/ {
+
+    VBdTableEntity save(VBdTableEntity entity);
+
+    void delete(VBdTableEntity entity);
+
+    List<VBdTableEntity> findByParent(VBdObjectEntity parent);
+
+    List<VBdTableEntity> findByTypeObjectCodeIn(String... codeS);
 }

@@ -5,6 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 
+@Deprecated
 public interface ParentForAllServise<S extends ParentForAll> {
 
     EntityManager getEntityManager();

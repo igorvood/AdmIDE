@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 @Transactional
 
-public class VBdColomnsEntityImpl extends VBdObjectEntityImpl /*ParentForAllImpl*/ implements VBdColomnsEntityService {
+public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllImpl*/ implements VBdColomnsEntityService {
     @Autowired
     private VBdColomnsEntityRepository bdColomnsEntityRepository;
 
@@ -23,5 +23,16 @@ public class VBdColomnsEntityImpl extends VBdObjectEntityImpl /*ParentForAllImpl
     public List<VBdColomnsEntity> findByParent(VBdObjectEntity parent) {
         return bdColomnsEntityRepository.findByParent(parent);
     }
+
+    @Override
+    public VBdColomnsEntity save(VBdColomnsEntity entity) {
+        return bdColomnsEntityRepository.save(entity);
+    }
+
+    @Override
+    public void delete(VBdColomnsEntity entity) {
+        bdColomnsEntityRepository.delete(entity);
+    }
+
 }
 

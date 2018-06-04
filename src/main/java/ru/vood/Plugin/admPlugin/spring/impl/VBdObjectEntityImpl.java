@@ -5,43 +5,25 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("jpaVBdObjectEntityService")
 @Repository
 @Transactional
-public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEntityService {
+public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObjectEntityService {
 
     @Autowired
     protected VBdObjectEntityRepository vBdObjectEntityRepository;
 
     @Autowired
     protected EntityManager em;
-
-    public ParentForAll findOne(BigDecimal bigDecimal) {
-        return vBdObjectEntityRepository.findOne(bigDecimal);
-    }
-
-    public boolean exists(BigDecimal bigDecimal) {
-        return vBdObjectEntityRepository.exists(bigDecimal);
-    }
-
-    public long count() {
-        return vBdObjectEntityRepository.count();
-    }
-
-    public void delete(Iterable<? extends ParentForAll> iterable) {
-        vBdObjectEntityRepository.delete((Iterable<? extends VBdObjectEntity>) iterable);
-    }
 
     @Cacheable("сacheFromDBTree")
     public ArrayList<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS) {
@@ -73,26 +55,19 @@ public class VBdObjectEntityImpl extends ParentForAllImpl implements VBdObjectEn
     }
     */
 
-    public EntityManager getEntityManager() {
-        return em;
-    }
-
-    /*
-    public List<VBdObjectEntity> findByCode(String code) {
-        return vBdObjectEntityRepository.findByCode(code);
-    }*/
-
-    public VBdObjectEntity save(ParentForAll parentForAll) {
-        return vBdObjectEntityRepository.save((VBdObjectEntity) parentForAll);
-    }
-
-    public void delete(ParentForAll parentForAll) {
-        vBdObjectEntityRepository.delete((VBdObjectEntity) parentForAll);
-    }
-
-
     @Override
     public List<VBdObjectEntity> findByParent(VBdObjectEntity parent) {
         return vBdObjectEntityRepository.findByParent(parent);
+    }
+
+    @Override
+    public VBdObjectEntity save(VBdObjectEntity entity) {
+
+        return vBdObjectEntityRepository.save(entity);
+    }
+
+    @Override
+    public void delete(VBdObjectEntity entity) {
+        vBdObjectEntityRepository.delete(entity);
     }
 }

@@ -1,7 +1,6 @@
 package ru.vood.Plugin.sql.oracle;
 
-import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
-import ru.vood.Plugin.admPlugin.spring.impl.CommonFunction;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.tune.ListTunes;
 import ru.vood.Plugin.applicationConst.AppConst;
@@ -27,7 +26,7 @@ public class SQLOra implements SQLInterface {
 
 
     public BigDecimal getNextId() {
-        CommonFunctionService commonFunctionService = (CommonFunctionService) ParentForAll.getServise(CommonFunction.class);
+        CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
         return commonFunctionService.nextId();
     }
 

@@ -17,6 +17,7 @@ import java.util.stream.StreamSupport;
 public class Tables {
 
     private static Map<String, VBdObjectEntity> bdObjectEntityMap;
+
     @Autowired
     private VBdObjectEntityRepository objectEntityRepository;
 
@@ -68,7 +69,6 @@ public class Tables {
             Iterable<VBdObjectEntity> iterable = objectEntityRepository.findAll();
             bdObjectEntityMap = StreamSupport.stream(iterable.spliterator(), false)
                     .collect(Collectors.toMap(p -> p.getCode(), q -> q));
-
         }
         return bdObjectEntityMap;
     }

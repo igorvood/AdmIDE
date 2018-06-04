@@ -16,9 +16,21 @@ import java.util.stream.StreamSupport;
 @Service
 public class ObjectTypes {
 
-    private static Map<String, VBdObjectTypeEntity> objectTypeEntityMap;
+
     @Autowired
     private VBdObjectTypeEntityRepository objectTypeEntityRepository;
+
+    private static Map<String, VBdObjectTypeEntity> objectTypeEntityMap;
+
+    @PostConstruct
+    private Map<String, VBdObjectTypeEntity> getObls() {
+        if (objectTypeEntityMap == null) {
+            Iterable<VBdObjectTypeEntity> iterable = objectTypeEntityRepository.findAll();
+            objectTypeEntityMap = StreamSupport.stream(iterable.spliterator(), false)
+                    .collect(Collectors.toMap(p -> p.getCode(), q -> q));
+        }
+        return objectTypeEntityMap;
+    }
 
     private static VBdObjectTypeEntity get(String s) {
         VBdObjectTypeEntity entity = objectTypeEntityMap.get(s);
@@ -62,15 +74,5 @@ public class ObjectTypes {
         return get("ARRAY");
     }
 
-    @PostConstruct
-    private Map<String, VBdObjectTypeEntity> getObls() {
-        if (objectTypeEntityMap == null) {
-            Iterable<VBdObjectTypeEntity> iterable = objectTypeEntityRepository.findAll();
-            objectTypeEntityMap = StreamSupport.stream(iterable.spliterator(), false)
-                    .collect(Collectors.toMap(p -> p.getCode(), q -> q));
-
-        }
-        return objectTypeEntityMap;
-    }
 
 }

@@ -4,17 +4,10 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
-import ru.vood.Plugin.admPlugin.spring.entity.ParentForAll;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +20,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
+/*
         VBdObjectTypeEntity typeEntity_9;
         typeEntity_9 = entityService.findByCode("TABLE");
 
@@ -52,7 +45,7 @@ public class Main {
 
 
         /*--- Успешные тесты-----------------------*/
-        ParentForAll.getServise(VBdObjectTypeEntity.class);
+/*        ParentForAll.getServise(VBdObjectTypeEntity.class);
         VBdObjectTypeEntityService service = ctx.getBean("jpaVBdObjectTypeEntityService", VBdObjectTypeEntityService.class);
 
         String[] strings = {"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN"};
@@ -75,7 +68,7 @@ public class Main {
         vBdTableEntity = vBdTableEntityService.findOne(BigDecimal.valueOf(4682130778L));
         System.out.println("---" + vBdTableEntity);
         System.out.println("=====================================================");
-
+*/
         /*--- Успешные тесты-----------------------*/
         System.exit(0);
     }

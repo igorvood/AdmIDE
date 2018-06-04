@@ -133,7 +133,7 @@ public class JDBTableModel extends AbstractTableModel {
         TreeSet<VBdColomnsEntity> colomnsTreeSet = bdColomnsResultSetToObject.viewToSet(SystemObject.VW_COLOMN_FOR_TABLE, new NameValuePair("PARENT", bdObject.getId().toString()));*/
 
         VBdColomnsEntityService vBdColomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
-        List<VBdObjectEntity> colomns = vBdColomnsEntityService.findByParent(bdObject).stream();
+        List<VBdColomnsEntity> colomns = vBdColomnsEntityService.findByParent(bdObject);
 
         for (VBdColomnsEntity col : colomns) {
             rows.add(col);
