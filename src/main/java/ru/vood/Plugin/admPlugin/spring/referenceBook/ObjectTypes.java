@@ -1,8 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.referenceBook;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectTypeEntityRepository;
@@ -12,8 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Repository
-@Service
+@Component
 public class ObjectTypes {
 
 

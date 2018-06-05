@@ -1,0 +1,55 @@
+package ru.vood.Plugin.admPlugin.aspectJ.observerSave;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.WeakHashMap;
+
+public abstract aspect ObserverProtocol {
+    /**
+     * Хранит отображение между Subjects и  Observers. Для каждого Subject, сохраняется LinkedList
+     * своих Observers.
+     */
+    private WeakHashMap<Subject,List<Observer>> perSubjectObservers;
+
+
+    /**
+     * Вовращает Collection Observers
+     * конкретного субъекта. Предназначен для внутреннего использования.
+     */
+    protected List<Observer> getObservers(Subject subject) {
+        if (perSubjectObservers == null) {
+            perSubjectObservers = new WeakHashMap();
+        }
+        List<Observer> observers = perSubjectObservers.get(subject);
+        if (observers == null) {
+            observers = new LinkedList();
+            perSubjectObservers.put(subject, observers);
+        }
+        return observers;
+    }
+
+
+    /**
+     * Добавляет Observer к Subject.
+     */
+    public void addObserver(Subject subject, Observer observer) {
+        getObservers(subject).add(observer);
+    }
+
+    /**
+     * Удаляет Observer из Subject.
+     */
+    public void removeObserver(Subject subject, Observer observer) {
+        getObservers(subject).remove(observer);
+    }
+
+    protected abstract pointcut subjectChange(Subject s);
+
+    after(Subject subject) returning : subjectChange(subject) {
+        for (Observer observer : getObservers(subject)) {
+            updateObserver(subject, observer);
+        }
+    }
+
+    protected abstract void updateObserver(Subject subject, Observer observer);
+}

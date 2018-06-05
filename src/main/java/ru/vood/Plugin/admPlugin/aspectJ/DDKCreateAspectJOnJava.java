@@ -4,24 +4,29 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 
 @Aspect
+//@Order(1)
 public class DDKCreateAspectJOnJava {
 
-    @Pointcut("execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEdit(..))")
+    @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService.save(..))")
+    //@Pointcut("execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEdit(..))")
     public void addOrEditObj() {
     }
 
 
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        VBdObjectEntity vBdObjectEntity = (VBdObjectEntity) proceedingJoinPoint.getArgs()[0];
-        Boolean adding = (Boolean) proceedingJoinPoint.getArgs()[1];
+        //VBdObjectEntity vBdObjectEntity = (VBdObjectEntity) proceedingJoinPoint.getArgs()[0];
+
+        Object[] adding = proceedingJoinPoint.getArgs();
+        DDLSave.before(proceedingJoinPoint, adding);
+        System.out.println(adding);
 
         long startTime = System.nanoTime();
         Object ret = proceedingJoinPoint.proceed();
 
+        DDLSave.after(adding[0], ret);
         if (ret != null) {
 
         }

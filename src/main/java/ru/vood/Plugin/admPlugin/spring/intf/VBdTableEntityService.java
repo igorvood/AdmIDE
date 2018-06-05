@@ -5,7 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 
 import java.util.List;
 
-public interface VBdTableEntityService/*<S extends VBdTableEntity> extends VBdObjectEntityService*/ {
+public interface VBdTableEntityService /*extends ParentForAllServise/*<S extends VBdTableEntity> extends VBdObjectEntityService*/ {
 
     VBdTableEntity save(VBdTableEntity entity);
 

@@ -4,7 +4,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 
 import java.util.List;
 
-public interface VBdObjectEntityService {
+public interface VBdObjectEntityService /*extends ParentForAllServise*/ {
 
     VBdObjectEntity save(VBdObjectEntity entity);
 
@@ -20,4 +20,6 @@ public interface VBdObjectEntityService {
     //List<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent(String codeS, String typeObjectCode, VBdObjectEntity parent);
 
     //ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent_TEST(String code, String typeObjectCode, VBdObjectEntity parent);
+
+
 }

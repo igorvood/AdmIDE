@@ -1,0 +1,19 @@
+package ru.vood.Plugin.admPlugin.aspectJ.observerSave;
+
+import org.aspectj.lang.annotation.DeclareParents;
+
+public class ConcretOservAspect extends ObserverProtocol {
+
+    @DeclareParents(value="ru.vood.*+")
+    public void play();
+    @Override
+
+    protected void subjectChange(Subject s) {
+
+    }
+
+    @Override
+    protected void updateObserver(Subject subject, Observer observer) {
+
+    }
+}

@@ -1,0 +1,76 @@
+package ru.vood.Plugin.admPlugin.aspectJ.observerSave;
+
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.WeakHashMap;
+
+@Aspect
+public abstract class ObserverProtocol {
+    /**
+     * Хранит отображение между Subjects и
+     * Observers. Для каждого Subject, сохраняется LinkedList
+     * своих Observers.
+     */
+    private WeakHashMap<Subject,List<Observer>> perSubjectObservers;
+
+    /**
+     * Вовращает Collection Observers
+     * конкретного субъекта. Предназначен для внутреннего использования.
+     */
+    protected List<Observer> getObservers(Subject subject) {
+        if (perSubjectObservers == null) {
+            perSubjectObservers = new WeakHashMap();
+        }
+        List<Observer> observers = perSubjectObservers.get(subject);
+        if (observers == null) {
+            observers = new LinkedList();
+            perSubjectObservers.put(subject, observers);
+        }
+        return observers;
+    }
+
+
+    /**
+     * Добавляет Observer к Subject.
+     */
+    public void addObserver(Subject subject, Observer observer) {
+        getObservers(subject).add(observer);
+    }
+
+    /**
+     * Удаляет Observer из Subject.
+     */
+    public void removeObserver(Subject subject, Observer observer) {
+        getObservers(subject).remove(observer);
+    }
+
+    /**
+     * Crosscutting elements supported by the @AspectJ syntax and their mapped elements
+     * ---------------------------------------------------------
+     * Feature                          |   Mapped element
+     * ---------------------------------------------------------
+     * Aspects                          |   Class with @Aspect annotation
+     * Pointcuts                        |   Method with @Pointcut annotation
+     * Advice                           |   Method with @Before, @After, @AfterReturning,  @AfterThrowing, or @Around annotation
+     * Declaring parents                |   Field with @DeclareMixin and @DeclareParents annotation
+     * Declaring errors and warnings    |   Field with @DeclareError and @DeclareWarning annotation
+     * Introducing data and methods     |   Not supported
+     * Exception handling               |   Not supported
+     * Privileged aspects               |   Not supported
+     */
+    @Pointcut
+    protected abstract void subjectChange(Subject s);
+
+    @After("subjectChange(s)")
+    public void qwe(Subject s) {
+        for (Observer observer : getObservers(s)) {
+            updateObserver(s, observer);
+        }
+    }
+
+    protected abstract void updateObserver(Subject subject, Observer observer);
+}
