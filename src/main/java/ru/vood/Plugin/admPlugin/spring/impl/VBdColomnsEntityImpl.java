@@ -5,10 +5,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdColomnsEntityRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service("jpaVBdColomnsEntityService")
@@ -19,9 +21,21 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
     @Autowired
     private VBdColomnsEntityRepository bdColomnsEntityRepository;
 
+    @Autowired
+    protected EntityManager em;
+
     @Override
-    public List<VBdColomnsEntity> findByParent(VBdObjectEntity parent) {
-        return bdColomnsEntityRepository.findByParent(parent);
+    public List<VBdColomnsEntity> findByParent(VBdTableEntity parent) {
+        Query query = em.createQuery("select a2 from VBdObjectEntity a2 " +
+                "  join fetch a2.typeObject a1 " + //" on a1.code in :codeTypeS  " +
+                "  join fetch a2.parent a3  " +
+                " where a2.parent = :parent " +
+                " order by a2.id ")
+                .setParameter("parent", parent);
+        List list = query.getResultList();
+        return list;
+
+        // return bdColomnsEntityRepository.findByParent(parent);
     }
 
     @Override

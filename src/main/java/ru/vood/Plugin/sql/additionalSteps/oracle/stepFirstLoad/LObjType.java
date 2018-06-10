@@ -32,6 +32,7 @@ public class LObjType {
                 "(ID    NUMBER not null,\n" +
                 "CODE   VARCHAR2(50) not null,\n" +
                 "NAME   VARCHAR2(250) not null,\n" +
+                "NEED_DDL   VARCHAR2(1),\n" +
                 "PARENT NUMBER\n" +
                 ") tablespace \n" + pluginTunes.getTableSpaseSysTable() + "\n " +
                 pluginTunes.getStorageTable();

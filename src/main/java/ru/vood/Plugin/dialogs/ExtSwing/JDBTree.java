@@ -144,13 +144,12 @@ public class JDBTree extends JTree {
 
     public void addToTree(VBdObjectEntity bdTable) {
         DefaultTreeModel model = (DefaultTreeModel) this.getModel();
-        DefaultMutableTreeNode defaultMutableTreeNode =
-                ((DefaultMutableTreeNode) model.getRoot()).getNextNode();
-        defaultMutableTreeNode = (DefaultMutableTreeNode) model.getRoot();
+        DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) model.getRoot();
         while (defaultMutableTreeNode != null) {
             if (bdTable.getParent() != null && bdTable.getParent().equals(defaultMutableTreeNode.getUserObject())) {
                 DefaultMutableTreeNode tmp = new DefaultMutableTreeNode(bdTable);
                 model.insertNodeInto(tmp, defaultMutableTreeNode, defaultMutableTreeNode.getChildCount());
+                model.nodeChanged(tmp);
                 break;
             }
             defaultMutableTreeNode = defaultMutableTreeNode.getNextNode();

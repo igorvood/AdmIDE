@@ -24,6 +24,10 @@ public class AddTableImpl implements StepsCreateServise {
 
     @Override
     public QueryTableNew createDDL(VBdObjectEntity bdObject) {
+        if (bdObject instanceof VBdTableEntity) {
+            return null;
+        }
+
         QueryTableNew queryTable = new QueryTableNew();
 
         VBdTableEntity bdTable = (VBdTableEntity) bdObject;

@@ -1,6 +1,7 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
@@ -13,6 +14,10 @@ import ru.vood.Plugin.sql.dbms.oracle.AddConstraintSql;
 
 @Component
 public class AddColomnImpl implements StepsCreateServise {
+
+    @Autowired
+    @Qualifier("addIndexImpl")
+    private StepsCreateServise nextStep;
 
     @Autowired
     private PluginTunes tunes;
@@ -70,6 +75,6 @@ public class AddColomnImpl implements StepsCreateServise {
 
     @Override
     public StepsCreateServise getNextStep() {
-        return null;
+        return nextStep;
     }
 }

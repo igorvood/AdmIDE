@@ -3,6 +3,7 @@ package ru.vood.Plugin.dialogs.ExtSwing;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 
 import javax.swing.*;
@@ -121,7 +122,7 @@ public class JDBTableModel extends AbstractTableModel {
         return false;
     }
 
-    public boolean loadTableByObj(VBdObjectEntity bdObject) {
+    public boolean loadTableByObj(VBdTableEntity bdObject) {
         boolean isEmpty = true;
         if (bdObject == null) {
             return false;
@@ -134,10 +135,11 @@ public class JDBTableModel extends AbstractTableModel {
 
         VBdColomnsEntityService vBdColomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
         List<VBdColomnsEntity> colomns = vBdColomnsEntityService.findByParent(bdObject);
-
-        for (VBdColomnsEntity col : colomns) {
-            rows.add(col);
-            isEmpty = false;
+        if (colomns != null) {
+            for (VBdColomnsEntity col : colomns) {
+                rows.add(col);
+                isEmpty = false;
+            }
         }
         // }
         if (isEmpty) {

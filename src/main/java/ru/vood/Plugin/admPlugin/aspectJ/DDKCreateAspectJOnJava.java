@@ -22,6 +22,7 @@ public class DDKCreateAspectJOnJava {
         //VBdObjectEntity vBdObjectEntity = (VBdObjectEntity) proceedingJoinPoint.getArgs()[0];
 
         Object[] adding = proceedingJoinPoint.getArgs();
+        DDLSave.checkRun(proceedingJoinPoint, adding[0]);
         boolean create = false;
         if (adding[0] instanceof VBdObjectEntity) {
             VBdObjectEntity entities = (VBdObjectEntity) adding[0];

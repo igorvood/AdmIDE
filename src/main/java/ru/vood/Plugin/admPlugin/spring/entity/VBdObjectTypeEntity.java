@@ -1,5 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -9,9 +11,12 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Table(name = "V_BD_OBJECT_TYPE", schema = SCHEMA, catalog = "")
 public class VBdObjectTypeEntity extends ParentForAll {
     @Id
+    @GenericGenerator(name = "seqId", strategy = "ru.vood.Plugin.admPlugin.spring.entity.GeneratorId")
+    @GeneratedValue(generator = "seqId")
+
+/*    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID", allocationSize = 10)*/
     @Column(name = "ID", nullable = false, precision = 0)
-    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
     private BigDecimal id;
 
     @Basic
@@ -25,6 +30,10 @@ public class VBdObjectTypeEntity extends ParentForAll {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     private VBdObjectTypeEntity parent;
+
+    @Basic
+    @Column(name = "NEED_DDL")
+    private boolean needDDL;
 
 
     public BigDecimal getId() {
@@ -59,6 +68,14 @@ public class VBdObjectTypeEntity extends ParentForAll {
 
     public void setParent(VBdObjectTypeEntity parent) {
         this.parent = parent;
+    }
+
+    public boolean isNeedDDL() {
+        return needDDL;
+    }
+
+    public void setNeedDDL(boolean needDDL) {
+        this.needDDL = needDDL;
     }
 
     @Override

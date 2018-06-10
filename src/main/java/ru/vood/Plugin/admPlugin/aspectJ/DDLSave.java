@@ -12,6 +12,12 @@ public class DDLSave {
         System.out.println(joinPoint);
     }*/
 
+    @Deprecated
+    public static void checkRun(Object joinPoint, Object o) {
+        System.out.println(joinPoint);
+        System.out.println(o);
+    }
+
     public static void before(Object joinPoint, Object[] o) {
         Object bdObj = o[0];
         ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
@@ -38,11 +44,12 @@ public class DDLSave {
         if (create & savedObj != null) {
             if (savedObj instanceof VBdObjectEntity) {
                 VBdObjectEntity entity = (VBdObjectEntity) savedObj;
-                ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
-                if (exeptObjectName.allowAdd(entity.getCode())) {
-                    TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
-                    create1.runChain(savedObj);
-
+                if (entity.getTypeObject().isNeedDDL()) {
+                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
+                    if (exeptObjectName.allowAdd(entity.getCode())) {
+                        TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
+                        create1.runChain(savedObj);
+                    }
                 }
             }
         }

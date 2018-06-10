@@ -25,7 +25,7 @@ public class TuneChainStepsCreate {
 
     public void runChain(Object bdobj) {
         // Вызов первого, остальное пойдет по цепочке
-        QueryTableNew queryTable = table.createDDL((VBdObjectEntity) bdobj);
+        QueryTableNew queryTable = table.runSteps((VBdObjectEntity) bdobj);
         runChain(queryTable);
     }
 

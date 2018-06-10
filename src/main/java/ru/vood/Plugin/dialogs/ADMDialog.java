@@ -98,8 +98,13 @@ public class ADMDialog extends JAddDialog {
                     if (tree1.getLastSelectedPathComponent() != null && ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject() != null) {
                         ((JDBTableModel) table1.getModel()).clear();
 
-                        ((JDBTableModel) table1.getModel()).loadTableByObj((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
-                        table1.updateUI();
+                        VBdObjectEntity entity = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
+
+                        if (entity instanceof VBdTableEntity) {
+                            ((JDBTableModel) table1.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
+                            table1.updateUI();
+
+                        }
                     }
 
                 } catch (CoreRuntimeException qw) {
@@ -283,7 +288,6 @@ public class ADMDialog extends JAddDialog {
 
     private void workTree() {
         try {
-
             tree1.loadTree();
             tree1.setCellRenderer(new DBTreeCellRenderer());
         } catch (ApplicationErrorException exception) {
@@ -435,6 +439,7 @@ public class ADMDialog extends JAddDialog {
                 dialog.setVisible(true);
                 if ((object instanceof VBdTableEntity)) {
                     tree1.addToTree(dialog.getAddedObj());
+                    tree1.refresh();
                 }
                 return dialog.getAddedObj();
             }

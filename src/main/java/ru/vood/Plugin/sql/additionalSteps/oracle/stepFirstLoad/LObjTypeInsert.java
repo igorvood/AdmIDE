@@ -19,6 +19,7 @@ public class LObjTypeInsert {
         VBdObjectTypeEntity bdObjType_TYPE = new VBdObjectTypeEntity();
         bdObjType_TYPE.setCode("TABLE");
         bdObjType_TYPE.setName("Таблица");
+        bdObjType_TYPE.setNeedDDL(true);
         bdObjType_TYPE = entityService.save(bdObjType_TYPE);
 
 
@@ -56,7 +57,15 @@ public class LObjTypeInsert {
         bdObjType_colomn.setCode("COLOMN");
         bdObjType_colomn.setName("Колонка таблицы");
         bdObjType_colomn.setParent(bdObjType_TYPE);
+        bdObjType_colomn.setNeedDDL(true);
         bdObjType_colomn = entityService.save(bdObjType_colomn);
+
+        VBdObjectTypeEntity bdObjType_index = new VBdObjectTypeEntity();
+        bdObjType_index.setCode("INDEX");
+        bdObjType_index.setName("Индек таблицы");
+        bdObjType_index.setParent(bdObjType_TYPE);
+        bdObjType_index.setNeedDDL(true);
+        bdObjType_index = entityService.save(bdObjType_index);
 
         return null;
     }

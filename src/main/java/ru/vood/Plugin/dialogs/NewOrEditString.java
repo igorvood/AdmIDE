@@ -4,6 +4,7 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
@@ -64,7 +65,7 @@ public class NewOrEditString extends JAddDialog {
 
         VBdTableEntity newBDTable = new VBdTableEntity();
         newBDTable.setParent(num);
-        newBDTable.setTypeObject(num.getTypeObject());
+        newBDTable.setTypeObject(ObjectTypes.getSTRING());
         newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
         newBDTable.setName(this.nameField.getText().trim());
         newBDTable.setJavaClass(newBDTable.getClass().toString());

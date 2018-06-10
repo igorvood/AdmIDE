@@ -7,12 +7,12 @@ public interface StepsCreateServise {
 
     QueryTableNew createDDL(VBdObjectEntity bdObject);
 
-    default QueryTableNew runStep(VBdObjectEntity bdObject) {
+    default QueryTableNew runSteps(VBdObjectEntity bdObject) {
         QueryTableNew queryTable = new QueryTableNew();
 
         queryTable.addAll(createDDL(bdObject));
         if (getNextStep() != null) {
-            queryTable.addAll(getNextStep().runStep(bdObject));
+            queryTable.addAll(getNextStep().runSteps(bdObject));
         }
         return queryTable;
     }

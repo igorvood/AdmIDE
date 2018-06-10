@@ -1,5 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,9 +12,11 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Table(name = "V_BD_OBJECT", schema = SCHEMA, catalog = "")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class VBdObjectEntity extends ParentForAll {
+
     @Id
-    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    @GenericGenerator(name = "seqId", strategy = "ru.vood.Plugin.admPlugin.spring.entity.GeneratorId")
+    @GeneratedValue(generator = "seqId")
+    //@SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID", allocationSize = 10)
     @Column(name = "ID", nullable = false, precision = 0)
     private BigDecimal id;
 

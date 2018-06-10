@@ -19,6 +19,7 @@ public class ExeptObjectName {
         exeptNames.add("STRING");
         exeptNames.add("NUMBER");
         exeptNames.add("TABLE");
+        exeptNames.add("INDEX");
     }
 
     public boolean allowAdd(String name) {

@@ -1,5 +1,6 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
+import org.hibernate.annotations.GenericGenerator;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad.LIndexedColumns;
 
 import javax.persistence.*;
@@ -10,10 +11,9 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Entity
 @Table(name = LIndexedColumns.tableName, schema = SCHEMA, catalog = "")
 public class VBdIndexedColomnsEntity {
-
     @Id
-    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    @GenericGenerator(name = "seqId", strategy = "ru.vood.Plugin.admPlugin.spring.entity.GeneratorId")
+    @GeneratedValue(generator = "seqId")
     @Column(name = "ID", nullable = false, precision = 0)
     private BigDecimal id;
 
