@@ -204,6 +204,18 @@ public class PluginTunes {
     }
 
     public String getStorageTable() {
+        if (storageTable == null || storageTable.length() == 0 || storageTable.equals("null")) {
+            return "  pctfree 20\n" +
+                    "  initrans 2\n" +
+                    "  maxtrans 255\n" +
+                    "  storage\n" +
+                    "  (\n" +
+                    "    initial 32K\n" +
+                    "    next 1M\n" +
+                    "    minextents 1\n" +
+                    "    maxextents unlimited\n" +
+                    "  )\n";
+        }
         return storageTable;
     }
 
@@ -212,6 +224,18 @@ public class PluginTunes {
     }
 
     public String getStorageIndex() {
+        if (storageIndex == null || storageIndex.length() == 0 || storageIndex.equals("null")) {
+            return "  pctfree 20\n" +
+                    "  initrans 2\n" +
+                    "  maxtrans 255\n" +
+                    "  storage\n" +
+                    "  (\n" +
+                    "    initial 32K\n" +
+                    "    next 1M\n" +
+                    "    minextents 1\n" +
+                    "    maxextents unlimited\n" +
+                    "  )\n";
+        }
         return storageIndex;
     }
 

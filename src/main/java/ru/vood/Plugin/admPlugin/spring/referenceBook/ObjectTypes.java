@@ -6,37 +6,29 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectTypeEntityRepository;
 
-import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class ObjectTypes {
 
+    private static Map<String, VBdObjectTypeEntity> objectTypeEntityMap;
 
     @Autowired
     private VBdObjectTypeEntityRepository objectTypeEntityRepository;
 
-    private static Map<String, VBdObjectTypeEntity> objectTypeEntityMap;
-
-    @PostConstruct
-    private Map<String, VBdObjectTypeEntity> getObls() {
-        if (objectTypeEntityMap == null) {
-            Iterable<VBdObjectTypeEntity> iterable = objectTypeEntityRepository.findAll();
-            objectTypeEntityMap = StreamSupport.stream(iterable.spliterator(), false)
-                    .collect(Collectors.toMap(p -> p.getCode(), q -> q));
-        }
-        return objectTypeEntityMap;
-    }
-
     private static VBdObjectTypeEntity get(String s) {
-        VBdObjectTypeEntity entity = objectTypeEntityMap.get(s);
+        VBdObjectTypeEntity entity;
+        if (objectTypeEntityMap == null) {
+            objectTypeEntityMap = new HashMap<>();
+        }
+        entity = objectTypeEntityMap.get(s);
         if (entity == null) {
             VBdObjectTypeEntityRepository vBdObjectTypeEntityRepository = LoadedCTX.getService(VBdObjectTypeEntityRepository.class);
             entity = vBdObjectTypeEntityRepository.findByCode(s).get(0);
             objectTypeEntityMap.put(entity.getCode(), entity);
         }
+
         return entity;
     }
 
@@ -71,6 +63,20 @@ public class ObjectTypes {
     public static VBdObjectTypeEntity getARRAY() {
         return get("ARRAY");
     }
+
+   /* @PostConstruct
+    private Map<String, VBdObjectTypeEntity> getObls() {
+        if (objectTypeEntityMap == null) {
+            try {
+                Iterable<VBdObjectTypeEntity> iterable = objectTypeEntityRepository.findAll();
+                objectTypeEntityMap = StreamSupport.stream(iterable.spliterator(), false)
+                        .collect(Collectors.toMap(p -> p.getCode(), q -> q));
+            } catch (Exception e){
+                System.out.println("Скорей всего не загруженны таблицы");
+            }
+        }
+        return objectTypeEntityMap;
+    }*/
 
 
 }

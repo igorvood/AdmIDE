@@ -1,23 +1,31 @@
 package ru.vood.Plugin.sql.dbms.oracle;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.LimitingNameDBMS;
 
+@Service
 public class AddConstraintSql {
 
+    @Autowired
+    private PluginTunes pluginTunes;
 
-    public static String getSql(String tableName, String colomn, String refTableName, String refColomn) {
-        String s = "alter table " + AppConst.getTune(ListTunes.USER) + "." + tableName + "\n" +
-                "  add constraint " + LimitingDBMS.getNameObj("FK#" + tableName + "_" + colomn + "_" + refTableName) + " foreign key (" + colomn + ")\n" +
-                "  references " + AppConst.getTune(ListTunes.USER) + "." + refTableName + " (" + refColomn + ")\n";
+    @Autowired
+    private LimitingNameDBMS limitingNameDBMS;
+
+    public String getSql(String tableName, String colomn, String refTableName, String refColomn) {
+        String s = "alter table " + pluginTunes.getUser() + "." + tableName + "\n" +
+                "  add constraint " + limitingNameDBMS.getNameObj("FK#" + tableName + "_" + colomn + "_" + refTableName) + " foreign key (" + colomn + ")\n" +
+                "  references " + pluginTunes.getUser() + "." + refTableName + " (" + refColomn + ")\n";
         return s;
     }
 
-    public static String getSqlAndAddPrefix(String tableName, String colomn, String refTableName, String refColomn) {
-        String s = "alter table " + AppConst.getTune(ListTunes.USER) + "." + AppConst.getTune(ListTunes.PREFIX_TABLE) + tableName + "\n" +
-                "  add constraint " + LimitingDBMS.getNameObj("FK#" + AppConst.getTune(ListTunes.PREFIX_TABLE) +
-                tableName + "_" + colomn + "_" + AppConst.getTune(ListTunes.PREFIX_TABLE) + refTableName) + " foreign key (" + colomn + ")\n" +
-                "  references " + AppConst.getTune(ListTunes.USER) + "." + AppConst.getTune(ListTunes.PREFIX_TABLE) + refTableName + " (" + refColomn + ")\n";
+    public String getSqlAndAddPrefix(String tableName, String colomn, String refTableName, String refColomn) {
+        String s = "alter table " + pluginTunes.getUser() + "." + pluginTunes.getPrefixTable() + tableName + "\n" +
+                "  add constraint " + limitingNameDBMS.getNameObj("FK#" + pluginTunes.getPrefixTable() +
+                tableName + "_" + colomn + "_" + pluginTunes.getPrefixTable() + refTableName) + " foreign key (" + colomn + ")\n" +
+                "  references " + pluginTunes.getUser() + "." + pluginTunes.getPrefixTable() + refTableName + " (" + refColomn + ")\n";
         return s;
     }
 }

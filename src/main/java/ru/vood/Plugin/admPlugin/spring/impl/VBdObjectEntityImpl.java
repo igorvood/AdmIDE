@@ -12,6 +12,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("jpaVBdObjectEntityService")
@@ -62,7 +63,9 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
 
     @Override
     public VBdObjectEntity save(VBdObjectEntity entity) {
-
+        if (entity.getDateCreate() == null) {
+            entity.setDateCreate(new Date());
+        }
         return vBdObjectEntityRepository.save(entity);
     }
 

@@ -1,22 +1,26 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
-import ru.vood.Plugin.db.QueryTable;
-import ru.vood.core.runtime.type.Varchar2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 
-public class LView extends StepsFirstLoad {
-    @Override
-    QueryTable additionOne(QueryTable queryTable) {
-        if (queryTable == null) {
-            queryTable = new QueryTable();
-        }
+@Service
+@Deprecated
+public class LView {
+    @Autowired
+    private PluginTunes pluginTunes;
+
+    QueryTableNew additionOne() {
+
+        QueryTableNew queryTable = new QueryTableNew();
+
 
         String s = ("CREATE OR REPLACE VIEW VW_CLASS_FOR_TREE AS \n" +
                 " select level as c_level, a1.*\n" + ", a3.table_space, a3.storage, a3.to_type, a3.length, a3.precision \n" +
-                "                from " + AppConst.getTune(ListTunes.OWNER) + ".V_BD_OBJECT a1\n" +
-                "                   , " + AppConst.getTune(ListTunes.OWNER) + ".V_BD_OBJECT_TYPE a2\n" +
-                "                   , " + AppConst.getTune(ListTunes.OWNER) + ".V_BD_TABLE a3\n" +
+                "                from " + pluginTunes.getOwner() + ".V_BD_OBJECT a1\n" +
+                "                   , " + pluginTunes.getOwner() + ".V_BD_OBJECT_TYPE a2\n" +
+                "                   , " + pluginTunes.getOwner() + ".V_BD_TABLE a3\n" +
                 "               where a1.TYPE_OBJECT = a2.id\n" +
                 "                       and a3.id(+) = a1.id\n" +
                 "                   and a2.code in ('DATE' , 'REFERENCE' , 'ARRAY' , 'STRING' , 'NUMBER' , 'TABLE')\n" +
@@ -24,7 +28,7 @@ public class LView extends StepsFirstLoad {
                 "                start with a1.PARENT is null ORDER SIBLINGS by a1.id desc\n" +
                 "                ");
 
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+        queryTable.add(s);
 
 
         s = ("CREATE OR REPLACE VIEW VW_COLOMN_FOR_TABLE AS\n" +
@@ -36,10 +40,10 @@ public class LView extends StepsFirstLoad {
                 "obj.name,obj.parent, " +
                 "obj.type_object, " +
                 "obj.java_class " +
-                "           from " + AppConst.getTune(ListTunes.OWNER) + ".v_BD_COLOMNS col\n" +
-                "              ," + AppConst.getTune(ListTunes.OWNER) + ".V_BD_OBJECT obj\n" +
+                "           from " + pluginTunes.getOwner() + ".v_BD_COLOMNS col\n" +
+                "              ," + pluginTunes.getOwner() + ".V_BD_OBJECT obj\n" +
                 "           where col.id=   obj.id");
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+        queryTable.add(s);
 
         return queryTable;
     }

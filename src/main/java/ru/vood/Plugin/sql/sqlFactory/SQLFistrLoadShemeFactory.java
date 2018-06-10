@@ -1,21 +1,24 @@
 package ru.vood.Plugin.sql.sqlFactory;
 
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.applicationConst.SupportedDBMS;
 import ru.vood.Plugin.sql.dbms.oracle.SQLFistrLoadShemeOra;
 import ru.vood.Plugin.sql.sqlInterfaces.SQLFistrLoadShemeInterface;
 
+@Service
 public class SQLFistrLoadShemeFactory implements SQLFistrLoadShemeInterface {
+
+    @Autowired
+    private PluginTunes pluginTunes;
+
     private static SQLFistrLoadShemeInterface sql;
 
-    private SQLFistrLoadShemeFactory() {
-    }
-
-    public static SQLFistrLoadShemeInterface getInstance() {
+    public SQLFistrLoadShemeInterface getInstance() {
         if (sql == null) {
-            if (AppConst.getTune(ListTunes.DBMS_TYPE) == SupportedDBMS.ORACLE.getType()) {
+            if (pluginTunes.getDbmsType().equals(SupportedDBMS.ORACLE.getType())) {
                 sql = new SQLFistrLoadShemeOra();
             } else sql = null;
         }
@@ -27,20 +30,4 @@ public class SQLFistrLoadShemeFactory implements SQLFistrLoadShemeInterface {
         sql.getSQL();
     }
 
-
-/*    public QueryTable getSQLForCreate(String owner, String storage, String tableName, String context) {
-        return sql.getSQLForCreate(owner, storage, tableName, context);
-    }
-
-    public QueryTable getSQLForCreate() {
-        return sql.getSQLForCreate(DbConst.OWNER_DICT, DbConst.STOGAGE_DICT, DbConst.MAIN_TABLE, DbConst.CONTEXT);
-    }
-
-    public QueryTable getSQLForInsertData(String owner, String tableName) {
-        return sql.getSQLForInsertData(owner, tableName);
-    }
-
-    public QueryTable getSQLForInsertData() {
-        return sql.getSQLForInsertData(DbConst.OWNER_DICT, DbConst.MAIN_TABLE);
-    }*/
 }

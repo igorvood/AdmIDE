@@ -7,7 +7,7 @@ import ru.vood.Plugin.applicationConst.TypeObject;
 import ru.vood.Plugin.db.QueryTable;
 import ru.vood.core.runtime.type.Varchar2;
 
-
+@Deprecated
 public class AddTable extends StepsCreate {
 
 

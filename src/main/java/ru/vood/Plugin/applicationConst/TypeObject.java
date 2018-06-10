@@ -1,5 +1,6 @@
 package ru.vood.Plugin.applicationConst;
 
+@Deprecated
 public enum TypeObject {
 
     TABLE("TABLE", 10),

@@ -10,18 +10,37 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Table(name = "V_BD_OBJECT", schema = SCHEMA, catalog = "")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class VBdObjectEntity extends ParentForAll {
+    @Id
+    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    @Column(name = "ID", nullable = false, precision = 0)
+    private BigDecimal id;
 
-    //private BigDecimal id;
+    @Basic
+    @Column(name = "CODE", nullable = false, length = 50)
     private String code;
+
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 250)
     private String name;
+
+    @Basic
+    @Column(name = "JAVA_CLASS", nullable = false, length = 512)
     private String javaClass;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     private VBdObjectEntity parent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TYPE_OBJECT", referencedColumnName = "ID", nullable = false)
     private VBdObjectTypeEntity typeObject;
+
+    @Basic
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DATE_CREATE", nullable = true, insertable = true, updatable = true)
     private Date dateCreate;
 
-    @Id
-    @Column(name = "ID", nullable = false, precision = 0)
     public BigDecimal getId() {
         return id;
     }
@@ -30,8 +49,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "CODE", nullable = false, length = 50)
     public String getCode() {
         return code;
     }
@@ -40,8 +57,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.code = code;
     }
 
-    @Basic
-    @Column(name = "NAME", nullable = false, length = 250)
     public String getName() {
         return name;
     }
@@ -50,8 +65,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.name = name;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     public VBdObjectEntity getParent() {
         return parent;
     }
@@ -60,8 +73,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.parent = parent;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TYPE_OBJECT", referencedColumnName = "ID", nullable = false)
     public VBdObjectTypeEntity getTypeObject() {
         return typeObject;
     }
@@ -70,9 +81,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.typeObject = typeObject;
     }
 
-    @Basic
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DATE_CREATE", nullable = true, insertable = true, updatable = true)
     public Date getDateCreate() {
         return dateCreate;
     }
@@ -81,8 +89,6 @@ public class VBdObjectEntity extends ParentForAll {
         this.dateCreate = dateCreate;
     }
 
-    @Basic
-    @Column(name = "JAVA_CLASS", nullable = false, length = 512)
     public String getJavaClass() {
         return javaClass;
     }

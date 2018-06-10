@@ -1,27 +1,57 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
 
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Component;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+@Component
 public class TuneChainStepsCreate {
-    public static void runChain(Object bdobj, String javaClass) {
-        ArrayList<StepsCreate> steps = new ArrayList<>();
 
-        // добавление таблицы
-        steps.add(new AddTable(bdobj, javaClass));
-        // добавление Колонки таблицы, в том числе и сложной
-        steps.add(new AddArrayType(bdobj));
-        // добавление первичного ключа для таблицы
-        steps.add(new AddPrimaryKey(bdobj, javaClass));
-        // добавление Вторичного ключа для таблицы, в случае если есть родительская таблица
-        steps.add(new AddForeignKeyForParent(bdobj));
-        // добавление Колонки таблицы, в том числе и сложной
-        steps.add(new AddColomn(bdobj, javaClass));
 
-        for (int i = steps.size() - 2; i >= 0; i--) {
-            steps.get(i).setNextStep(steps.get(i + 1));
-        }
+    @Autowired
+    @Qualifier("addTableImpl")
+    private StepsCreateServise table;
 
+    @Autowired
+    private DriverManagerDataSource dataSource;
+
+    public void runChain(Object bdobj) {
         // Вызов первого, остальное пойдет по цепочке
-        steps.get(0).addition();
+        QueryTableNew queryTable = table.createDDL((VBdObjectEntity) bdobj);
+        runChain(queryTable);
+    }
+
+    public void runChain(QueryTableNew queryTable) {
+        Connection conn;
+        Statement stmt = null;
+        ResultSet r = null;
+
+        for (String q : queryTable) {
+            try {
+                conn = dataSource.getConnection();
+                if (!conn.isClosed()) {
+                    stmt = conn.createStatement();
+                    r = stmt.executeQuery(q);
+                }
+            } catch (SQLException e) {
+                int i = queryTable.indexOf(q);
+                e.printStackTrace();
+            } finally {
+                try {
+                    r.close();
+                    stmt.close();
+                } catch (Exception e) {
+
+                }
+            }
+        }
     }
 }

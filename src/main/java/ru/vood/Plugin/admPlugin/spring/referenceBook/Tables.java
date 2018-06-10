@@ -7,10 +7,8 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
 
-import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Repository
 @Service
@@ -22,6 +20,9 @@ public class Tables {
     private VBdObjectEntityRepository objectEntityRepository;
 
     private static VBdObjectEntity get(String s) {
+        if (bdObjectEntityMap == null) {
+            bdObjectEntityMap = new HashMap<>();
+        }
         VBdObjectEntity entity = bdObjectEntityMap.get(s);
         if (entity == null) {
             VBdObjectEntityRepository objectEntityRepository = LoadedCTX.getService(VBdObjectEntityRepository.class);
@@ -63,7 +64,7 @@ public class Tables {
         return get(tableName);
     }
 
-    @PostConstruct
+/*    @PostConstruct
     private Map<String, VBdObjectEntity> getMainTables() {
         if (bdObjectEntityMap == null) {
             Iterable<VBdObjectEntity> iterable = objectEntityRepository.findAll();
@@ -71,7 +72,7 @@ public class Tables {
                     .collect(Collectors.toMap(p -> p.getCode(), q -> q));
         }
         return bdObjectEntityMap;
-    }
+    }*/
 
 
 }

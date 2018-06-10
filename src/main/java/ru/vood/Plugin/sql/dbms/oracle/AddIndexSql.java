@@ -1,41 +1,50 @@
 package ru.vood.Plugin.sql.dbms.oracle;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.LimitingNameDBMS;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
+@Service
 public class AddIndexSql {
 
-    public static String generateSys(String tableName, boolean isUnique, String... colomns) {
+    @Autowired
+    private PluginTunes pluginTunes;
+
+    @Autowired
+    private LimitingNameDBMS limitingNameDBMS;
+
+    public String generateSys(String tableName, boolean isUnique, String... colomns) {
         return generateSys(tableName, isUnique, false, colomns);
     }
 
-    public static String generateSys(String tableName, String... colomns) {
+    public String generateSys(String tableName, String... colomns) {
         return generateSys(tableName, false, false, colomns);
     }
 
-    public static String generateUser(String tableName, boolean isUnique, String... colomns) {
+    public String generateUser(String tableName, boolean isUnique, String... colomns) {
         return generateUser(tableName, isUnique, false, colomns);
     }
 
-    public static String generateUser(String tableName, String... colomns) {
+    public String generateUser(String tableName, String... colomns) {
         return generateUser(tableName, false, false, colomns);
     }
 
 
-    public static String generateSys(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
-        return generate(tableName, isUnique, isReverse, AppConst.getTune(ListTunes.TABLE_SPASE_SYS_INDEX), colomns);
+    public String generateSys(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
+        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
     }
 
-    public static String generateSys(String tableName, boolean isUnique, boolean isReverse, String colomns) {
-        return generate(tableName, isUnique, isReverse, AppConst.getTune(ListTunes.TABLE_SPASE_SYS_INDEX), colomns);
+    public String generateSys(String tableName, boolean isUnique, boolean isReverse, String colomns) {
+        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
     }
 
-    public static String generateUser(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
-        return generate(tableName, isUnique, isReverse, AppConst.getTune(ListTunes.TABLE_SPASE_USER_INDEX), colomns);
+    public String generateUser(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
+        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
     }
 
-    private static String generate(String tableName, boolean isUnique, boolean isReverse, String tableSpace, String... colomns) {
+    private String generate(String tableName, boolean isUnique, boolean isReverse, String tableSpace, String... colomns) {
         if (colomns == null) {
             throw new ApplicationErrorException("Не определен список колонок для индекса.");
         }
@@ -63,7 +72,7 @@ public class AddIndexSql {
             }
         }
 
-        res.append(LimitingDBMS.getNameObj(nameIndex.toString()));
+        res.append(limitingNameDBMS.getNameObj(nameIndex.toString()));
         res.append(" on ");
         res.append(tableName);
         res.append(col);
@@ -72,8 +81,7 @@ public class AddIndexSql {
         res.append(" tablespace ");
         res.append(tableSpace);
         res.append(" ");
-        res.append(AppConst.getTune(ListTunes.STORAGE_INDEX));
-
+        res.append(pluginTunes.getStorageIndex());
 
         if (isReverse) {
             res.append(" REVERSE");

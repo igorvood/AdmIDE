@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.TreeMap;
 import java.util.logging.Level;
 
+@Deprecated
 class DbQuery {
     public static TreeMap<String, OpenedCursor> treeSet = new TreeMap<>();
     private static Log log = Log.getLogger(DbQuery.class);

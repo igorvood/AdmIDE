@@ -1,14 +1,10 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
 
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
 import ru.vood.Plugin.applicationConst.TypeObject;
 import ru.vood.Plugin.db.QueryTable;
-import ru.vood.Plugin.sql.dbms.oracle.AddPrimaryKeySql;
-import ru.vood.Plugin.sql.dbms.oracle.LimitingDBMS;
-import ru.vood.core.runtime.type.Varchar2;
 
+@Deprecated
 public class AddPrimaryKey extends StepsCreate {
 
 
@@ -35,8 +31,8 @@ public class AddPrimaryKey extends StepsCreate {
 
         VBdTableEntity bdTable = (VBdTableEntity) bdObject;
         if (bdTable.getTypeObject().getCode().equals(TypeObject.TABLE.getName())) {
-            queryTable.set(queryTable.count().add(1), new Varchar2(AddPrimaryKeySql.generateUserPK(LimitingDBMS.getNameObj(AppConst.getTune(ListTunes.PREFIX_TABLE) +
-                    bdTable.getCode()))));
+          /*  queryTable.set(queryTable.count().add(1), new Varchar2(AddPrimaryKeySql.generateUserPK(LimitingDBMS.getNameObj(AppConst.getTune(ListTunes.PREFIX_TABLE) +
+                    bdTable.getCode()))));*/
         }
         return queryTable;
     }

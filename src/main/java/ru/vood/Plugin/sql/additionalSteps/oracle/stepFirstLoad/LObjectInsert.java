@@ -1,14 +1,22 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
-import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.db.QueryTable;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 
-public class LObjectInsert extends StepsFirstLoad {
-    QueryTable additionOne(QueryTable queryTable) {
+@Service
+public class LObjectInsert {
+
+    @Autowired
+    @Qualifier("jpaVBdObjectEntityService")
+    private VBdObjectEntityService bdObjectEntityService;
+
+    QueryTableNew additionOne() {
 
 
         VBdObjectTypeEntity bdObjType_TABLE = ObjectTypes.getTABLE();
@@ -20,8 +28,8 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_obj.setParent(null);
         bdObject_obj.setTypeObject(bdObjType_TABLE);
         bdObject_obj.setJavaClass(VBdObjectEntity.class.toString());
-        VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
-        VBdObjectEntity newbdObject_obj = vBdObjectEntityService.save(bdObject_obj);
+
+        VBdObjectEntity newbdObject_obj = bdObjectEntityService.save(bdObject_obj);
 
         VBdObjectTypeEntity bdObjType_DATE = ObjectTypes.getDATE();
 
@@ -31,7 +39,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_date.setParent(bdObject_obj);
         bdObject_date.setTypeObject(bdObjType_DATE);
         bdObject_date.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_date);
+        bdObjectEntityService.save(bdObject_date);
 
 
         VBdObjectTypeEntity bdObjType_REFERENCE = ObjectTypes.getREFERENCE();
@@ -42,7 +50,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_REFERENCE.setParent(bdObject_obj);
         bdObject_REFERENCE.setTypeObject(bdObjType_REFERENCE);
         bdObject_REFERENCE.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_REFERENCE);
+        bdObjectEntityService.save(bdObject_REFERENCE);
 
         VBdObjectTypeEntity bdObjType_ARRAY = ObjectTypes.getDATE();
 
@@ -52,7 +60,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_ARRAY.setParent(bdObject_obj);
         bdObject_ARRAY.setTypeObject(bdObjType_ARRAY);
         bdObject_ARRAY.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_ARRAY);
+        bdObjectEntityService.save(bdObject_ARRAY);
 
 
         VBdObjectTypeEntity bdObjType_STRING = ObjectTypes.getSTRING();
@@ -63,7 +71,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_STRING.setParent(bdObject_obj);
         bdObject_STRING.setTypeObject(bdObjType_STRING);
         bdObject_STRING.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_STRING);
+        bdObjectEntityService.save(bdObject_STRING);
 
 
         VBdObjectTypeEntity bdObjType_NUMBER = ObjectTypes.getNUMBER();
@@ -74,7 +82,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_NUMBER.setParent(bdObject_obj);
         bdObject_NUMBER.setTypeObject(bdObjType_NUMBER);
         bdObject_NUMBER.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_NUMBER);
+        bdObjectEntityService.save(bdObject_NUMBER);
 
 
         VBdObjectEntity bdObject_table = new VBdObjectEntity();
@@ -83,7 +91,7 @@ public class LObjectInsert extends StepsFirstLoad {
         bdObject_table.setParent(bdObject_obj);
         bdObject_table.setTypeObject(bdObjType_TABLE);
         bdObject_table.setJavaClass(VBdObjectEntity.class.toString());
-        vBdObjectEntityService.save(bdObject_table);
+        bdObjectEntityService.save(bdObject_table);
 
         return null;
     }

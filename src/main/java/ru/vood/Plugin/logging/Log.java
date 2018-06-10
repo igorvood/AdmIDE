@@ -8,6 +8,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Deprecated
 public class Log {
     private static Level defaultlogLevel = AppConst.DEFAULT_LOG_LEVEL;
     private static Logger logger = Logger.getLogger("L");

@@ -20,6 +20,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
 /*
         VBdObjectTypeEntity typeEntity_9;
         typeEntity_9 = entityService.findByCode("TABLE");

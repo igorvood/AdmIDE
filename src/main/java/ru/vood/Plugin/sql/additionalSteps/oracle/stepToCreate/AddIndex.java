@@ -4,6 +4,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.db.QueryTable;
 
 
+@Deprecated
 public class AddIndex extends StepsCreate {
 
     /**

@@ -1,39 +1,49 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
-import ru.vood.Plugin.db.QueryTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 import ru.vood.Plugin.sql.dbms.oracle.AddConstraintSql;
 import ru.vood.Plugin.sql.dbms.oracle.AddPrimaryKeySql;
-import ru.vood.core.runtime.type.Varchar2;
 
-public class LTable extends StepsFirstLoad {
-    @Override
-    QueryTable additionOne(QueryTable queryTable) {
-        if (queryTable == null) {
-            queryTable = new QueryTable();
-        }
+
+@Service
+public class LTable {
+
+    @Autowired
+    private PluginTunes pluginTunes;
+
+    @Autowired
+    private AddPrimaryKeySql primaryKeySql;
+
+    @Autowired
+    private AddConstraintSql constraintSql;
+
+    QueryTableNew additionOne() {
+        QueryTableNew queryTable = new QueryTableNew();
+
         String tableName = "V_BD_TABLE";
 
-        String s = "create table " + AppConst.getTune(ListTunes.USER) + "." + tableName + "\n" +
+        String s = "create table " + pluginTunes.getUser() + "." + tableName + "\n" +
                 "(ID    NUMBER not null,\n" +
                 "TABLE_SPACE   VARCHAR2(50) ,\n" +
                 "STORAGE   VARCHAR2(500), \n" +
                 "  to_type     NUMBER,\n" + //VARCHAR2(500)
                 "  length      NUMBER,\n" +
                 "  precision   NUMBER\n" +
-                ") tablespace \n" + AppConst.getTune(ListTunes.TABLE_SPASE_SYS_TABLE) + "\n " +
-                AppConst.getTune(ListTunes.STORAGE_TABLE);
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+                ") tablespace \n" + pluginTunes.getTableSpaseSysTable() + "\n " +
+                pluginTunes.getStorageTable();
+        queryTable.add(s);
 
-        s = AddPrimaryKeySql.generateSys(tableName);
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+        s = primaryKeySql.generateSys(tableName);
+        queryTable.add(s);
 
-        s = AddConstraintSql.getSql(tableName, "ID", "V_BD_OBJECT", "ID");
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+        s = constraintSql.getSql(tableName, "ID", "V_BD_OBJECT", "ID");
+        queryTable.add(s);
 
-        s = AddConstraintSql.getSql(tableName, "to_type", tableName, "ID");
-        queryTable.set(queryTable.count().add(1), new Varchar2(s));
+        s = constraintSql.getSql(tableName, "to_type", tableName, "ID");
+        queryTable.add(s);
 
         return queryTable;
     }

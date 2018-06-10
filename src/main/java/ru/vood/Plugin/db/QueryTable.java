@@ -5,6 +5,7 @@ import ru.vood.core.runtime.type.Null;
 import ru.vood.core.runtime.type.Number;
 import ru.vood.core.runtime.type.Varchar2;
 
+@Deprecated
 public class QueryTable extends IndexByTable<Number, Varchar2> {
 
     public QueryTable() {

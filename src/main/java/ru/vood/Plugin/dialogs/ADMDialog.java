@@ -1,5 +1,6 @@
 package ru.vood.Plugin.dialogs;
 
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
@@ -242,7 +243,7 @@ public class ADMDialog extends JAddDialog {
                 }
 
                 private void FirstLoad_ActionPerformed(ActionEvent ae) {
-                    TuneChainStepsFirstLoad.runChain();
+                    LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
                     workTree();
                 }
             });
@@ -262,7 +263,7 @@ public class ADMDialog extends JAddDialog {
                 }
 
                 private void FirstLoad_ActionPerformed(ActionEvent ae) {
-                    TuneChainStepsFirstLoad.runChain();
+                    LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
                     workTree();
                 }
             });

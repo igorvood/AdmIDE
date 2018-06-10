@@ -2,7 +2,8 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.ExeptObjectName;
 
 public class DDLSave {
 
@@ -13,20 +14,39 @@ public class DDLSave {
 
     public static void before(Object joinPoint, Object[] o) {
         Object bdObj = o[0];
-        if (bdObj instanceof VBdObjectEntity) {
-            CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
+        ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
 
-            ((VBdObjectEntity) bdObj).setId(commonFunctionService.nextId());
-            //    TuneChainStepsCreate.runChain(o,((VBdObjectEntity) bdObj).getJavaClass());
+        if (bdObj instanceof VBdObjectEntity) {
+            VBdObjectEntity entity = (VBdObjectEntity) bdObj;
+            if (exeptObjectName.allowAdd(entity.getCode())) {
+
+            }
+           /* VBdObjectEntity entity = (VBdObjectEntity) bdObj;
+            if (entity.getId() == null) {
+                CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
+                entity.setId(commonFunctionService.nextId());
+            }
+            if (entity.getDateCreate() == null) {
+                entity.setDateCreate(new Date());
+            }*/
         }
         System.out.println(joinPoint);
         System.out.println(o);
     }
 
-    public static void after(Object beforeSaving, Object afterSaving) {
-        System.out.println(beforeSaving);
-        System.out.println(afterSaving);
+    public static void after(Object savedObj, boolean create) {
+        if (create & savedObj != null) {
+            if (savedObj instanceof VBdObjectEntity) {
+                VBdObjectEntity entity = (VBdObjectEntity) savedObj;
+                ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
+                if (exeptObjectName.allowAdd(entity.getCode())) {
+                    TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
+                    create1.runChain(savedObj);
 
+                }
+            }
+        }
+        System.out.println(savedObj);
     }
 
 }

@@ -1,21 +1,32 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 
 @Entity
 @Table(name = "V_BD_INDEX", schema = SCHEMA, catalog = "")
 public class VBdIndexEntity extends VBdObjectEntity {
-    private String uniqueI;
-    private String globalI;
-    private String listColumns;
 
     @Basic
     @Column(name = "UNIQUE_I", nullable = true, length = 1)
+    private String uniqueI;
+
+    @Basic
+    @Column(name = "GLOBAL_I", nullable = true, length = 1)
+    private String globalI;
+
+    @Basic
+    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    @Column(name = "COLUMNS", nullable = true, length = 1)
+    private BigDecimal columns;
+
+//    @Basic
+//    @Column(name = "LIST_COLUMNS", nullable = false, length = 250)
+//    private String listColumns;
+
     public String getUniqueI() {
         return uniqueI;
     }
@@ -24,8 +35,6 @@ public class VBdIndexEntity extends VBdObjectEntity {
         this.uniqueI = uniqueI;
     }
 
-    @Basic
-    @Column(name = "GLOBAL_I", nullable = true, length = 1)
     public String getGlobalI() {
         return globalI;
     }
@@ -34,21 +43,19 @@ public class VBdIndexEntity extends VBdObjectEntity {
         this.globalI = globalI;
     }
 
-    @Basic
-    @Column(name = "LIST_COLUMNS", nullable = false, length = 250)
-    public String getListColumns() {
-        return listColumns;
+    public BigDecimal getColumns() {
+        return columns;
     }
 
-    public void setListColumns(String listColumns) {
-        this.listColumns = listColumns;
+    public void setColumns(BigDecimal columns) {
+        this.columns = columns;
     }
 
     public String toString() {
         return "VBdIndexEntity{" +
                 "uniqueI='" + uniqueI + '\'' +
                 ", globalI='" + globalI + '\'' +
-                ", listColumns='" + listColumns + '\'' +
+                ", listColumns='" + columns + '\'' +
                 '}';
     }
 

@@ -1,46 +1,83 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 
 
+@Component
 public class TuneChainStepsFirstLoad {
 
-    public static void runChain() {
-        ArrayList<StepsFirstLoad> steps = new ArrayList<>();
-        // 1 заполнение типов объектов
-        steps.add(new LObjType());
+    @Autowired
+    private TuneChainStepsCreate stepsCreate;
 
-        // 2 заполнение объектов
-        steps.add(new LObject());
+    @Autowired
+    private LObjType lObjType;
+
+    @Autowired
+    private LObject lObj;
+
+    @Autowired
+    private LColomns lColomns;
+
+    @Autowired
+    private LIndexedColumns indexedColumns;
+
+    @Autowired
+    private LTable lTable;
+
+    @Autowired
+    private LIndex lIndex;
+
+    @Autowired
+    private LView lView;
+
+    @Autowired
+    private LObjTypeInsert lObjTypeInsert;
+
+    @Autowired
+    private LObjectInsert lObjectInsert;
+
+    @Autowired
+    private LTableInsert lTableInsert;
+
+    public void run() {
+        QueryTableNew queryTable = new QueryTableNew();
+        // 1 создание таблицы типов объектов
+        queryTable.addAll(lObjType.additionOne());
+
+        // 2 создание таблицы объектов
+        queryTable.addAll(lObj.additionOne());
 
         // 3 создание таблицы колонок
-        steps.add(new LColomns());
+        queryTable.addAll(lColomns.additionOne());
 
-        // 4 создание Таблиц
-        steps.add(new LTable());
+        // 4 создание таблицы Таблиц
+        queryTable.addAll(lTable.additionOne());
 
         // 5 создание Таблицы индексов
-        steps.add(new LIndex());
+        queryTable.addAll(lIndex.additionOne());
 
         // 6 создание Представлений
-        steps.add(new LView());
+        queryTable.addAll(lView.additionOne());
 
+        // 7 Создоание таблицы с индексированными колонками
+        queryTable.addAll(indexedColumns.additionOne());
+
+
+        // Запуск созданных DDL Комманд
+        stepsCreate.runChain(queryTable);
+
+
+        // --------------------- пеовоначальная залива созданных таблиц-------------------------
         // 1.1 заполнение типов объектов, первоначальная заливка таблицы
-        steps.add(new LObjTypeInsert());
+        lObjTypeInsert.additionOne();
 
         // 2.1 заполнение объектов, первоначальная заливка таблицы
-        steps.add(new LObjectInsert());
+        lObjectInsert.additionOne();
 
         // 4.1 создание Таблиц, первоначальная заливка таблицы
-        steps.add(new LTableInsert());
-
-
-        for (int i = steps.size() - 2; i >= 0; i--) {
-            steps.get(i).setNextStep(steps.get(i + 1));
-        }
-
-        // Вызов первого, остальное пойдет по цепочке
-        steps.get(0).addition();
+        lTableInsert.additionOne();
     }
-
 }

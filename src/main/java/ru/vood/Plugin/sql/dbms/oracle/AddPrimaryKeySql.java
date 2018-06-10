@@ -1,23 +1,32 @@
 package ru.vood.Plugin.sql.dbms.oracle;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.LimitingNameDBMS;
 
+@Service
 public class AddPrimaryKeySql {
 
-    public static String generateUserPK(String tableName) {
-        return generate(tableName, ListTunes.TABLE_SPASE_USER_INDEX);
+    @Autowired
+    private PluginTunes tunes;
+
+    @Autowired
+    private LimitingNameDBMS nameDBMS;
+
+    public String generateUserPK(String tableName) {
+        return generate(tableName, tunes.getTableSpaseUserIndex());
     }
 
-    public static String generateSys(String tableName) {
-        return generate(tableName, ListTunes.TABLE_SPASE_SYS_INDEX);
+    public String generateSys(String tableName) {
+        return generate(tableName, tunes.getTableSpaseSysIndex());
     }
 
-    private static String generate(String tableName, ListTunes tableSpace) {
-        String nameConstraint = LimitingDBMS.getNameObj("PK#" + tableName);
-        String s = "alter table " + AppConst.getTune(ListTunes.USER) + "." + tableName + "\n" +
+    private String generate(String tableName, String tableSpace) {
+        String nameConstraint = nameDBMS.getNameObj("PK#" + tableName);
+        String s = "alter table " + tunes.getUser() + "." + tableName + "\n" +
                 "  add constraint " + nameConstraint + " primary key (ID)\n" +
-                "  using index tablespace \n" + AppConst.getTune(tableSpace) + AppConst.getTune(ListTunes.STORAGE_INDEX);
+                "  using index tablespace \n" + tableSpace + tunes.getStorageIndex();
         return s;
     }
 }

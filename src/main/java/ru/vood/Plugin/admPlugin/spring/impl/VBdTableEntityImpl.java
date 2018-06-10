@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdTableEntityRepository;
 
@@ -19,8 +20,18 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
     @Autowired
     private VBdTableEntityRepository bdTableEntityRepository;
 
+    @Autowired
+    private CommonFunctionService commonFunction;
+
     @Override
     public VBdTableEntity save(VBdTableEntity entity) {
+//        if (entity.getDateCreate() == null) {
+//            entity.setDateCreate(new Date());
+//        }
+//        if (entity.getId()==null){
+//            entity.setId(commonFunction.nextId());
+//        }
+
         return bdTableEntityRepository.save(entity);
     }
 

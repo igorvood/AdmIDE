@@ -8,14 +8,25 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Entity
 @Table(name = "V_BD_OBJECT_TYPE", schema = SCHEMA, catalog = "")
 public class VBdObjectTypeEntity extends ParentForAll {
-    //private BigDecimal id;
+    @Id
+    @Column(name = "ID", nullable = false, precision = 0)
+    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
+    private BigDecimal id;
+
+    @Basic
+    @Column(name = "CODE", nullable = false, length = 50)
     private String code;
+
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 250)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     private VBdObjectTypeEntity parent;
 
 
-    @Id
-    @Column(name = "ID", nullable = false, precision = 0)
     public BigDecimal getId() {
         return id;
     }
@@ -25,8 +36,6 @@ public class VBdObjectTypeEntity extends ParentForAll {
     }
 
 
-    @Basic
-    @Column(name = "CODE", nullable = false, length = 50)
     public String getCode() {
         return code;
     }
@@ -35,8 +44,6 @@ public class VBdObjectTypeEntity extends ParentForAll {
         this.code = code;
     }
 
-    @Basic
-    @Column(name = "NAME", nullable = false, length = 250)
     public String getName() {
         return name;
     }
@@ -46,8 +53,6 @@ public class VBdObjectTypeEntity extends ParentForAll {
     }
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     public VBdObjectTypeEntity getParent() {
         return parent;
     }
@@ -66,4 +71,18 @@ public class VBdObjectTypeEntity extends ParentForAll {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VBdObjectTypeEntity)) return false;
+
+        VBdObjectTypeEntity entity = (VBdObjectTypeEntity) o;
+
+        return getCode().equals(entity.getCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return getCode().hashCode();
+    }
 }

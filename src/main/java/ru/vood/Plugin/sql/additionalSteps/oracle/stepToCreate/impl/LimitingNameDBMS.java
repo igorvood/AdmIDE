@@ -1,6 +1,10 @@
-package ru.vood.Plugin.sql.dbms.oracle;
+package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
 
-public class LimitingDBMS {
+import org.springframework.stereotype.Component;
+
+@Component
+public class LimitingNameDBMS {
+
     private static int maxLengthNameObject = 30;
 
     public static String getNameObj(String name) {

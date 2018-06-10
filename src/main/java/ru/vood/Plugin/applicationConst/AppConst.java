@@ -6,6 +6,7 @@ import ru.vood.core.runtime.type.Varchar2;
 
 import java.util.logging.Level;
 
+@Deprecated
 public class AppConst {
     public static final String CONNECTIONS = "Connections.gson";
     public static final String DB_PROPERTUES = "DBProperty.properties";

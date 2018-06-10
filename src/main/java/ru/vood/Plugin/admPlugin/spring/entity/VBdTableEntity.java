@@ -8,14 +8,26 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Table(name = "V_BD_TABLE", schema = SCHEMA, catalog = "")
 public class VBdTableEntity extends VBdObjectEntity {
 
-    private String tableSpace;
-    private String storage;
-    private Long length;
-    private Long precision;
-    private VBdTableEntity toType;
-
     @Basic
     @Column(name = "TABLE_SPACE", nullable = true, length = 50)
+    private String tableSpace;
+
+    @Basic
+    @Column(name = "STORAGE", nullable = true, length = 500)
+    private String storage;
+
+    @Basic
+    @Column(name = "LENGTH", nullable = true, precision = 0)
+    private Long length;
+
+    @Basic
+    @Column(name = "PRECISION", nullable = true, precision = 0)
+    private Long precision;
+
+    @ManyToOne
+    @JoinColumn(name = "TO_TYPE", referencedColumnName = "ID", nullable = true)
+    private VBdTableEntity toType;
+
     public String getTableSpace() {
         return tableSpace;
     }
@@ -24,8 +36,6 @@ public class VBdTableEntity extends VBdObjectEntity {
         this.tableSpace = tableSpace;
     }
 
-    @Basic
-    @Column(name = "STORAGE", nullable = true, length = 500)
     public String getStorage() {
         return storage;
     }
@@ -34,8 +44,6 @@ public class VBdTableEntity extends VBdObjectEntity {
         this.storage = storage;
     }
 
-    @Basic
-    @Column(name = "LENGTH", nullable = true, precision = 0)
     public Long getLength() {
         return length;
     }
@@ -44,8 +52,6 @@ public class VBdTableEntity extends VBdObjectEntity {
         this.length = length;
     }
 
-    @Basic
-    @Column(name = "PRECISION", nullable = true, precision = 0)
     public Long getPrecision() {
         return precision;
     }
@@ -54,8 +60,6 @@ public class VBdTableEntity extends VBdObjectEntity {
         this.precision = precision;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "TO_TYPE", referencedColumnName = "ID", nullable = true)
     public VBdTableEntity getToType() {
         return toType;
     }
