@@ -6,9 +6,12 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.dialogs.ExtSwing.DigitIntFilter;
+import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
 import javax.swing.*;
+import javax.swing.text.PlainDocument;
 import java.awt.event.*;
 
 public class NewOrEditNumber extends JAddDialog {
@@ -63,22 +66,26 @@ public class NewOrEditNumber extends JAddDialog {
     }
 
     private void onOK() {
-        VBdObjectEntity num = Tables.getNUMBER();
+        if (checkText(codeField) && checkText(nameField) && checkText(precisionField) && checkText(lengthField)) {
+            VBdObjectEntity num = Tables.getNUMBER();
 
-        VBdTableEntity newBDTable = new VBdTableEntity();
-        newBDTable.setParent(num);
-        newBDTable.setTypeObject(ObjectTypes.getNUMBER());
-        newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
-        newBDTable.setName(this.nameField.getText().trim());
-        newBDTable.setJavaClass(newBDTable.getClass().toString());
-        newBDTable.setLength(Long.getLong(lengthField.getText()));
-        newBDTable.setPrecision(Long.getLong(precisionField.getText()));
+            VBdTableEntity newBDTable = new VBdTableEntity();
+            newBDTable.setParent(num);
+            newBDTable.setTypeObject(ObjectTypes.getNUMBER());
+            newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
+            newBDTable.setName(this.nameField.getText().trim());
+            newBDTable.setJavaClass(newBDTable.getClass().toString());
+            newBDTable.setLength(Long.getLong(lengthField.getText()));
+            newBDTable.setPrecision(Long.getLong(precisionField.getText()));
 
-        VBdTableEntityService colomnsEntityService = LoadedCTX.getService(VBdTableEntityService.class);
-        VBdTableEntity newNum = (VBdTableEntity) colomnsEntityService.save(newBDTable);
+            VBdTableEntityService colomnsEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+            VBdTableEntity newNum = (VBdTableEntity) colomnsEntityService.save(newBDTable);
 
-        this.setAddedObj(newNum);
-        dispose();
+            this.setAddedObj(newNum);
+            dispose();
+        } else {
+
+        }
     }
 
     private void onCancel() {
@@ -92,6 +99,14 @@ public class NewOrEditNumber extends JAddDialog {
      */
     @Override
     protected void extension() {
+        PlainDocument doc = (PlainDocument) lengthField.getDocument();
+        doc.setDocumentFilter(new DigitIntFilter());
+
+        PlainDocument doc1 = (PlainDocument) precisionField.getDocument();
+        doc1.setDocumentFilter(new DigitIntFilter());
+
+        PlainDocument doc2 = (PlainDocument) codeField.getDocument();
+        doc2.setDocumentFilter(new EnglishFilter());
 
     }
 }

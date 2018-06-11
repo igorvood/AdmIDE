@@ -140,4 +140,8 @@ public abstract class JAddDialog extends JDialog {
     protected void setAddedObj(VBdObjectEntity addedObj) {
         this.addedObj = addedObj;
     }
+
+    protected boolean checkText(JTextField textField) {
+        return textField != null && textField.getText() != null && textField.getText().length() > 0;
+    }
 }

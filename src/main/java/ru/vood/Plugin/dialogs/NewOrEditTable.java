@@ -4,11 +4,12 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
 import javax.swing.*;
+import javax.swing.text.PlainDocument;
 import java.awt.event.*;
 
 public class NewOrEditTable extends JAddDialog {
@@ -64,18 +65,23 @@ public class NewOrEditTable extends JAddDialog {
     }
 
     private void onOK() {
-        VBdTableEntity newBDTable = new VBdTableEntity();
-        newBDTable.setParent(this.parent);
-        newBDTable.setTypeObject(this.parent.getTypeObject());
-        newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
-        newBDTable.setName(this.nameField.getText().trim());
-        newBDTable.setJavaClass(newBDTable.getClass().toString());
-        newBDTable.setTableSpace(AppConst.getTune(ListTunes.TABLE_SPASE_USER_TABLE));
-        newBDTable.setStorage(AppConst.getTune(ListTunes.STORAGE_TABLE));
-        VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
-        tableEntityService.save(newBDTable);
-        this.setAddedObj(newBDTable);
-        dispose();
+        if (checkText(codeField) && checkText(nameField)) {
+            PluginTunes pluginTunes = LoadedCTX.getService(PluginTunes.class);
+
+            VBdTableEntity newBDTable = new VBdTableEntity();
+            newBDTable.setParent(this.parent);
+            newBDTable.setTypeObject(this.parent.getTypeObject());
+            newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
+            newBDTable.setName(this.nameField.getText().trim());
+            newBDTable.setJavaClass(newBDTable.getClass().toString());
+
+            newBDTable.setTableSpace(pluginTunes.getTableSpaseUserTable());
+            newBDTable.setStorage(pluginTunes.getStorageTable());
+            VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+            tableEntityService.save(newBDTable);
+            this.setAddedObj(newBDTable);
+            dispose();
+        }
     }
 
     private void onCancel() {
@@ -92,6 +98,8 @@ public class NewOrEditTable extends JAddDialog {
 
     @Override
     protected void extension() {
+        PlainDocument doc = (PlainDocument) codeField.getDocument();
+        doc.setDocumentFilter(new EnglishFilter());
     }
 
 }

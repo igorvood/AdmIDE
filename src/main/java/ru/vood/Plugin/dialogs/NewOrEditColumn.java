@@ -7,12 +7,14 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
+import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
@@ -82,8 +84,9 @@ public class NewOrEditColumn extends JAddDialog {
     }
 
     private void onOK() {
+
         // add your code here
-        if (codeField.getText() != null && nameField.getText() != null && tree1.getLastSelectedPathComponent() != null) {
+        if (checkText(codeField) && checkText(nameField) && tree1.getLastSelectedPathComponent() != null) {
             VBdColomnsEntity colomns = new VBdColomnsEntity();
             colomns.setJavaClass(VBdColomnsEntity.class.toString());
             colomns.setParent(this.parentObject);
@@ -110,13 +113,19 @@ public class NewOrEditColumn extends JAddDialog {
 
     @Override
     protected void extension() {
+        PlainDocument doc = (PlainDocument) codeField.getDocument();
+        doc.setDocumentFilter(new EnglishFilter());
+
         this.setSize(new Dimension(500, 500));
+
     }
 
     private void createUIComponents() {
         tree1 = JDBTree.getInstance();
         ((JDBTree) tree1).loadTree();
         tree1.setCellRenderer(new DBTreeCellRenderer());
-        // TODO: place custom component creation code here
     }
+
+
 }
+

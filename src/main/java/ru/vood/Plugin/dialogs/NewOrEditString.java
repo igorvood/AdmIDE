@@ -6,9 +6,12 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.dialogs.ExtSwing.DigitIntFilter;
+import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 
 import javax.swing.*;
+import javax.swing.text.PlainDocument;
 import java.awt.event.*;
 
 public class NewOrEditString extends JAddDialog {
@@ -61,21 +64,23 @@ public class NewOrEditString extends JAddDialog {
     }
 
     private void onOK() {
-        VBdObjectEntity num = Tables.getSTRING();
+        if (checkText(codeField) && checkText(nameField) && checkText(lengthField)) {
+            VBdObjectEntity num = Tables.getSTRING();
 
-        VBdTableEntity newBDTable = new VBdTableEntity();
-        newBDTable.setParent(num);
-        newBDTable.setTypeObject(ObjectTypes.getSTRING());
-        newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
-        newBDTable.setName(this.nameField.getText().trim());
-        newBDTable.setJavaClass(newBDTable.getClass().toString());
-        newBDTable.setLength(Long.getLong(lengthField.getText()));
+            VBdTableEntity newBDTable = new VBdTableEntity();
+            newBDTable.setParent(num);
+            newBDTable.setTypeObject(ObjectTypes.getSTRING());
+            newBDTable.setCode(this.codeField.getText().toUpperCase().trim());
+            newBDTable.setName(this.nameField.getText().trim());
+            newBDTable.setJavaClass(newBDTable.getClass().toString());
+            newBDTable.setLength(Long.getLong(lengthField.getText()));
 
-        VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
-        VBdTableEntity newNum = (VBdTableEntity) tableEntityService.save(newBDTable);
+            VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+            VBdTableEntity newNum = tableEntityService.save(newBDTable);
 
-        this.setAddedObj(newNum);
-        dispose();
+            this.setAddedObj(newNum);
+            dispose();
+        }
     }
 
     private void onCancel() {
@@ -83,10 +88,26 @@ public class NewOrEditString extends JAddDialog {
         dispose();
     }
 
+    private boolean check() {
+        boolean fl = true;
+        fl = fl && this.codeField.getText().length() == 0;
+        fl = fl && this.nameField.getText().length() == 0;
+        fl = fl && this.lengthField.getText().length() == 0;
+
+        return fl;
+    }
+
     /**
      * Дополнительные действия, запускается при вызове setVisible
      */
     @Override
     protected void extension() {
+        PlainDocument doc = (PlainDocument) lengthField.getDocument();
+        doc.setDocumentFilter(new DigitIntFilter());
+
+        PlainDocument docENG = (PlainDocument) codeField.getDocument();
+        docENG.setDocumentFilter(new EnglishFilter());
+
+
     }
 }

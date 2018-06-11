@@ -121,7 +121,7 @@ public class WorkWithTunes {
                 }
             }
         } catch (Exception e) {
-            // TODO: Add catch code
+
             return NULL_TUNE;
         }
         return NULL_TUNE;

@@ -10,6 +10,7 @@ public class SQLFistrLoadShemeOra implements SQLFistrLoadShemeInterface {
 
     @Autowired
     private TuneChainStepsFirstLoad runChain;
+
     @Override
     public void getSQL() {
         runChain.run();

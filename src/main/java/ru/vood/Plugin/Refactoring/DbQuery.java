@@ -1,7 +1,5 @@
 package ru.vood.Plugin.Refactoring;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
 import ru.vood.Plugin.db.DBConnect;
 import ru.vood.Plugin.dialogs.ErrWin;
 import ru.vood.Plugin.logging.Log;
@@ -66,11 +64,11 @@ class DbQuery {
 
     static void setContext(String par, String val) {
         ResultSet resultSet;
-        if (AppConst.getTune(ListTunes.USER).toUpperCase().equals("IBS")) {
+/*        if (AppConst.getTune(ListTunes.USER).toUpperCase().equals("IBS")) {
             resultSet = executeQuery("call executor.SET_CONTEXT('" + par + "','" + val + "') ");
-        } else {
-            resultSet = executeQuery("call sys.set_voodcontext_value('" + par + "','" + val + "') ");
-        }
+        } else {*/
+        resultSet = executeQuery("call sys.set_voodcontext_value('" + par + "','" + val + "') ");
+        //}
         DbQuery.closeCursor(resultSet);
     }
 
@@ -84,7 +82,7 @@ class DbQuery {
         }
     }
 
-    //todo клас временный для контороля открытых курсоров, удалить поже когда не нужен будет
+
     @Deprecated
     static class OpenedCursor {
         ResultSet resultSet;

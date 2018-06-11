@@ -1,7 +1,7 @@
 package ru.vood.Plugin.sql.sqlFactory;
 
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.applicationConst.SupportedDBMS;
 import ru.vood.Plugin.sql.oracle.SQLOra;
 import ru.vood.Plugin.sql.sqlInterfaces.SQLInterface;
@@ -17,7 +17,8 @@ public class SQLFactory implements SQLInterface {
 
     public static SQLInterface getInstance() {
         if (sql == null) {
-            if (AppConst.getTune(ListTunes.DBMS_TYPE).equals(SupportedDBMS.ORACLE.getType())) {
+            PluginTunes pluginTunes = LoadedCTX.getService(PluginTunes.class);
+            if (pluginTunes.getDbmsType().equals(SupportedDBMS.ORACLE.getType())) {
                 sql = new SQLOra();
             } else sql = null;
         }

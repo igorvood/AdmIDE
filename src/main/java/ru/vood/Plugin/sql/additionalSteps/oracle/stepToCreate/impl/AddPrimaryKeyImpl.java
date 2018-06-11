@@ -1,6 +1,7 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
@@ -12,6 +13,11 @@ import ru.vood.Plugin.sql.dbms.oracle.AddPrimaryKeySql;
 
 @Component
 public class AddPrimaryKeyImpl implements StepsCreateServise {
+
+    @Autowired
+    @Qualifier("addColomnImpl")
+    private StepsCreateServise nextStep;
+
 
     @Autowired
     private PluginTunes tunes;
@@ -36,6 +42,6 @@ public class AddPrimaryKeyImpl implements StepsCreateServise {
     }
 
     public StepsCreateServise getNextStep() {
-        return null;
+        return nextStep;
     }
 }

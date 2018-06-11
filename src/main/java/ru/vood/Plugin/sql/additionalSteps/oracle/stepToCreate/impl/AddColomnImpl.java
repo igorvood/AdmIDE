@@ -25,6 +25,7 @@ public class AddColomnImpl implements StepsCreateServise {
     @Autowired
     private AddConstraintSql constraintSql;
 
+
     @Override
     public QueryTableNew createDDL(VBdObjectEntity bdObject) {
         QueryTableNew queryTable = new QueryTableNew();
@@ -40,9 +41,10 @@ public class AddColomnImpl implements StepsCreateServise {
 
         VBdTableEntity vBdTableEntity = (VBdTableEntity) bdColomns.getTypeValue();
 
-        if (bdColomns.getTypeValue().equals(ObjectTypes.getSTRING())) {
-            stringBuffer.append(" VARCHAR2(" + vBdTableEntity.getLength() + ") " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
-        } else if (bdColomns.getTypeValue().equals(ObjectTypes.getNUMBER())) {
+        if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getSTRING())) {
+            String length = vBdTableEntity.getLength() == null ? " " : "(" + vBdTableEntity.getLength() + ")";
+            stringBuffer.append(" VARCHAR2" + length + " " + ((bdColomns.getNotNull().equals("1")) ? " not null" : " "));
+        } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getNUMBER())) {
             Long len = vBdTableEntity.getLength();
             Long pres = vBdTableEntity.getPrecision();
             String paramNum = "";
@@ -52,14 +54,14 @@ public class AddColomnImpl implements StepsCreateServise {
                 paramNum = "(" + len + ")";
             }
             stringBuffer.append(" NUMBER" + paramNum + " " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
-        } else if (bdColomns.getTypeValue().equals(ObjectTypes.getDATE())) {
+        } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getDATE())) {
             stringBuffer.append(" DATE " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
-        } else if (bdColomns.getTypeValue().equals(ObjectTypes.getREFERENCE())) {
+        } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getREFERENCE())) {
             stringBuffer.append(" NUMBER " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
             queryTable.add(stringBuffer.toString());
             String pref = tunes.getPrefixTable();
             stringBuffer = new StringBuffer(constraintSql.getSql(pref + (bdColomns).getParent().getCode(), (bdColomns).getCode(), pref + vBdTableEntity.getToType().getCode(), "ID"));
-        } else if (bdColomns.getTypeValue().equals(ObjectTypes.getARRAY())) {
+        } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getARRAY())) {
             stringBuffer.append(" NUMBER not null");
 
             /*Это перенести в создание типа массив

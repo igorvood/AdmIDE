@@ -75,7 +75,12 @@ public class JDBTableModel extends AbstractTableModel {
                 if (rows.get(rowIndex).getTypeObject() == null) {
                     return null;
                 } else {
-                    return rows.get(rowIndex).getTypeObject().getName();
+                    if (rows.get(rowIndex) instanceof VBdColomnsEntity) {
+                        return ((VBdColomnsEntity) rows.get(rowIndex)).getTypeValue().getName();
+                    } else {
+                        return rows.get(rowIndex).getTypeObject().getName();
+                    }
+                    //return rows.get(rowIndex).getTypeObject().getName();
                 }
             }
             if (columnIndex == 3) {

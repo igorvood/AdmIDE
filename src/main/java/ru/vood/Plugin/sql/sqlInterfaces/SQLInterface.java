@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public interface SQLInterface {
 
+    public final static String COLLECTION = "collectionid";
+
     String getSQLForAddCollectionId(String tableShortName);
 
     String getSQLNextId();

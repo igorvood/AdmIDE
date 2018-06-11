@@ -31,6 +31,7 @@ public class LObjTypeInsert {
         VBdObjectTypeEntity bdObjType_ARRAY = new VBdObjectTypeEntity();
         bdObjType_ARRAY.setCode("ARRAY");
         bdObjType_ARRAY.setName("Массив");
+        bdObjType_ARRAY.setNeedDDL(true);
         bdObjType_ARRAY = entityService.save(bdObjType_ARRAY);
 
         VBdObjectTypeEntity bdObjType_STRING = new VBdObjectTypeEntity();

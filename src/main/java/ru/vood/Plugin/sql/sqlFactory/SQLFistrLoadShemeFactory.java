@@ -11,10 +11,9 @@ import ru.vood.Plugin.sql.sqlInterfaces.SQLFistrLoadShemeInterface;
 @Service
 public class SQLFistrLoadShemeFactory implements SQLFistrLoadShemeInterface {
 
+    private static SQLFistrLoadShemeInterface sql;
     @Autowired
     private PluginTunes pluginTunes;
-
-    private static SQLFistrLoadShemeInterface sql;
 
     public SQLFistrLoadShemeInterface getInstance() {
         if (sql == null) {

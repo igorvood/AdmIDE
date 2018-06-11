@@ -21,7 +21,7 @@ public class QueryTable extends IndexByTable<Number, Varchar2> {
         this.assign(other);
     }
 
-    // // TODO: 12.09.2016 ----------------------------------------------------------- Удалить toString
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("");

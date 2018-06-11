@@ -7,12 +7,7 @@ import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.ExeptObjectNa
 
 public class DDLSave {
 
-/*
-    public static void before(Object joinPoint) {
-        System.out.println(joinPoint);
-    }*/
 
-    @Deprecated
     public static void checkRun(Object joinPoint, Object o) {
         System.out.println(joinPoint);
         System.out.println(o);

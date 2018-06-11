@@ -8,12 +8,14 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
+import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
@@ -81,17 +83,19 @@ public class NewOrEditRefArr extends JAddDialog {
         tree1.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                VBdObjectEntity bdTable = ((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
-                if (bdTable.getTypeObject().getCode().equals("TABLE")) {
-                    String postfix;
-                    if (isRef) {
-                        postfix = "_REF";
-                        nameField.setText("Ссылна на <" + bdTable.getName() + ">");
-                    } else {
-                        postfix = "_ARR";
-                        nameField.setText("Массив <" + bdTable.getName() + ">");
+                if (tree1.getLastSelectedPathComponent() != null) {
+                    VBdObjectEntity bdTable = ((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
+                    if (bdTable.getTypeObject().getCode().equals("TABLE")) {
+                        String postfix;
+                        if (isRef) {
+                            postfix = "REF";
+                            nameField.setText("Ссылна на <" + bdTable.getName() + ">");
+                        } else {
+                            postfix = "ARR";
+                            nameField.setText("Массив <" + bdTable.getName() + ">");
+                        }
+                        codeField.setText(bdTable.getCode() + postfix);
                     }
-                    codeField.setText(bdTable.getCode() + postfix);
                 }
             }
         });
@@ -102,9 +106,9 @@ public class NewOrEditRefArr extends JAddDialog {
             new ErrWin(this, "Не выбран тип.", true, "Не выбран тип.", null);
         } else {
             VBdObjectEntity bdTable = ((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
-            VBdObjectEntity parent = new VBdObjectEntity();
+            VBdObjectEntity parent;
 
-            if (bdTable.getTypeObject().getCode().equals("TABLE")) {
+            if (bdTable.getTypeObject().equals(ObjectTypes.getTABLE())) {
                 VBdTableEntity table = new VBdTableEntity();
                 table.setCode(codeField.getText());
                 table.setName(nameField.getText());
@@ -142,11 +146,13 @@ public class NewOrEditRefArr extends JAddDialog {
         tree1 = JDBTree.getInstance();
         ((JDBTree) tree1).loadTree();
         tree1.setCellRenderer(new DBTreeCellRenderer());
-        // TODO: place custom component creation code here
     }
 
     @Override
     protected void extension() {
+        PlainDocument doc = (PlainDocument) codeField.getDocument();
+        doc.setDocumentFilter(new EnglishFilter());
+
         this.setSize(new Dimension(500, 500));
     }
 

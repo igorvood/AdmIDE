@@ -34,7 +34,7 @@ public class DBConnect {
                 _conn.setAutoCommit(true);
             }
         } catch (Exception sqle) {
-            // TODO: Add catch code
+
             log.putToLog("Не удалось создать соединение." + _thinConn, Level.SEVERE, sqle);
         }
         return _conn;

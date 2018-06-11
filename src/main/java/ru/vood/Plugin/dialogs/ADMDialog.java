@@ -4,9 +4,8 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.admPlugin.tune.WorkWithTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.applicationConst.TypeObject;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
@@ -110,7 +109,6 @@ public class ADMDialog extends JAddDialog {
                 } catch (CoreRuntimeException qw) {
                     System.out.println(qw.toString());
                     qw.printStackTrace();
-                    //System.out.println(qw.getStackTrace().toString());
                 }
             }
         });
@@ -148,14 +146,15 @@ public class ADMDialog extends JAddDialog {
 
                 private void fileTune_ActionPerformed(ActionEvent ae) {
 
-                    String defaultFolder = AppConst.getTune(ListTunes.DEFAULT_FOLDER);
+                    PluginTunes pluginTunes = LoadedCTX.getService(PluginTunes.class);
+                    String defaultFolder = pluginTunes.getDefaultFolder();
                     File file;
                     JFileChooser fileopen = new JFileChooser(defaultFolder);
                     fileopen.setDialogType(JFileChooser.SAVE_DIALOG);
                     int ret = fileopen.showDialog(null, "Save File");
                     if (ret == JFileChooser.APPROVE_OPTION) {
                         file = fileopen.getSelectedFile();
-                        WorkWithTunes.getInstance().setTuneValue(ListTunes.DEFAULT_FOLDER.getName(), file.getParent());
+                        //WorkWithTunes.getInstance().setTuneValue(ListTunes.DEFAULT_FOLDER.getName(), file.getParent());
                         //ExportInterface save = new Save();
                         //Todo кусок для проверки, удалить его
 /*
@@ -397,7 +396,7 @@ public class ADMDialog extends JAddDialog {
         }*/
 
         JAddDialog dialog = null;
-        if (object.getTypeObject() != null && object.getTypeObject().getCode().equals(TypeObject.DATE.getName())) {
+        if (object.getTypeObject() != null && object.getTypeObject().equals(ObjectTypes.getDATE())) {
             new MessageWin("Это же какую новую дату хотите добавить?");
         } else {
             if (adding) {
@@ -437,7 +436,7 @@ public class ADMDialog extends JAddDialog {
             if (dialog != null) {
                 dialog.pack();
                 dialog.setVisible(true);
-                if ((object instanceof VBdTableEntity)) {
+                if ((dialog.getAddedObj() instanceof VBdTableEntity)) {
                     tree1.addToTree(dialog.getAddedObj());
                     tree1.refresh();
                 }

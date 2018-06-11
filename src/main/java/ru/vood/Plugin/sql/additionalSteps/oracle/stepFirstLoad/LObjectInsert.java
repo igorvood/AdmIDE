@@ -58,7 +58,7 @@ public class LObjectInsert {
         bdObject_ARRAY.setCode("ARRAY");
         bdObject_ARRAY.setName("Массивы");
         bdObject_ARRAY.setParent(bdObject_obj);
-        bdObject_ARRAY.setTypeObject(bdObjType_ARRAY);
+        bdObject_ARRAY.setTypeObject(ObjectTypes.getARRAY());
         bdObject_ARRAY.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_ARRAY);
 

@@ -19,10 +19,9 @@ import java.util.List;
 
 public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllImpl*/ implements VBdColomnsEntityService {
     @Autowired
-    private VBdColomnsEntityRepository bdColomnsEntityRepository;
-
-    @Autowired
     protected EntityManager em;
+    @Autowired
+    private VBdColomnsEntityRepository bdColomnsEntityRepository;
 
     @Override
     public List<VBdColomnsEntity> findByParent(VBdTableEntity parent) {

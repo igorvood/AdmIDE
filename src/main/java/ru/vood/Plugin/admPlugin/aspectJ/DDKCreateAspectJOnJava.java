@@ -20,7 +20,7 @@ public class DDKCreateAspectJOnJava {
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {
         //VBdObjectEntity vBdObjectEntity = (VBdObjectEntity) proceedingJoinPoint.getArgs()[0];
-
+        System.out.println(DDKCreateAspectJOnJava.class + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave.checkRun(proceedingJoinPoint, adding[0]);
         boolean create = false;

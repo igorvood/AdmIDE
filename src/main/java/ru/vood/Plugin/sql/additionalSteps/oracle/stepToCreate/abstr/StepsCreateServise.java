@@ -10,7 +10,10 @@ public interface StepsCreateServise {
     default QueryTableNew runSteps(VBdObjectEntity bdObject) {
         QueryTableNew queryTable = new QueryTableNew();
 
-        queryTable.addAll(createDDL(bdObject));
+        QueryTableNew queryTabletmp = createDDL(bdObject);
+        if (queryTabletmp != null) {
+            queryTable.addAll(createDDL(bdObject));
+        }
         if (getNextStep() != null) {
             queryTable.addAll(getNextStep().runSteps(bdObject));
         }

@@ -16,15 +16,17 @@ public class AddTableImpl implements StepsCreateServise {
 
     @Autowired
     AddPrimaryKeyImpl primaryKey;
+
     @Autowired
-    @Qualifier("addColomnImpl")
+    @Qualifier("addPrimaryKeyImpl")
     private StepsCreateServise nextStep;
+
     @Autowired
     private PluginTunes tunes;
 
     @Override
     public QueryTableNew createDDL(VBdObjectEntity bdObject) {
-        if (bdObject instanceof VBdTableEntity) {
+        if (!(bdObject instanceof VBdTableEntity)) {
             return null;
         }
 

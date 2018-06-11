@@ -10,9 +10,16 @@ import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 import ru.vood.Plugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.sql.sqlFactory.SQLFactory;
+import ru.vood.Plugin.sql.sqlInterfaces.SQLInterface;
 
 @Component
 public class AddArrayTypeImpl implements StepsCreateServise {
+
+    // todo сюда добавить ссылок
+//    @Autowired
+//    @Qualifier("addArrayTypeImpl")
+//    private StepsCreateServise nextStep;
+
 
     @Autowired
     private PluginTunes pluginTunes;
@@ -36,7 +43,7 @@ public class AddArrayTypeImpl implements StepsCreateServise {
             String tmp = SQLFactory.getInstance().getSQLForAddCollectionId(bdTable.getToType().getCode());
             queryTable.add(tmp);
 
-            tmp = addIndexSql.generateSys(pluginTunes.getPrefixTable() + bdTable.getToType().getCode(), "COLLECTIONID");
+            tmp = addIndexSql.generateSys(pluginTunes.getPrefixTable() + bdTable.getToType().getCode(), SQLInterface.COLLECTION);
             queryTable.add(tmp);
 
 

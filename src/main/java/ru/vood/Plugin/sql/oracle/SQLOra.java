@@ -2,8 +2,7 @@ package ru.vood.Plugin.sql.oracle;
 
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
-import ru.vood.Plugin.admPlugin.tune.ListTunes;
-import ru.vood.Plugin.applicationConst.AppConst;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.applicationConst.SystemObject;
 import ru.vood.Plugin.sql.sqlInterfaces.SQLInterface;
 
@@ -11,10 +10,12 @@ import java.math.BigDecimal;
 
 public class SQLOra implements SQLInterface {
 
+
     public String getSQLForAddCollectionId(String tableShortName) {
         StringBuffer sb = new StringBuffer();
-        sb.append("alter table " + AppConst.getTune(ListTunes.OWNER) + "." + AppConst.getTune(ListTunes.PREFIX_TABLE) + tableShortName +
-                " add collectionid NUMBER");
+        PluginTunes pluginTunes = LoadedCTX.getService(PluginTunes.class);
+        sb.append("alter table " + pluginTunes.getOwner() + "." + pluginTunes.getPrefixTable() + tableShortName +
+                " add " + COLLECTION + " NUMBER");
         return sb.toString();
     }
 
