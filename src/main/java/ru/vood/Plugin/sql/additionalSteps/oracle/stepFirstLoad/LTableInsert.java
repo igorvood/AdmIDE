@@ -66,14 +66,56 @@ public class LTableInsert {
 
         VBdTableEntity bdObject_table_new = bdTableEntityService.save(bdObject_table);
 
-        bdObject_table = new VBdTableEntity();
-        bdObject_table.setCode("address");
-        bdObject_table.setName("Адреса");
-        bdObject_table.setParent(Tables.getTABLE());
-        bdObject_table.setTypeObject(ObjectTypes.getTABLE());
-        bdObject_table.setJavaClass(VBdTableEntity.class.toString());
+        VBdTableEntity bdObject_table_aderss = new VBdTableEntity();
+        bdObject_table_aderss.setCode("address");
+        bdObject_table_aderss.setName("Адреса");
+        bdObject_table_aderss.setParent(Tables.getTABLE());
+        bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
+        bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
 
-        bdObject_table_new = bdTableEntityService.save(bdObject_table);
+        bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
+
+//        for (int i = 0; i <10000 ; i++) {
+//            bdObject_table_aderss = new VBdTableEntity();
+//            bdObject_table_aderss.setCode("TMP_"+i);
+//            bdObject_table_aderss.setName("Временно "+i);
+//            bdObject_table_aderss.setParent(Tables.getTABLE());
+//            bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
+//            bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
+//
+//            bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
+//        }
+
+        VBdTableEntity bdObject_table_type_adress = new VBdTableEntity();
+        bdObject_table_type_adress.setCode("TYPE_ADRESS");
+        bdObject_table_type_adress.setName("Типы адресов");
+        bdObject_table_type_adress.setParent(Tables.getTABLE());
+        bdObject_table_type_adress.setTypeObject(ObjectTypes.getTABLE());
+        bdObject_table_type_adress.setJavaClass(VBdTableEntity.class.toString());
+
+        bdObject_table_type_adress = bdTableEntityService.save(bdObject_table_type_adress);
+
+
+        VBdTableEntity table = new VBdTableEntity();
+        table.setCode(bdObject_table_type_adress.getCode() + "_REF");
+        table.setName("Ссылка <" + bdObject_table_type_adress.getName() + ">");
+        table.setTypeObject(ObjectTypes.getREFERENCE());
+        table.setJavaClass(table.getClass().toString());
+        table.setParent(Tables.getREFERENCE());
+        table.setToType(bdObject_table_type_adress);
+
+        table = bdTableEntityService.save(table);
+
+
+        table = new VBdTableEntity();
+        table.setCode(bdObject_table_aderss.getCode() + "_ARR");
+        table.setName("Массив <" + bdObject_table_aderss.getName() + ">");
+        table.setTypeObject(ObjectTypes.getARRAY());
+        table.setJavaClass(table.getClass().toString());
+        table.setParent(Tables.getARRAY());
+        table.setToType(bdObject_table_aderss);
+
+        table = bdTableEntityService.save(table);
 
 //        VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
 //        colomnsEntity.setCode("NAME");
