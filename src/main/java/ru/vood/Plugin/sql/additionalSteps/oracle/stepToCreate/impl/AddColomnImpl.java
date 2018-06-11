@@ -9,6 +9,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 import ru.vood.Plugin.sql.dbms.oracle.AddConstraintSql;
 
@@ -24,6 +25,9 @@ public class AddColomnImpl implements StepsCreateServise {
 
     @Autowired
     private AddConstraintSql constraintSql;
+
+    @Autowired
+    private TuneChainStepsCreate stepsCreate;
 
 
     @Override
@@ -62,15 +66,31 @@ public class AddColomnImpl implements StepsCreateServise {
             String pref = tunes.getPrefixTable();
             stringBuffer = new StringBuffer(constraintSql.getSql(pref + (bdColomns).getParent().getCode(), (bdColomns).getCode(), pref + vBdTableEntity.getToType().getCode(), "ID"));
         } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getARRAY())) {
-            stringBuffer.append(" NUMBER not null");
+            //Если работа идет с массивом то сначала добавить колонку, потом заполнить ее значениями, и поптом ее сделать не пустой.
+            stringBuffer.append(" NUMBER ");
+            queryTable.add(stringBuffer.toString());
+            stepsCreate.runChain(queryTable);
+            stringBuffer = new StringBuffer();
+            stringBuffer.append(" UPDATE  " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdColomns.getParent().getCode() + "\n");
+            stringBuffer.append(" SET " + bdColomns.getCode() + " = SEQ_ID.nextval  ");
 
-            /*Это перенести в создание типа массив
-            String tmp = AddIndexSql.generateSys(AppConst.getTune(ListTunes.PREFIX_TABLE)+ bdColomns.getParent().getCode(),AppConst.getTune(ListTunes.PREFIX_COLOMN)+bdColomns.getCode());
-            queryTable.set(queryTable.count().add(1), new Varchar2(tmp));
+            queryTable = new QueryTableNew();
+            queryTable.add(stringBuffer.toString());
+            queryTable.add("commit ");
 
-            */
+            stringBuffer = new StringBuffer();
+            /*stringBuffer.append(" ALTER TABLE " + tunes.getPrefixTable() + bdColomns.getParent().getCode());
+            stringBuffer.append(" ALTER COLUMN " + bdColomns.getCode() + " NUMBER not null");*/
+            stringBuffer.append(" ALTER TABLE " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdColomns.getParent().getCode());
+            stringBuffer.append(" MODIFY ( " + bdColomns.getCode() + " NUMBER not null) ");
+            //ALTER TABLE Employees MODIFY(ID int NOT NULL,Name nvarchar2(30) NOT NULL);
+            queryTable.add(stringBuffer.toString());
+
+            stepsCreate.runChain(queryTable);
         }
-        queryTable.add(stringBuffer.toString());
+        if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getARRAY())) {
+            queryTable.add(stringBuffer.toString());
+        }
         return queryTable;
 
     }

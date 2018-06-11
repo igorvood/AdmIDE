@@ -19,6 +19,7 @@ public class NewOrEditTable extends JAddDialog {
     private JButton buttonCancel;
     private JTextField codeField;
     private JTextField nameField;
+    private JTextField parentField;
     private VBdObjectEntity object;
     private VBdObjectEntity parent;
 
@@ -100,6 +101,7 @@ public class NewOrEditTable extends JAddDialog {
     protected void extension() {
         PlainDocument doc = (PlainDocument) codeField.getDocument();
         doc.setDocumentFilter(new EnglishFilter());
+        parentField.setText(parent.getName());
     }
 
 }

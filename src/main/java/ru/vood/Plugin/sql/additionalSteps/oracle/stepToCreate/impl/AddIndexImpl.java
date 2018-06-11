@@ -12,7 +12,7 @@ import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateS
 public class AddIndexImpl implements StepsCreateServise {
 
     @Autowired
-    @Qualifier("addForeignKeyForParentImpl")
+    @Qualifier("addArrayTypeImpl")
     private StepsCreateServise nextStep;
 
 

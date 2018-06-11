@@ -34,24 +34,36 @@ public class TuneChainStepsCreate {
         Statement stmt = null;
         ResultSet r = null;
 
-        for (String q : queryTable) {
-            try {
-                conn = dataSource.getConnection();
-                if (!conn.isClosed()) {
-                    stmt = conn.createStatement();
-                    r = stmt.executeQuery(q);
-                }
-            } catch (SQLException e) {
-                int i = queryTable.indexOf(q);
-                e.printStackTrace();
-            } finally {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            conn = null;
+        }
+        if (conn != null) {
+            for (String q : queryTable) {
                 try {
-                    r.close();
-                    stmt.close();
-                } catch (Exception e) {
+                    if (!conn.isClosed()) {
+                        stmt = conn.createStatement();
+                        r = stmt.executeQuery(q);
+                    }
+                } catch (SQLException e) {
+                    int i = queryTable.indexOf(q);
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        r.close();
+                        stmt.close();
+                    } catch (Exception e) {
 
+                    }
                 }
             }
+        }
+
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

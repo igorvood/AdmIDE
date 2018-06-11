@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
@@ -34,7 +35,7 @@ public class AddForeignKeyForParentImpl implements StepsCreateServise {
         QueryTableNew queryTable = new QueryTableNew();
 
         VBdTableEntity bdTable = (VBdTableEntity) bdObject;
-        if (bdTable.getParent() != null && !bdTable.getParent().getCode().equals("TABLE") && bdTable.getTypeObject().getCode().equals(ObjectTypes.getTABLE())) {
+        if (bdTable.getParent() != null && !bdTable.getParent().getCode().equals(Tables.getTABLE().getCode()) && bdTable.getTypeObject().equals(ObjectTypes.getTABLE())) {
             String pref = pluginTunes.getPrefixTable();
             String forKey = constraintSql.getSql(pref + bdTable.getCode(), "ID", pref + bdTable.getParent().getCode(), "ID");
             queryTable.add(forKey);

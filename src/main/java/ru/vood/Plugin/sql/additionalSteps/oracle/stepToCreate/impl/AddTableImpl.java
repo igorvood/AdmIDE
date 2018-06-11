@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
@@ -18,7 +19,10 @@ public class AddTableImpl implements StepsCreateServise {
     AddPrimaryKeyImpl primaryKey;
 
     @Autowired
-    @Qualifier("addPrimaryKeyImpl")
+    AddForeignKeyForParentImpl foreignKeyForParent;
+
+    @Autowired
+    @Qualifier("addColomnImpl")
     private StepsCreateServise nextStep;
 
     @Autowired
@@ -45,6 +49,11 @@ public class AddTableImpl implements StepsCreateServise {
 
             //Добавление первичного ключа
             queryTable.addAll(primaryKey.createDDL(bdTable));
+
+            //если добавляем таблицу с настоящим родителем, то надо их связать внешним ключем
+            if (!bdTable.getParent().equals(Tables.getTABLE())) {
+                queryTable.addAll(foreignKeyForParent.createDDL(bdTable));
+            }
         }
 
         return queryTable;
