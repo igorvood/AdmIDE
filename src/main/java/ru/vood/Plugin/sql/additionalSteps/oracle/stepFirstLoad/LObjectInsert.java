@@ -7,7 +7,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 
 @Service
 public class LObjectInsert {

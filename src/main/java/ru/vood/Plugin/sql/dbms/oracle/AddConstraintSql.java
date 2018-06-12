@@ -3,7 +3,7 @@ package ru.vood.Plugin.sql.dbms.oracle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.LimitingNameDBMS;
+import ru.vood.Plugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 
 @Service
 public class AddConstraintSql {

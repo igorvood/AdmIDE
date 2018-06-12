@@ -22,12 +22,13 @@ public class NewOrEditTable extends JAddDialog {
     private JTextField parentField;
     private VBdObjectEntity object;
     private VBdObjectEntity parent;
+    private boolean isEdit;
 
     public NewOrEditTable(VBdObjectEntity object, VBdObjectEntity parent) {
         this.object = object;
         this.parent = parent;
-
-        if (this.object == null) {
+        isEdit = this.object != null;
+        if (isEdit) {
             this.setTitle("Создание таблицы");
         } else {
             this.setTitle("Редактирование таблицы");
@@ -102,6 +103,11 @@ public class NewOrEditTable extends JAddDialog {
         PlainDocument doc = (PlainDocument) codeField.getDocument();
         doc.setDocumentFilter(new EnglishFilter());
         parentField.setText(parent.getName());
+        if (isEdit) {
+            this.codeField.setText(object.getCode());
+            this.nameField.setText(object.getName());
+        }
+
     }
 
 }

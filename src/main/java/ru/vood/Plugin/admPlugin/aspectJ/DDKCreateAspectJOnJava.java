@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 
 @Aspect
+
 //@Order(1)
 public class DDKCreateAspectJOnJava {
 
@@ -24,8 +25,9 @@ public class DDKCreateAspectJOnJava {
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave.checkRun(proceedingJoinPoint, adding[0]);
         boolean create = false;
+        VBdObjectEntity entities = null;
         if (adding[0] instanceof VBdObjectEntity) {
-            VBdObjectEntity entities = (VBdObjectEntity) adding[0];
+            entities = (VBdObjectEntity) adding[0];
             create = entities.getId() == null ? true : false;
             DDLSave.before(proceedingJoinPoint, adding);
         }
@@ -39,7 +41,7 @@ public class DDKCreateAspectJOnJava {
             //throwable.printStackTrace();
         }
         if (adding[0] instanceof VBdObjectEntity) {
-            DDLSave.after(ret, create);
+            DDLSave.after(ret, create, entities);
         }
         long endTime = System.nanoTime();
         System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));

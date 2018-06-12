@@ -112,6 +112,32 @@ public class ADMDialog extends JAddDialog {
                 }
             }
         });
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable obj = (JTable) e.getSource();
+                    //если клинул по наименованию типа
+                    if (obj.getSelectedColumn() == 2) {
+                        JDBTableModel tableModel = (JDBTableModel) obj.getModel();
+                        tree1.gotoObjectOnTree(tableModel.getSelectedTypeObject(obj.getSelectedRow()));
+                        tree1.getLastSelectedPathComponent();
+                        //getLastSelectedPathComponent
+
+                    }
+                }
+                super.mouseClicked(e);
+            }
+        });
+        tree1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("=======================");
+                System.out.println(e);
+                System.out.println((short) e.getKeyChar());
+                super.keyTyped(e);
+            }
+        });
     }
 
     private void onOK() {

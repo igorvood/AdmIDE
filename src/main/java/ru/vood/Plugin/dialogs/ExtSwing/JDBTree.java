@@ -3,13 +3,14 @@ package ru.vood.Plugin.dialogs.ExtSwing;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
-import ru.vood.Plugin.logging.Log;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
 import javax.persistence.PersistenceException;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -25,7 +26,6 @@ import java.util.TreeMap;
  */
 
 public class JDBTree extends JTree {
-    private static Log log = Log.getLogger(JDBTree.class);
     private static JDBTree tree;
     private static boolean loaded = false;
     //private ResultSet _r = null;
@@ -123,6 +123,21 @@ public class JDBTree extends JTree {
             }
             defaultMutableTreeNode = defaultMutableTreeNode.getNextNode();
         }
+    }
+
+    public void gotoObjectOnTree(VBdObjectEntity entity) {
+        DefaultTreeModel model = (DefaultTreeModel) this.getModel();
+        DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) model.getRoot();
+        while (defaultMutableTreeNode != null) {
+            if (defaultMutableTreeNode.getUserObject().equals(entity)) {
+                break;
+            }
+            defaultMutableTreeNode = defaultMutableTreeNode.getNextNode();
+        }
+
+        TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(defaultMutableTreeNode);
+        TreePath tpath = new TreePath(nodes);
+        tree.setSelectionPath(tpath);
     }
 
 

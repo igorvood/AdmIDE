@@ -11,6 +11,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,5 +73,10 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
     @Override
     public void delete(VBdObjectEntity entity) {
         vBdObjectEntityRepository.delete(entity);
+    }
+
+    @Override
+    public VBdObjectEntity findOne(BigDecimal id) {
+        return vBdObjectEntityRepository.findOne(id);
     }
 }

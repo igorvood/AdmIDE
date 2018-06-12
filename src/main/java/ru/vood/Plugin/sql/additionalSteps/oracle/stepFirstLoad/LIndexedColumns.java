@@ -3,7 +3,7 @@ package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 import ru.vood.Plugin.sql.dbms.oracle.AddConstraintSql;
 import ru.vood.Plugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.sql.dbms.oracle.AddPrimaryKeySql;

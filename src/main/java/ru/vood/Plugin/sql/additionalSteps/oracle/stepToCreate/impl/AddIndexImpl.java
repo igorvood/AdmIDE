@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 
 @Component

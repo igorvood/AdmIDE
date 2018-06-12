@@ -1,4 +1,4 @@
-package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
+package ru.vood.Plugin.sql;
 
 import java.util.ArrayList;
 

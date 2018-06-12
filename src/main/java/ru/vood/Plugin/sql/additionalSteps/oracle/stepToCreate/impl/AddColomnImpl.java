@@ -8,7 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 import ru.vood.Plugin.sql.dbms.oracle.AddConstraintSql;

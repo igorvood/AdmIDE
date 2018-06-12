@@ -6,7 +6,6 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +16,11 @@ public class JDBTableModel extends AbstractTableModel {
     ArrayList<String> cols = new ArrayList<String>();
 
     public JDBTableModel() {
-        cols.add("Короткое имя");
         cols.add("Длинное имя");
+        cols.add("Короткое имя");
+        cols.add("Наименование типа");
         cols.add("Тип");
         cols.add("Класс владелец");
-        // Todo удалить
-        cols.add("test");
         rows.add(new VBdObjectEntity());
     }
 
@@ -64,12 +62,11 @@ public class JDBTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (rows.get(rowIndex) != null && rows.get(rowIndex).getId() != null) {
-
             if (columnIndex == 0) {
-                return rows.get(rowIndex).getCode();
+                return rows.get(rowIndex).getName();
             }
             if (columnIndex == 1) {
-                return rows.get(rowIndex).getName();
+                return rows.get(rowIndex).getCode();
             }
             if (columnIndex == 2) {
                 if (rows.get(rowIndex).getTypeObject() == null) {
@@ -84,18 +81,27 @@ public class JDBTableModel extends AbstractTableModel {
                 }
             }
             if (columnIndex == 3) {
-                if (rows.get(rowIndex).getParent() == null) {
+                if (rows.get(rowIndex).getTypeObject() == null) {
                     return null;
                 } else {
-                    return rows.get(rowIndex).getParent().getCode();
+                    if (rows.get(rowIndex) instanceof VBdColomnsEntity) {
+                        return ((VBdColomnsEntity) rows.get(rowIndex)).getTypeValue().getTypeObject().getName();
+                    } else {
+                        return rows.get(rowIndex).getTypeObject().getName();
+                    }
+                    //return rows.get(rowIndex).getTypeObject().getName();
                 }
             }
-            // Todo удалить
+
+
+//                if (rows.get(rowIndex).getParent() == null) {
+//                    return null;
+//                } else {
+//                    return rows.get(rowIndex).getParent().getCode();
+//                }
+
             if (columnIndex == 4) {
-                JComboBox box = new JComboBox();
-                box.addItem("asd");
-                box.addItem("123");
-                return box;
+                return rows.get(rowIndex).getParent().getName();
             }
 
         }
@@ -156,5 +162,9 @@ public class JDBTableModel extends AbstractTableModel {
     public void clear() {
         rows.clear();
         //rows.add(new BDObject());
+    }
+
+    public VBdObjectEntity getSelectedTypeObject(int rowIndex) {
+        return ((VBdColomnsEntity) rows.get(rowIndex)).getTypeValue();
     }
 }

@@ -8,7 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 
 @Service
 public class LTableInsert {

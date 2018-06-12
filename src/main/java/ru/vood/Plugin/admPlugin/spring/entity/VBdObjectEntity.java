@@ -101,6 +101,21 @@ public class VBdObjectEntity extends ParentForAll {
         this.javaClass = javaClass;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VBdObjectEntity)) return false;
+
+        VBdObjectEntity that = (VBdObjectEntity) o;
+
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
     public String toString() {
         return name;
         /*return "VBdObjectEntity{" +

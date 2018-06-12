@@ -2,8 +2,9 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.sql.ExeptObjectName;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl.ExeptObjectName;
 
 public class DDLSave {
 
@@ -35,7 +36,7 @@ public class DDLSave {
         System.out.println(o);
     }
 
-    public static void after(Object savedObj, boolean create) {
+    public static void after(Object savedObj, boolean create, Object oldObj) {
         if (create & savedObj != null) {
             if (savedObj instanceof VBdObjectEntity) {
                 VBdObjectEntity entity = (VBdObjectEntity) savedObj;
@@ -44,6 +45,17 @@ public class DDLSave {
                     if (exeptObjectName.allowAdd(entity.getCode())) {
                         TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
                         create1.runChain(savedObj);
+                    }
+                }
+            }
+        } else if (!create) {
+            if (savedObj instanceof VBdObjectEntity && oldObj instanceof VBdObjectEntity) {
+                VBdTableEntity bdTableOld = (VBdTableEntity) oldObj;
+                VBdTableEntity bdTableNew = (VBdTableEntity) savedObj;
+                if (bdTableNew.getTypeObject().isNeedDDL()) {
+                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
+                    if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
+
                     }
                 }
             }

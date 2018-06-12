@@ -2,9 +2,12 @@ package ru.vood.Plugin.admPlugin.spring.intf;
 
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface VBdObjectEntityService /*extends ParentForAllServise*/ {
+
+    VBdObjectEntity findOne(BigDecimal id);
 
     VBdObjectEntity save(VBdObjectEntity entity);
 

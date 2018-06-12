@@ -1,4 +1,4 @@
-package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
+package ru.vood.Plugin.sql;
 
 import org.springframework.stereotype.Component;
 

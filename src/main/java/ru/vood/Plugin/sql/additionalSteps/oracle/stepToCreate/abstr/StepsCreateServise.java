@@ -1,7 +1,7 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.abstr;
 
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.QueryTableNew;
+import ru.vood.Plugin.sql.QueryTableNew;
 
 public interface StepsCreateServise {
 
@@ -23,7 +23,5 @@ public interface StepsCreateServise {
     default StepsCreateServise getNextStep() {
         return null;
     }
-
-    ;
 
 }
