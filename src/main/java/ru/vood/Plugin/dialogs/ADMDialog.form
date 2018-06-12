@@ -89,19 +89,36 @@
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="68e3a">
+              <tabbedpane id="1c520">
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="962ef" class="javax.swing.JTable" binding="table1" custom-create="true" default-binding="true">
-                    <constraints/>
+                  <scrollpane id="68e3a" binding="colomnsPanel">
+                    <constraints>
+                      <tabbedpane title="Колонки"/>
+                    </constraints>
                     <properties/>
-                  </component>
+                    <border type="none"/>
+                    <children>
+                      <component id="962ef" class="javax.swing.JTable" binding="colomnTable" custom-create="true">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <scrollpane id="7840d" binding="indexesPanel">
+                    <constraints>
+                      <tabbedpane title="Индексы"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </scrollpane>
                 </children>
-              </scrollpane>
+              </tabbedpane>
             </children>
           </splitpane>
         </children>

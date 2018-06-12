@@ -48,9 +48,11 @@ public class ADMDialog extends JAddDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JDBTree tree1;
-    private JTable table1;
+    private JTable colomnTable;
     private JProgressBar progressBar1;
     private JLabel shortName;
+    private JScrollPane colomnsPanel;
+    private JScrollPane indexesPanel;
 
     public ADMDialog() {
         //createUIComponents();
@@ -96,13 +98,13 @@ public class ADMDialog extends JAddDialog {
             public void valueChanged(TreeSelectionEvent e) {
                 try {
                     if (tree1.getLastSelectedPathComponent() != null && ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject() != null) {
-                        ((JDBTableModel) table1.getModel()).clear();
+                        ((JDBTableModel) colomnTable.getModel()).clear();
 
                         VBdObjectEntity entity = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
                         shortName.setText(entity.getCode());
                         if (entity instanceof VBdTableEntity) {
-                            ((JDBTableModel) table1.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
-                            table1.updateUI();
+                            ((JDBTableModel) colomnTable.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
+                            colomnTable.updateUI();
                         }
                     }
 
@@ -112,7 +114,7 @@ public class ADMDialog extends JAddDialog {
                 }
             }
         });
-        table1.addMouseListener(new MouseAdapter() {
+        colomnTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -413,7 +415,7 @@ public class ADMDialog extends JAddDialog {
 
         }
         jPopupMenuTable.add(menuAdd);
-        table1.setComponentPopupMenu(jPopupMenuTable);
+        colomnTable.setComponentPopupMenu(jPopupMenuTable);
     }
 
     public VBdObjectEntity addOrEdit(VBdObjectEntity object, boolean adding) {
@@ -474,7 +476,7 @@ public class ADMDialog extends JAddDialog {
     }
 
     private void createUIComponents() {
-        table1 = new JTable(new JDBTableModel());
+        colomnTable = new JTable(new JDBTableModel());
         tree1 = JDBTree.getInstance();
         // TODO: place custom component creation code here
     }
