@@ -77,6 +77,15 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
 
     @Override
     public VBdObjectEntity findOne(BigDecimal id) {
-        return vBdObjectEntityRepository.findOne(id);
+        Query query = em.createQuery("select a2 from VBdObjectEntity a2 " +
+                "  join fetch a2.typeObject a1 " + //" on a1.code in :codeTypeS  " +
+//                "  left join a2.parent a3  " +
+                " where a2.id = :idd " +
+                //" order by a2.id " +
+                "")
+                .setParameter("idd", id);
+        List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
+        return (VBdObjectEntity) list1.get(0);
+//        return vBdObjectEntityRepository.findOne(id);
     }
 }

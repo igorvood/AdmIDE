@@ -4,12 +4,18 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 
 @Aspect
-
+//@Component
 //@Order(1)
 public class DDKCreateAspectJOnJava {
+
+//    @Autowired
+//    @Qualifier("jpaVBdObjectEntityService")
+//    private VBdObjectEntityService bdObjectEntityService;
 
     @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.save(..))")
     //@Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.impl.*.save(..)) ")
@@ -20,33 +26,70 @@ public class DDKCreateAspectJOnJava {
 
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {
-        //VBdObjectEntity vBdObjectEntity = (VBdObjectEntity) proceedingJoinPoint.getArgs()[0];
-        System.out.println(DDKCreateAspectJOnJava.class + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        long startTime = System.nanoTime();
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave.checkRun(proceedingJoinPoint, adding[0]);
         boolean create = false;
-        VBdObjectEntity entities = null;
+        VBdObjectEntity newEntity = null;
+        VBdObjectEntity oldEntity = null;
         if (adding[0] instanceof VBdObjectEntity) {
-            entities = (VBdObjectEntity) adding[0];
-            create = entities.getId() == null ? true : false;
-            DDLSave.before(proceedingJoinPoint, adding);
+            newEntity = (VBdObjectEntity) adding[0];
+            create = newEntity.getId() == null ? true : false;
+            if (!create) {
+                oldEntity = (VBdObjectEntity) LoadedCTX.getService(VBdObjectEntityService.class).findOne(newEntity.getId()).copy();
+            }
+            DDLSave.before(proceedingJoinPoint, adding, oldEntity);
         }
-        System.out.println(adding);
-        long startTime = System.nanoTime();
+        //System.out.println(adding);
 
-        Object ret = null;
+        // ========================================= Вызов основного метода==========================================
+        Object ret;
         try {
-            ret = proceedingJoinPoint.proceed();
+            ret = proceedingJoinPoint.proceed(adding);
         } catch (Throwable throwable) {
+            ret = null;
             //throwable.printStackTrace();
         }
-        if (adding[0] instanceof VBdObjectEntity) {
-            DDLSave.after(ret, create, entities);
+        // ========================================= Вызов основного метода==========================================
+
+        if (ret != null) {
+            if (adding[0] instanceof VBdObjectEntity) {
+                DDLSave.after(ret, create, oldEntity);
+            }
         }
+
         long endTime = System.nanoTime();
         System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
         return ret;
     }
+
+//    private void after(Object savedObj, boolean create, Object oldObj) {
+//        if (create & savedObj != null) {
+//            if (savedObj instanceof VBdObjectEntity) {
+//                VBdObjectEntity entity = (VBdObjectEntity) savedObj;
+//                if (entity.getTypeObject().isNeedDDL()) {
+//                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
+//                    if (exeptObjectName.allowAdd(entity.getCode())) {
+//                        TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
+//                        create1.runChain(savedObj);
+//                    }
+//                }
+//            }
+//        } else if (!create) {
+//            if (savedObj instanceof VBdObjectEntity && oldObj instanceof VBdObjectEntity) {
+//                VBdTableEntity bdTableOld = (VBdTableEntity) oldObj;
+//                VBdTableEntity bdTableNew = (VBdTableEntity) savedObj;
+//                if (bdTableNew.getTypeObject().isNeedDDL()) {
+//                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
+//                    if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
+//
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println(savedObj);
+//    }
 
 //    @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.save(..))")
 //    public void save() {

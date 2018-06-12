@@ -5,6 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.sql.ExeptObjectName;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
+import ru.vood.Plugin.sql.additionalSteps.oracle.stepToEdit.TuneChainStepsEdit;
 
 public class DDLSave {
 
@@ -14,10 +15,10 @@ public class DDLSave {
         System.out.println(o);
     }
 
-    public static void before(Object joinPoint, Object[] o) {
+    public static void before(Object joinPoint, Object[] o, VBdObjectEntity objectEntity) {
         Object bdObj = o[0];
         ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
-
+        System.out.println(objectEntity);
         if (bdObj instanceof VBdObjectEntity) {
             VBdObjectEntity entity = (VBdObjectEntity) bdObj;
             if (exeptObjectName.allowAdd(entity.getCode())) {
@@ -55,7 +56,8 @@ public class DDLSave {
                 if (bdTableNew.getTypeObject().isNeedDDL()) {
                     ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
                     if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
-
+                        TuneChainStepsEdit stepsEdit = LoadedCTX.getService(TuneChainStepsEdit.class);
+                        stepsEdit.runChain(oldObj, savedObj);
                     }
                 }
             }

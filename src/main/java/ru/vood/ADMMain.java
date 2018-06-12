@@ -56,6 +56,28 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
+
+//        VBdObjectTypeEntity entity =new VBdObjectTypeEntity();
+//        entity.setCode("AAAAAAA");
+//        entity.setName("AAAAAAA");
+//
+//
+//        VBdObjectTypeEntityRepository vBdObjectTypeEntityRepository = LoadedCTX.getService(VBdObjectTypeEntityRepository.class);
+//
+//        entity = vBdObjectTypeEntityRepository.save(entity);
+//
+//        BigDecimal bigDecimal = entity.getId();
+//
+//        entity =new VBdObjectTypeEntity();
+//        entity.setCode("AAAAAAA");
+//        entity.setId(bigDecimal);
+//        entity.setName("qwqqwerrerewr");
+//
+//        entity = vBdObjectTypeEntityRepository.save(entity);
+//
+//        vBdObjectTypeEntityRepository.delete(entity);
+
+
 //        System.out.println("----------------------------------------");
 //        DriverManagerDataSource dataSource = ADMMain.getCtx().getBean(DriverManagerDataSource.class);
 //        System.out.println(dataSource + " - " + dataSource.getUrl());

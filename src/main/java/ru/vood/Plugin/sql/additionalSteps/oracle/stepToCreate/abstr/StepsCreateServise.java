@@ -12,7 +12,7 @@ public interface StepsCreateServise {
 
         QueryTableNew queryTabletmp = createDDL(bdObject);
         if (queryTabletmp != null) {
-            queryTable.addAll(createDDL(bdObject));
+            queryTable.addAll(queryTabletmp);
         }
         if (getNextStep() != null) {
             queryTable.addAll(getNextStep().runSteps(bdObject));

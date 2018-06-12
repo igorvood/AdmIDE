@@ -50,6 +50,7 @@ public class ADMDialog extends JAddDialog {
     private JDBTree tree1;
     private JTable table1;
     private JProgressBar progressBar1;
+    private JLabel shortName;
 
     public ADMDialog() {
         //createUIComponents();
@@ -98,11 +99,10 @@ public class ADMDialog extends JAddDialog {
                         ((JDBTableModel) table1.getModel()).clear();
 
                         VBdObjectEntity entity = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
-
+                        shortName.setText(entity.getCode());
                         if (entity instanceof VBdTableEntity) {
                             ((JDBTableModel) table1.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
                             table1.updateUI();
-
                         }
                     }
 

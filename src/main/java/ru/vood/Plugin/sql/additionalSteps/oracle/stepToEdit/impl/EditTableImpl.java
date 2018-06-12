@@ -23,7 +23,7 @@ public class EditTableImpl implements StepsEditServise {
     @Override
     public QueryTableNew editDDL(VBdObjectEntity bdObjectOld, VBdObjectEntity bdObjectNew) {
 
-        if (!(bdObjectOld instanceof VBdTableEntity) || bdObjectNew instanceof VBdTableEntity) {
+        if (!(bdObjectOld instanceof VBdTableEntity) || !(bdObjectNew instanceof VBdTableEntity)) {
             return null;
         }
 
@@ -33,7 +33,8 @@ public class EditTableImpl implements StepsEditServise {
         VBdTableEntity bdTableNew = (VBdTableEntity) bdObjectNew;
         if (bdTableOld.getTypeObject().equals(ObjectTypes.getTABLE()) && bdTableNew.getTypeObject().equals(ObjectTypes.getTABLE())) {
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("alter table " + tunes.getOwner() + "." + bdTableOld.getCode() + " rename to " + bdTableNew.getCode());
+            stringBuffer.append("alter table " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdTableOld.getCode() + " rename to " + tunes.getPrefixTable() + bdTableNew.getCode());
+            queryTable.add(stringBuffer.toString());
         }
 
         return queryTable;

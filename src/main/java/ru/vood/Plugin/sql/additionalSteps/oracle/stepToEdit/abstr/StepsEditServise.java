@@ -12,7 +12,7 @@ public interface StepsEditServise {
 
         QueryTableNew queryTabletmp = editDDL(bdObjectOld, bdObjectNew);
         if (queryTabletmp != null) {
-            queryTable.addAll(editDDL(bdObjectOld, bdObjectNew));
+            queryTable.addAll(queryTabletmp);
         }
         if (getNextStep() != null) {
             queryTable.addAll(getNextStep().runSteps(bdObjectOld, bdObjectNew));
