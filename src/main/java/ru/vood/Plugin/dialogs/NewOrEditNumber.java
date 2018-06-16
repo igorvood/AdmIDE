@@ -5,7 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.dialogs.ExtSwing.DigitIntFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
@@ -67,7 +67,7 @@ public class NewOrEditNumber extends JAddDialog {
 
     private void onOK() {
         if (checkText(codeField) && checkText(nameField) && checkText(precisionField) && checkText(lengthField)) {
-            VBdObjectEntity num = Tables.getNUMBER();
+            VBdObjectEntity num = RootObjects.getNUMBER();
 
             VBdTableEntity newBDTable = new VBdTableEntity();
             newBDTable.setParent(num);

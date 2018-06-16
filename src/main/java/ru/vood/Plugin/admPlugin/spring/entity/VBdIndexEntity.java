@@ -15,14 +15,20 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 public class VBdIndexEntity extends VBdObjectEntity {
     @Basic
     @Column(name = "UNIQUE_I", nullable = true, length = 1)
-    private String uniqueI;
+    private String uniqueI = "0";
 
     @Basic
     @Column(name = "GLOBAL_I", nullable = true, length = 1)
-    private String globalI;
+    private String globalI = "0";
 
-    @OneToMany(mappedBy = "collectionId")//(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "COLUMNS", referencedColumnName = "COLLECTION_ID")
+    //    @JoinTable(name = "contact_hobby_detail",
+//            joinColumns = @JoinColumn(name = "CONTACT_ID"),
+//            inverseJoinColumns = @JoinColumn(name = "HOBBY_ID"))
+    //@OneToMany(fetch = FetchType.EAGER, mappedBy = "collectionId")//(mappedBy = "columns")//(fetch = FetchType.LAZY)
+//    @JoinColumn(table = "VBdIndexedColomnsEntity", name = "VBdIndexedColomnsEntity", referencedColumnName = "columns")
+/*    @OneToMany//(mappedBy = "collectionId", fetch = FetchType.EAGER)
+    @JoinColumn(name = "COLUMNS", referencedColumnName = COLLECTION)*/
+    @Transient
     private List<VBdIndexedColomnsEntity> colomnsEntities;
 
     @Basic

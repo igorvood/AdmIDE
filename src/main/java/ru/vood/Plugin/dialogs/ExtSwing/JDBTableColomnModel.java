@@ -77,7 +77,6 @@ public class JDBTableColomnModel extends AbstractTableModel {
                     } else {
                         return rows.get(rowIndex).getTypeObject().getName();
                     }
-                    //return rows.get(rowIndex).getTypeObject().getName();
                 }
             }
             if (columnIndex == 3) {

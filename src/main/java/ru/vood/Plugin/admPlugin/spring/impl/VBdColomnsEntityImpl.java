@@ -29,17 +29,6 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
 
     @Override
     public List<VBdColomnsEntity> findByParent(VBdTableEntity parent) {
-  /*      Query query = em.createQuery("select a2 from VBdObjectEntity a2 " +
-                "  join fetch a2.typeObject a1 " +
-                "  join fetch a2.parent a3  " +
-//                "  inner join VBdColomnsEntity a4 on a2.id = a4.id " +
-//                "  join fetch a4.typeValue a5  " +
-
-                //"  join fetch a3.typeObject a4 " +
-                " where a2.parent = :parent " +
-                " order by a2.id ")
-                .setParameter("parent", parent);*/
-
         Query query = em.createQuery("select a2 from VBdColomnsEntity a2 " +
                 "  join fetch a2.typeObject a1 " +
                 "  join fetch a2.parent a3  " +
@@ -48,11 +37,8 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
                 " where a2.parent = :parent " +
                 " order by a2.id ")
                 .setParameter("parent", parent);
-
         List list = query.getResultList();
         return list;
-
-        // return bdColomnsEntityRepository.findByParent(parent);
     }
 
     @Override

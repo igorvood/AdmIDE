@@ -6,7 +6,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.EnglishFilter;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
@@ -115,10 +115,10 @@ public class NewOrEditRefArr extends JAddDialog {
                 VBdObjectTypeEntity bdObjType;
                 if (isRef) {
                     bdObjType = ObjectTypes.getREFERENCE();
-                    parent = Tables.getREFERENCE();
+                    parent = RootObjects.getREFERENCE();
                 } else {
                     bdObjType = ObjectTypes.getARRAY();
-                    parent = Tables.getARRAY();
+                    parent = RootObjects.getARRAY();
                 }
                 table.setTypeObject(bdObjType);
                 table.setJavaClass(table.getClass().toString());

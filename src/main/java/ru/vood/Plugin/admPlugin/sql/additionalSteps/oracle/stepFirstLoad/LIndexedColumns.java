@@ -8,6 +8,8 @@ import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
+import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.COLLECTION;
+
 @Service
 public class LIndexedColumns {
     public final static String tableName = "V_BD_INDEXED_COLOMNS";
@@ -29,7 +31,7 @@ public class LIndexedColumns {
 
         String s = "create table " + pluginTunes.getUser() + "." + tableName + "\n" +
                 "(ID    NUMBER not null,\n" +
-                "COLLECTION_ID NUMBER,\n" +
+                COLLECTION + " NUMBER,\n" +
                 "COLUMN_REF   NUMBER  not null \n" +
                 ") tablespace \n" + pluginTunes.getTableSpaseSysTable() + "\n" +
                 pluginTunes.getStorageTable();
@@ -38,7 +40,7 @@ public class LIndexedColumns {
         s = primaryKeySql.generateSys(tableName);
         queryTable.add(s);
 
-        s = addIndexSql.generateSys(tableName, false, "COLLECTION_ID");
+        s = addIndexSql.generateSys(tableName, false, COLLECTION);
         queryTable.add(s);
 
         s = constraintSql.getSql(tableName, "COLUMN_REF", "V_BD_OBJECT", "ID");

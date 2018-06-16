@@ -1,15 +1,23 @@
 package ru.vood.Plugin.dialogs;
 
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexedColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
+import ru.vood.Plugin.dialogs.ExtSwing.JDBTableIndexColomnsModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.INDEX_PREFIX;
 
 public class NewOrEditIndex extends JAddDialog {
     private JPanel contentPane;
@@ -18,9 +26,12 @@ public class NewOrEditIndex extends JAddDialog {
     private JTextField indexField;
     private JTable ExcludeTable;
     private JTable includeTable;
+    private JLabel idxPrefixLabel;
 
     private VBdObjectEntity parentObject;
     private VBdIndexEntity indexEntity;
+
+    private List<VBdObjectEntity> indexedColomnsEntities;
 
     public NewOrEditIndex(VBdIndexEntity indexEntity, VBdObjectEntity parent) {
 
@@ -63,6 +74,31 @@ public class NewOrEditIndex extends JAddDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        MouseAdapter tableMouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable obj = (JTable) e.getSource();
+                    JDBTableIndexColomnsModel tableModel = (JDBTableIndexColomnsModel) obj.getModel();
+                    VBdColomnsEntity clickedColomnsEntity = tableModel.getSelectedTypeObject(obj.getSelectedRow());
+                    if (clickedColomnsEntity != null) {
+                        if (ExcludeTable.equals(obj)) {
+                            ((JDBTableIndexColomnsModel) includeTable.getModel()).addColomn(clickedColomnsEntity);
+                            ((JDBTableIndexColomnsModel) ExcludeTable.getModel()).deleteColomn(clickedColomnsEntity);
+                        } else {
+                            ((JDBTableIndexColomnsModel) includeTable.getModel()).deleteColomn(clickedColomnsEntity);
+                            ((JDBTableIndexColomnsModel) ExcludeTable.getModel()).addColomn(clickedColomnsEntity);
+                        }
+                        includeTable.updateUI();
+                        ExcludeTable.updateUI();
+                    }
+                }
+                super.mouseClicked(e);
+            }
+        };
+        ExcludeTable.addMouseListener(tableMouseAdapter);
+        includeTable.addMouseListener(tableMouseAdapter);
     }
 
     private void onOK() {
@@ -82,13 +118,30 @@ public class NewOrEditIndex extends JAddDialog {
     protected void extension() {
         //VBdTableEntityRepository bdTableEntityRepository= LoadedCTX.getService(VBdTableEntityRepository.class);
         //bdTableEntityRepository.
+
+        this.setSize(new Dimension(1000, 500));
+    }
+
+    private void createUIComponents() {
         VBdObjectEntityService service = LoadedCTX.getService(VBdObjectEntityService.class);
         List<VBdObjectEntity> vBdObjectEntityList = service.findByParentAndTypeObject(parentObject, ObjectTypes.getCOLOMN());
-        System.out.println(vBdObjectEntityList);
-
         if (indexEntity != null) {
+            VBdIndexedColomnsEntityService indexedColomnsEntityService = LoadedCTX.getService(VBdIndexedColomnsEntityService.class);
+            indexedColomnsEntities = indexedColomnsEntityService.findByCollectionId(indexEntity.getColumns())
+                    .stream().map(q -> q.getColomnRef())
+                    .collect(Collectors.toList());
+        } else {
+            indexedColomnsEntities = new ArrayList<>();
         }
+        List<VBdObjectEntity> vBdColomnListNotInIndex = vBdObjectEntityList.stream()
+                .filter(colom -> !indexedColomnsEntities.contains(colom))
+                .collect(Collectors.toList());
+        JDBTableIndexColomnsModel excludeTableModel = new JDBTableIndexColomnsModel((ArrayList<VBdObjectEntity>) vBdColomnListNotInIndex, "Не включены в индекс");
+        JDBTableIndexColomnsModel includeTableModel = new JDBTableIndexColomnsModel((ArrayList<VBdObjectEntity>) indexedColomnsEntities, "В индексе");
+        ExcludeTable = new JTable(excludeTableModel);
+        includeTable = new JTable(includeTableModel);
 
-        //this.setSize(new Dimension(1000, 500));
+        idxPrefixLabel = new JLabel();
+        idxPrefixLabel.setText(INDEX_PREFIX);
     }
 }

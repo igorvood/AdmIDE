@@ -6,6 +6,8 @@ import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
+import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.INDEX_PREFIX;
+
 @Service
 public class AddIndexSql {
 
@@ -49,7 +51,7 @@ public class AddIndexSql {
             throw new ApplicationErrorException("Не определен список колонок для индекса.");
         }
 
-        StringBuffer nameIndex = new StringBuffer("IDX_Z#");
+        StringBuffer nameIndex = new StringBuffer(INDEX_PREFIX);
         nameIndex.append(tableName.toUpperCase());
 
         StringBuffer col = new StringBuffer(" (");
@@ -74,7 +76,7 @@ public class AddIndexSql {
 
         res.append(limitingNameDBMS.getNameObj(nameIndex.toString()));
         res.append(" on ");
-        res.append(tableName);
+        res.append(pluginTunes.getPrefixTable() + tableName);
         res.append(col);
         res.append(" ) ");
         //res.append(AppConst.getTune(ListTunes.TABLE_SPASE_SYS_TABLE));

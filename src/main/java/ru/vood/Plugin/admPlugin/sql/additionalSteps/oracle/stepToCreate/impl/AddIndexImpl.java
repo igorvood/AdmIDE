@@ -7,13 +7,17 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 
 @Component
 public class AddIndexImpl implements StepsCreateServise {
 
     @Autowired
-    @Qualifier("addArrayTypeImpl")
+    @Qualifier("addArrayImpl")
     private StepsCreateServise nextStep;
+
+    @Autowired
+    private AddIndexSql indexSql;
 
     @Override
     public StepsCreateServise getNextStep() {
@@ -28,15 +32,13 @@ public class AddIndexImpl implements StepsCreateServise {
 
         QueryTableNew queryTable = new QueryTableNew();
         VBdIndexEntity bdIndex = (VBdIndexEntity) bdObject;
-       /* StringBuffer stringBuffer = new StringBuffer();
-
-
-        TableDBToJavaClass tableDBToJavaClass = TableDBToJavaClass.gettToJc(bdIndex);
-
-        stringBuffer.append("alter table " + tableDBToJavaClass.getDbTable() + "\n");
-        stringBuffer.append("add constraint PK#" + tableDBToJavaClass.getDbTable() + "_ID primary key (" + tableDBToJavaClass.getIdColomn().getDbField() + ")\n");
-        stringBuffer.append(" using index tablespace \n" + AppConst.getTune(ListTunes.TABLE_SPASE_USER_INDEX) + AppConst.getTune(ListTunes.STORAGE_INDEX));
-        queryTable.set(queryTable.count().add(1), new Varchar2(stringBuffer.toString()));*/
+        if (bdIndex.getColomnsEntities() != null) {
+            String s = bdIndex.getColomnsEntities().stream()
+                    .map((c) -> c.getColomnRef().getCode())
+                    .reduce((s1, s2) -> s1 + ", " + s2).orElse(" ");
+            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI().equals("1"), s);
+            queryTable.add(sql);
+        }
 
         return queryTable;
 

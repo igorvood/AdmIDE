@@ -5,13 +5,10 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
-import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
-import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
-import ru.vood.Plugin.dialogs.ExtSwing.JDBTableColomnModel;
-import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
+import ru.vood.Plugin.dialogs.ExtSwing.*;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 import ru.vood.core.runtime.exception.CoreRuntimeException;
 
@@ -106,6 +103,10 @@ public class ADMDialog extends JAddDialog {
                         if (entity instanceof VBdTableEntity) {
                             ((JDBTableColomnModel) colomnTable.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
                             colomnTable.updateUI();
+
+                            ((JDBTableIndexsModel) indexTable.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
+                            indexTable.updateUI();
+
                         }
                     }
 
@@ -410,19 +411,20 @@ public class ADMDialog extends JAddDialog {
                             object.getParent() == null ||
                             object.getParent().getTypeObject() == null ||
                             !object.getParent().getTypeObject().equals(ObjectTypes.getTABLE()) ||
-                            object.getParent().equals(Tables.getTABLE())
+                            object.getParent().equals(RootObjects.getTABLE())
                             ) {
                         new MessageWin("Не выбран тип для добавления колонки или тип не является таблицей.");
                     } else {
                         dialog = new NewOrEditColumn(null, object.getParent());
                     }
-                } else if (object.getTypeObject().equals(ObjectTypes.getTABLE())) {
+                } else if (object.getCode().equals("TABLE") || object.getTypeObject().equals(ObjectTypes.getTABLE())) {
                     dialog = new NewOrEditTable(null, object);
-                } else if (object.getTypeObject().equals(ObjectTypes.getNUMBER())) {
+                } else if (object.getCode().equals("NUMBER") || object.getTypeObject().equals(ObjectTypes.getNUMBER())) {
                     dialog = new NewOrEditNumber(null);
-                } else if (object.getTypeObject().equals(ObjectTypes.getSTRING())) {
+                } else if (object.getCode().equals("STRING") || object.getTypeObject().equals(ObjectTypes.getSTRING())) {
                     dialog = new NewOrEditString(null);
-                } else if (object.getTypeObject().equals(ObjectTypes.getREFERENCE())
+                } else if (object.getCode().equals("ARRAY") || object.getCode().equals("REFERENCE") ||
+                        object.getTypeObject().equals(ObjectTypes.getREFERENCE())
                         || object.getTypeObject().equals(ObjectTypes.getARRAY())) {
                     dialog = new NewOrEditRefArr(null, object.getTypeObject().equals(ObjectTypes.getREFERENCE()));
                 }
@@ -454,7 +456,7 @@ public class ADMDialog extends JAddDialog {
 
     private void createUIComponents() {
         colomnTable = new JTable(new JDBTableColomnModel());
-        indexTable = new JTable(new JDBTableColomnModel());
+        indexTable = new JTable(new JDBTableIndexsModel());
         tree1 = JDBTree.getInstance();
         // TODO: place custom component creation code here
     }

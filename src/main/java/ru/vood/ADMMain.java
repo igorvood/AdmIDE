@@ -56,6 +56,14 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
+
+      /*  VBdObjectEntity tables = Tables.getAny("address");
+        VBdIndexEntityService indexEntityService = LoadedCTX.getService(VBdIndexEntityService.class);
+        List<VBdIndexEntity> colomns = indexEntityService.findByParent(tables);
+
+        System.out.println(colomns);*/
+
+
 /*
 
         VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
-import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddConstraintSql;
@@ -16,7 +16,7 @@ import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 public class AddForeignKeyForParentImpl implements StepsCreateServise {
 
     @Autowired
-    @Qualifier("addArrayTypeImpl")
+    @Qualifier("addArrayImpl")
     private StepsCreateServise nextStep;
 
 
@@ -35,7 +35,7 @@ public class AddForeignKeyForParentImpl implements StepsCreateServise {
         QueryTableNew queryTable = new QueryTableNew();
 
         VBdTableEntity bdTable = (VBdTableEntity) bdObject;
-        if (bdTable.getParent() != null && !bdTable.getParent().getCode().equals(Tables.getTABLE().getCode()) && bdTable.getTypeObject().equals(ObjectTypes.getTABLE())) {
+        if (bdTable.getParent() != null && !bdTable.getParent().equals(RootObjects.getTABLE()) && bdTable.getTypeObject().equals(ObjectTypes.getTABLE())) {
             String pref = pluginTunes.getPrefixTable();
             String forKey = constraintSql.getSql(pref + bdTable.getCode(), "ID", pref + bdTable.getParent().getCode(), "ID");
             queryTable.add(forKey);

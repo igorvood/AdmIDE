@@ -8,6 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 
@@ -96,6 +97,38 @@ public class LTableInsert {
 
         bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
 
+        VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
+        colomnsEntity.setCode("CITY");
+        colomnsEntity.setName("Город");
+        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
+        colomnsEntity.setTypeValue(bdObject_str_table_new);
+        colomnsEntity.setParent(bdObject_table_aderss);
+        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+
+        colomnsEntity = new VBdColomnsEntity();
+        colomnsEntity.setCode("STREET");
+        colomnsEntity.setName("Улица");
+        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
+        colomnsEntity.setTypeValue(bdObject_str_table_new);
+        colomnsEntity.setParent(bdObject_table_aderss);
+        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+
+        VBdTableEntity table = new VBdTableEntity();
+        table.setCode(bdObject_table_aderss.getCode() + "_ARR");
+        table.setName("Массив <" + bdObject_table_aderss.getName() + ">");
+        table.setTypeObject(ObjectTypes.getARRAY());
+        table.setJavaClass(table.getClass().toString());
+        table.setParent(RootObjects.getARRAY());
+        table.setToType(bdObject_table_aderss);
+
+        table = bdTableEntityService.save(table);
+
+
+
 //        for (int i = 0; i <10000 ; i++) {
 //            bdObject_table_aderss = new VBdTableEntity();
 //            bdObject_table_aderss.setCode("TMP_"+i);
@@ -117,7 +150,7 @@ public class LTableInsert {
         bdObject_table_type_adress = bdTableEntityService.save(bdObject_table_type_adress);
 
 
-        VBdTableEntity table = new VBdTableEntity();
+        table = new VBdTableEntity();
         table.setCode(bdObject_table_type_adress.getCode() + "_REF");
         table.setName("Ссылка <" + bdObject_table_type_adress.getName() + ">");
         table.setTypeObject(ObjectTypes.getREFERENCE());
@@ -128,17 +161,7 @@ public class LTableInsert {
         table = bdTableEntityService.save(table);
 
 
-/*        table = new VBdTableEntity();
-        table.setCode(bdObject_table_aderss.getCode() + "_ARR");
-        table.setName("Массив <" + bdObject_table_aderss.getName() + ">");
-        table.setTypeObject(ObjectTypes.getARRAY());
-        table.setJavaClass(table.getClass().toString());
-        table.setParent(Tables.getARRAY());
-        table.setToType(bdObject_table_aderss);
-
-        table = bdTableEntityService.save(table);*/
-
-        VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
+        colomnsEntity = new VBdColomnsEntity();
         colomnsEntity.setCode("NAME");
         colomnsEntity.setName("ФИО");
         colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());

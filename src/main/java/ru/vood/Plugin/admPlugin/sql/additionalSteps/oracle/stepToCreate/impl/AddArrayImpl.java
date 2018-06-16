@@ -19,7 +19,7 @@ import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.COLLECTION;
 
 @Component
-public class AddArrayTypeImpl implements StepsCreateServise {
+public class AddArrayImpl implements StepsCreateServise {
 
     // todo сюда добавить ссылок
 //    @Autowired
@@ -56,7 +56,7 @@ public class AddArrayTypeImpl implements StepsCreateServise {
             VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
             colomnsEntity.setParent(((VBdTableEntity) bdObject).getToType());
             colomnsEntity.setCode(COLLECTION);
-            colomnsEntity.setName(COLLECTION);
+            colomnsEntity.setName("Идентификатор коллекции");
             colomnsEntity.setNotNull("1");
             colomnsEntity.setTypeColomn(ObjectTypes.getNUMBER());
             colomnsEntity.setTypeValue(Tables.getAny("NUM"));

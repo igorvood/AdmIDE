@@ -10,4 +10,5 @@ public interface VBdIndexedColomnsEntityRepository extends CrudRepository<VBdInd
 
     List<VBdIndexedColomnsEntity> findByCollectionId(BigDecimal collectionId);
 
+    List<VBdIndexedColomnsEntity> findByCollectionIdIn(List<BigDecimal> collectionId);
 }
