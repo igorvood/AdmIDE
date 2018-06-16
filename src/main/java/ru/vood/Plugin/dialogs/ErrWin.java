@@ -1,7 +1,8 @@
 package ru.vood.Plugin.dialogs;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
-import ru.vood.Plugin.logging.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ErrWin extends JAddDialog {
-    private Log log = Log.getLogger(ErrWin.class);
+    private final static Logger lOG = LoggerFactory.getLogger(JAddDialog.class);
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JTextArea textArea1;
@@ -57,7 +59,7 @@ public class ErrWin extends JAddDialog {
             messages.append("CLASS: " + stackTraceElements[i].getClassName() + " METHOD: " + stackTraceElements[i].getMethodName() + " LINE: " + stackTraceElements[i].getLineNumber() + "\n");
         }
         textArea2.setText(messages.toString());
-        log.putToLog(err, exept);
+        lOG.error(err, exept);
         this.setVisible(true);
 
     }

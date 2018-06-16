@@ -1,18 +1,19 @@
 package ru.vood.Plugin.Refactoring;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vood.Plugin.db.DBConnect;
 import ru.vood.Plugin.dialogs.ErrWin;
-import ru.vood.Plugin.logging.Log;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
 import java.sql.*;
 import java.util.TreeMap;
-import java.util.logging.Level;
 
 @Deprecated
 class DbQuery {
+    private final static Logger lOG = LoggerFactory.getLogger(DbQuery.class);
+
     public static TreeMap<String, OpenedCursor> treeSet = new TreeMap<>();
-    private static Log log = Log.getLogger(DbQuery.class);
 
     static ResultSet executeQuery(String query) {
         Connection conn;
@@ -26,9 +27,9 @@ class DbQuery {
                     r = stmt.executeQuery();
 
                     treeSet.put(r.toString(), new OpenedCursor(r, Thread.currentThread().getStackTrace()));
-                    log.putToLog(" Выполнен запрос. " + query + " Результат " + r, Level.FINEST);
+                    lOG.debug(" Выполнен запрос. " + query + " Результат " + r);
                 } else {
-                    log.putToLog(" Нет соединения. ", Level.WARNING);
+                    lOG.debug(" Нет соединения. ");
                 }
             } catch (SQLException e) {
                 throw new ApplicationErrorException(" Не удалось Выполнить запроос: " + query + " Причина " + e.getMessage(), e);
@@ -48,10 +49,10 @@ class DbQuery {
                 stmt = conn.createStatement();
                 r = stmt.executeQuery(query);
                 treeSet.put(r.toString(), new OpenedCursor(r, Thread.currentThread().getStackTrace()));
-                log.putToLog(" Выполнен запрос. " + query + " Результат " + r, Level.FINEST);
+                lOG.debug(" Выполнен запрос. " + query + " Результат " + r);
 
             } else {
-                log.putToLog(" Нет соединения. ", Level.WARNING);
+                lOG.debug(" Нет соединения. ");
             }
         } catch (SQLException e) {
             String s = " Не удалось Выполнить запроос: ";

@@ -36,7 +36,7 @@ public class VBdObjectEntity extends ParentForAll {
     @JoinColumn(name = "PARENT", referencedColumnName = "ID")
     private VBdObjectEntity parent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TYPE_OBJECT", referencedColumnName = "ID", nullable = false)
     private VBdObjectTypeEntity typeObject;
 

@@ -72,7 +72,7 @@ public class JDBTree extends JTree {
         }
         VBdObjectEntityService bdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
 
-        String[] typeObjectCodeS = {"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN"};
+        String[] typeObjectCodeS = {"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN", "OBJECT"};
 
         ArrayList<VBdObjectEntity> bdObjects = null;
         try {

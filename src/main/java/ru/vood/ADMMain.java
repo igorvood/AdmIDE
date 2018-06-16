@@ -3,9 +3,6 @@ package ru.vood;
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
-import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
@@ -59,21 +56,16 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
-        VBdObjectTypeEntity bdObjectTypeEntity = new VBdObjectTypeEntity();
-        bdObjectTypeEntity.setCode("dasdasdasdas");
-        bdObjectTypeEntity.setName("dasdasdasdas");
-        VBdObjectTypeEntityService objectTypeEntityService = LoadedCTX.getService(VBdObjectTypeEntityService.class);
-        bdObjectTypeEntity = objectTypeEntityService.save(bdObjectTypeEntity);
-        objectTypeEntityService.delete(bdObjectTypeEntity);
+/*
 
-
-     /*   VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
+        VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
         VBdColomnsEntity colomnsEntity= colomnsEntityService.findColomn(Tables.getAny("CLIENT"),"NAME");
+        VBdColomnsEntity colomnsEntity_date= colomnsEntityService.findColomn(Tables.getAny("CLIENT"),"DATE_BIRTH");
 
         CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
-        VBdIndexEntityTestService entityTestService = LoadedCTX.getService(VBdIndexEntityTestService.class);
+        VBdIndexEntityService entityTestService = LoadedCTX.getService(VBdIndexEntityService.class);
 
-        VBdIndexEntityTest vBdIndexEntityTest = new VBdIndexEntityTest();
+        VBdIndexEntity vBdIndexEntityTest = new VBdIndexEntity();
 
         vBdIndexEntityTest.setCode("IDX_");
         vBdIndexEntityTest.setName("IDX_");
@@ -84,8 +76,12 @@ public class ADMMain {
 
         VBdIndexedColomnsEntity indexedColomnsEntity = new VBdIndexedColomnsEntity();
         indexedColomnsEntity.setColomnRef(colomnsEntity);
-
         vBdIndexEntityTest.addColomn(indexedColomnsEntity);
+
+        indexedColomnsEntity = new VBdIndexedColomnsEntity();
+        indexedColomnsEntity.setColomnRef(colomnsEntity_date);
+        vBdIndexEntityTest.addColomn(indexedColomnsEntity);
+
 
         vBdIndexEntityTest = entityTestService.save(vBdIndexEntityTest);
 

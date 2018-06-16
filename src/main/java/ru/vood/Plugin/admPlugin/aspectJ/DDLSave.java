@@ -65,4 +65,8 @@ public class DDLSave {
         System.out.println(savedObj);
     }
 
+    public static void error(Throwable throwable) {
+        throwable.printStackTrace();
+    }
+
 }

@@ -30,8 +30,15 @@ public class TuneChainStepsCreate {
 
     public void runChain(Object bdobj) {
         // Вызов первого, остальное пойдет по цепочке
-        QueryTableNew queryTable = table.runSteps((VBdObjectEntity) bdobj);
-        runChain(queryTable);
+        QueryTableNew queryTable = null;
+        try {
+            queryTable = table.runSteps((VBdObjectEntity) bdobj);
+            runChain(queryTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void runChain(QueryTableNew queryTable) {

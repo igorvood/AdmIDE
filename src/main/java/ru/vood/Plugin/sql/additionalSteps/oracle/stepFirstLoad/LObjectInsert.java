@@ -20,13 +20,14 @@ public class LObjectInsert {
 
 
         VBdObjectTypeEntity bdObjType_TABLE = ObjectTypes.getTABLE();
+        VBdObjectTypeEntity bdObjType_OBJECT = ObjectTypes.getOBJECT();
 
 
         VBdObjectEntity bdObject_obj = new VBdObjectEntity();
         bdObject_obj.setCode("OBJECT");
         bdObject_obj.setName("Объекты");
         bdObject_obj.setParent(null);
-        bdObject_obj.setTypeObject(bdObjType_TABLE);
+        bdObject_obj.setTypeObject(bdObjType_OBJECT);
         bdObject_obj.setJavaClass(VBdObjectEntity.class.toString());
 
         VBdObjectEntity newbdObject_obj = bdObjectEntityService.save(bdObject_obj);
@@ -37,7 +38,7 @@ public class LObjectInsert {
         bdObject_date.setCode("DATE");
         bdObject_date.setName("Даты");
         bdObject_date.setParent(bdObject_obj);
-        bdObject_date.setTypeObject(bdObjType_DATE);
+        bdObject_date.setTypeObject(bdObjType_OBJECT);
         bdObject_date.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_date);
 
@@ -46,7 +47,7 @@ public class LObjectInsert {
         bdObject_bool.setCode("BOOLEAN");
         bdObject_bool.setName("Логика");
         bdObject_bool.setParent(bdObject_obj);
-        bdObject_bool.setTypeObject(ObjectTypes.getBOOLEAN());
+        bdObject_bool.setTypeObject(bdObjType_OBJECT);
         bdObject_bool.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_bool);
 
@@ -57,7 +58,7 @@ public class LObjectInsert {
         bdObject_REFERENCE.setCode("REFERENCE");
         bdObject_REFERENCE.setName("Ссылки");
         bdObject_REFERENCE.setParent(bdObject_obj);
-        bdObject_REFERENCE.setTypeObject(bdObjType_REFERENCE);
+        bdObject_REFERENCE.setTypeObject(bdObjType_OBJECT);
         bdObject_REFERENCE.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_REFERENCE);
 
@@ -67,7 +68,7 @@ public class LObjectInsert {
         bdObject_ARRAY.setCode("ARRAY");
         bdObject_ARRAY.setName("Массивы");
         bdObject_ARRAY.setParent(bdObject_obj);
-        bdObject_ARRAY.setTypeObject(ObjectTypes.getARRAY());
+        bdObject_ARRAY.setTypeObject(bdObjType_OBJECT);
         bdObject_ARRAY.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_ARRAY);
 
@@ -78,7 +79,7 @@ public class LObjectInsert {
         bdObject_STRING.setCode("STRING");
         bdObject_STRING.setName("Строки");
         bdObject_STRING.setParent(bdObject_obj);
-        bdObject_STRING.setTypeObject(bdObjType_STRING);
+        bdObject_STRING.setTypeObject(bdObjType_OBJECT);
         bdObject_STRING.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_STRING);
 
@@ -89,7 +90,7 @@ public class LObjectInsert {
         bdObject_NUMBER.setCode("NUMBER");
         bdObject_NUMBER.setName("Числа");
         bdObject_NUMBER.setParent(bdObject_obj);
-        bdObject_NUMBER.setTypeObject(bdObjType_NUMBER);
+        bdObject_NUMBER.setTypeObject(bdObjType_OBJECT);
         bdObject_NUMBER.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_NUMBER);
 
@@ -98,7 +99,7 @@ public class LObjectInsert {
         bdObject_table.setCode("TABLE");
         bdObject_table.setName("Таблицы");
         bdObject_table.setParent(bdObject_obj);
-        bdObject_table.setTypeObject(bdObjType_TABLE);
+        bdObject_table.setTypeObject(bdObjType_OBJECT);
         bdObject_table.setJavaClass(VBdObjectEntity.class.toString());
         bdObjectEntityService.save(bdObject_table);
 

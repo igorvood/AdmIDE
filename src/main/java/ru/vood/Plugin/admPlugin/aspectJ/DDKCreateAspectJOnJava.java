@@ -53,6 +53,7 @@ public class DDKCreateAspectJOnJava {
         try {
             ret = proceedingJoinPoint.proceed(adding);
         } catch (Throwable throwable) {
+            DDLSave.error(throwable);
             ret = null;
             throw new ApplicationException("Не удалось выполнить сохрание ", throwable);
         }

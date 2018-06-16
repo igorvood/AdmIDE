@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexedColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexedColomnsEntityService;
-import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexedColomnsRepository;
+import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexedColomnsEntityRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class VBdIndexedColomnsImpl implements VBdIndexedColomnsEntityService {
 
     @Autowired
-    private VBdIndexedColomnsRepository bdColomnsEntityRepository;
+    private VBdIndexedColomnsEntityRepository bdColomnsEntityRepository;
 
     @Override
     public VBdIndexedColomnsEntity save(VBdIndexedColomnsEntity entity) {

@@ -39,7 +39,7 @@ public class AddArrayTypeImpl implements StepsCreateServise {
     private VBdColomnsEntityService colomnsEntityService;
 
     @Autowired
-    @Qualifier("jpaVBdIndexEntityService")
+    @Qualifier("jpaVBdIndexEntityTestImpService")
     private VBdIndexEntityService indexEntityService;
 
     @Autowired

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 
 import java.util.HashMap;
@@ -25,8 +26,12 @@ public class Tables {
         VBdTableEntity entity = bdObjectEntityMap.get(s);
         if (entity == null) {
             VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
-            entity = tableEntityService.findByCode(s);
-            bdObjectEntityMap.put(entity.getCode(), entity);
+            try {
+                entity = tableEntityService.findByCode(s);
+                bdObjectEntityMap.put(entity.getCode(), entity);
+            } catch (ApplicationException e) {
+                entity = null;
+            }
         }
         return entity;
     }

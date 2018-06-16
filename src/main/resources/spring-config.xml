@@ -49,8 +49,10 @@
             <!--Propagation.SUPPORTS — метод с этим правилом будет использовать текущую транзакцию, если она есть, либо будет исполнятся без транзакции, если её нет.-->
             <!--Propagation.NOT_SUPPORTED — одно из самых забавных правил. При входе в метод текущая транзакция, если она есть, будет приостановлена и метод будет выполняться без транзакции.-->
             <!--Propagation.NEVER — правило, которое явно запрещает исполнение в контексте транзакции. Если при входе в метод будет существовать транзакция, будет выброшено исключение.            -->
-            <tx:method name="attributesType" propagation="REQUIRED" rollback-for="java.lang.RuntimeException"
-                       read-only="true"/>
+            <tx:method name="attributesType" propagation="REQUIRED"
+                       rollback-for="java.lang.RuntimeException"
+                       read-only="false"
+            />
         </tx:attributes>
     </tx:advice>
 
@@ -80,19 +82,35 @@
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.use_sql_comments">true</prop>
-                <prop key="hibernate.session_factory.statement_inspector">true</prop>
+                <prop key="hibernate.session_factory.statement_inspector">
+                    com.jeeconf.hibernate.performancetuning.sqltracker.StatementInspectorImpl
+                </prop>
+                <prop key="hibernate.SQL">debug</prop>
+                <prop key="hibernate.type">trace</prop>
 
+
+                <!--cache-->
+                <!--<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>-->
+                <!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
+                <!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
+                <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
+
+                <!--statistics-->
+                <prop key="hibernate.generate_statistics">true</prop>
+
+                <!--batch processing-->
+                <!--Какими пачками Вставлять в базу-->
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.jdbc.batch_versioned_data">true</prop>
 
                 <!--Устанавливает максимальную "глубину" для дерева выбора внешнего соединения для однократного ассоциаций
                 (один к одному, много-к-одному). A 0 отключает внешнюю внешнюю присоедините выборку. например рекомендуемые значения между 0 и 3 -->
                 <prop key="hibernate.max_fetch_depth">3</prop>
                 <!--Какими пачками вычитывать из БД-->
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
-                <!--Какими пачками Вставлять в базу-->
-                <prop key="hibernate.jdbc.batch_size">10</prop>
 
-                <prop key="hibernate.SQL">debug</prop>
-                <prop key="hibernate.type">trace</prop>
 
 
                 <!--<prop key="hibernate.session_factory.statement_inspector">com.jeeconf.hibernate.performancetuning.sqltracker.StatementInspectorImpl</prop>-->

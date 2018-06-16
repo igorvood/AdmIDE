@@ -2,12 +2,13 @@ package ru.vood.Plugin.dialogs;
 
 import com.google.gson.Gson;
 import jfork.nproperty.ConfigParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.db.SupportedDBMS;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
-import ru.vood.Plugin.logging.Log;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
 import javax.swing.*;
@@ -27,7 +28,8 @@ import static ru.vood.Plugin.applicationConst.AppConst.CONNECTIONS;
 import static ru.vood.Plugin.applicationConst.AppConst.DB_PROPERTUES;
 
 public class ADMTuneDialog extends JAddDialog {
-    private static Log log = Log.getLogger(ADMTuneDialog.class);
+    private final static Logger lOG = LoggerFactory.getLogger(ADMTuneDialog.class);
+
     private static PluginTunes defaultTunes = getDefaultTunes();
     private JPanel contentPane;
     private JButton buttonOK;

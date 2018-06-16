@@ -1,21 +1,21 @@
 package ru.vood.Plugin.db;
 
 import oracle.jdbc.OracleDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vood.Plugin.admPlugin.tune.ListTunes;
 import ru.vood.Plugin.applicationConst.AppConst;
-import ru.vood.Plugin.logging.Log;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * Класс работы с коннектом к базе
  */
 @Deprecated
 public class DBConnect {
-    private static Log log = Log.getLogger(DBConnect.class);
+    private final static Logger lOG = LoggerFactory.getLogger(DBConnect.class);
     private static Connection _conn = null;
     private static String _username = AppConst.getTune(ListTunes.USER);
     private static String _password = AppConst.getTune(ListTunes.PASSWORD);
@@ -35,7 +35,7 @@ public class DBConnect {
             }
         } catch (Exception sqle) {
 
-            log.putToLog("Не удалось создать соединение." + _thinConn, Level.SEVERE, sqle);
+            lOG.error("Не удалось создать соединение." + _thinConn, sqle);
         }
         return _conn;
     }
