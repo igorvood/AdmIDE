@@ -13,5 +13,7 @@ public interface VBdTableEntityService /*extends ParentForAllServise/*<S extends
 
     List<VBdTableEntity> findByParent(VBdObjectEntity parent);
 
+    VBdTableEntity findByCode(String code);
+
     List<VBdTableEntity> findByTypeObjectCodeIn(String... codeS);
 }

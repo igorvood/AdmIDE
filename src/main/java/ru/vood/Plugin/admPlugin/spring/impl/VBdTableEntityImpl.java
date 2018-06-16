@@ -50,6 +50,13 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
         return bdTableEntityRepository.findByParent(parent);
     }
 
+    @Override
+    public VBdTableEntity findByCode(String code) {
+        List list = bdTableEntityRepository.findByCode(code);
+        commonFunction.checkOn(list);
+        return (VBdTableEntity) list.get(0);
+    }
+
     /*
     public ParentForAll findOne(BigDecimal bigDecimal) {
         return bdTableEntityRepository.findOne(bigDecimal);

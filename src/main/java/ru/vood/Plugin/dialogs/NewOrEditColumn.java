@@ -33,7 +33,7 @@ public class NewOrEditColumn extends JAddDialog {
 
     public NewOrEditColumn(VBdColomnsEntity object, VBdObjectEntity parent) {
         this.parentObject = parent;
-        if (this.parentObject == null) {
+        if (object == null) {
             this.setTitle("Создание столбца таблицы");
         } else {
             this.setTitle("Редактирование столбца таблицы");

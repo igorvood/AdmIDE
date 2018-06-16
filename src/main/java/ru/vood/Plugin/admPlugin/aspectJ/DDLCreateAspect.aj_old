@@ -18,7 +18,7 @@ public aspect DDLCreateAspect {
 //        return ret;
 //    }
 
-    pointcut addOrEditObj(VBdObjectEntity objectEntity): execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEdit(..))
+    pointcut addOrEditObj(VBdObjectEntity objectEntity): execution(* addOrEditColomn(..))
             && target(objectEntity);
 
 

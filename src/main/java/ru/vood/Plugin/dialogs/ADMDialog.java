@@ -5,11 +5,11 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
-import ru.vood.Plugin.applicationConst.TypeObject;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
-import ru.vood.Plugin.dialogs.ExtSwing.JDBTableModel;
+import ru.vood.Plugin.dialogs.ExtSwing.JDBTableColomnModel;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
 import ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
@@ -53,6 +53,7 @@ public class ADMDialog extends JAddDialog {
     private JLabel shortName;
     private JScrollPane colomnsPanel;
     private JScrollPane indexesPanel;
+    private JTable indexTable;
 
     public ADMDialog() {
         //createUIComponents();
@@ -98,12 +99,12 @@ public class ADMDialog extends JAddDialog {
             public void valueChanged(TreeSelectionEvent e) {
                 try {
                     if (tree1.getLastSelectedPathComponent() != null && ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject() != null) {
-                        ((JDBTableModel) colomnTable.getModel()).clear();
+                        ((JDBTableColomnModel) colomnTable.getModel()).clear();
 
                         VBdObjectEntity entity = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
                         shortName.setText(entity.getCode());
                         if (entity instanceof VBdTableEntity) {
-                            ((JDBTableModel) colomnTable.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
+                            ((JDBTableColomnModel) colomnTable.getModel()).loadTableByObj((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());
                             colomnTable.updateUI();
                         }
                     }
@@ -121,11 +122,9 @@ public class ADMDialog extends JAddDialog {
                     JTable obj = (JTable) e.getSource();
                     //если клинул по наименованию типа
                     if (obj.getSelectedColumn() == 2) {
-                        JDBTableModel tableModel = (JDBTableModel) obj.getModel();
+                        JDBTableColomnModel tableModel = (JDBTableColomnModel) obj.getModel();
                         tree1.gotoObjectOnTree(tableModel.getSelectedTypeObject(obj.getSelectedRow()));
                         tree1.getLastSelectedPathComponent();
-                        //getLastSelectedPathComponent
-
                     }
                 }
                 super.mouseClicked(e);
@@ -332,7 +331,7 @@ public class ADMDialog extends JAddDialog {
             jMenuItemAddSubType.setText("Add");
             jMenuItemAddSubType.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    addOrEdit((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject(), true);
+                    addOrEditColomn((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject(), true);
                 }
             });
         }
@@ -341,7 +340,7 @@ public class ADMDialog extends JAddDialog {
             jMenuItemEditType.setText("Edit");
             jMenuItemEditType.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    addOrEdit((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject(), false);
+                    addOrEditColomn((VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject(), false);
                 }
             });
         }
@@ -373,29 +372,7 @@ public class ADMDialog extends JAddDialog {
                     fileTune_ActionPerformed(ae);
                 }
 
-                private void fileTune_ActionPerformed(ActionEvent ae) {
-                    VBdObjectEntity object;
-                    try {
-                        object = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
-                    } catch (NullPointerException e) {
-                        object = null;
-                    }
 
-                    if (object == null) {
-                        new MessageWin("Не выбран тип, в который нужно дабавить колонку.");
-                    } else if (!object.getTypeObject().getCode().equals("TABLE")) {
-                        new MessageWin("Для объекта типа " + object.getTypeObject().getName() + " не предусмотрено добавление столбца.\nДобавление возможно только для таблицы");
-                    } else {
-                        //Todo  тут идет лишний запрос к BDObjType, далее в ЭФ добавления эта инфа не передается, надо пооптимальнее сделать
-                        VBdColomnsEntity colomns = new VBdColomnsEntity();
-                        colomns.setJavaClass(VBdColomnsEntity.class.toString());
-                        colomns.setParent(object);
-                        /*BDObjType objType = new BDObjType();
-                        objType = (BDObjType) objType.selectFromBase("CODE", "COLOMN");
-                        colomns.setTypeObject(objType);*/
-                        addOrEdit(colomns, true);
-                    }
-                }
             });
             menuAdd.add(jMenuItemAddColomn);
 
@@ -407,8 +384,6 @@ public class ADMDialog extends JAddDialog {
                     fileTune_ActionPerformed(ae);
                 }
 
-                private void fileTune_ActionPerformed(ActionEvent ae) {
-                }
             });
             menuAdd.add(jMenuItemAddIndex);
 
@@ -416,9 +391,11 @@ public class ADMDialog extends JAddDialog {
         }
         jPopupMenuTable.add(menuAdd);
         colomnTable.setComponentPopupMenu(jPopupMenuTable);
+        indexTable.setComponentPopupMenu(jPopupMenuTable);
     }
 
-    public VBdObjectEntity addOrEdit(VBdObjectEntity object, boolean adding) {
+
+    public VBdObjectEntity addOrEditColomn(VBdObjectEntity object, boolean adding) {
         /*if (object != null) {
             object.setLoaded(true);
         }*/
@@ -432,33 +409,33 @@ public class ADMDialog extends JAddDialog {
                     if (object == null ||
                             object.getParent() == null ||
                             object.getParent().getTypeObject() == null ||
-                            !object.getParent().getTypeObject().getCode().equals(TypeObject.TABLE.getName()) ||
-                            object.getParent().getCode().equals(TypeObject.TABLE.getName())
+                            !object.getParent().getTypeObject().equals(ObjectTypes.getTABLE()) ||
+                            object.getParent().equals(Tables.getTABLE())
                             ) {
                         new MessageWin("Не выбран тип для добавления колонки или тип не является таблицей.");
                     } else {
                         dialog = new NewOrEditColumn(null, object.getParent());
                     }
-                } else if (object.getTypeObject().getCode().equals(TypeObject.TABLE.getName())) {
+                } else if (object.getTypeObject().equals(ObjectTypes.getTABLE())) {
                     dialog = new NewOrEditTable(null, object);
-                } else if (object.getTypeObject().getCode().equals(TypeObject.NUMBER.getName())) {
+                } else if (object.getTypeObject().equals(ObjectTypes.getNUMBER())) {
                     dialog = new NewOrEditNumber(null);
-                } else if (object.getTypeObject().getCode().equals(TypeObject.STRING.getName())) {
+                } else if (object.getTypeObject().equals(ObjectTypes.getSTRING())) {
                     dialog = new NewOrEditString(null);
-                } else if (object.getTypeObject().getCode().equals(TypeObject.REFERENCE.getName())
-                        || object.getTypeObject().getCode().equals(TypeObject.ARRAY.getName())) {
-                    dialog = new NewOrEditRefArr(null, object.getTypeObject().getCode().equals(TypeObject.REFERENCE.getName()));
+                } else if (object.getTypeObject().equals(ObjectTypes.getREFERENCE())
+                        || object.getTypeObject().equals(ObjectTypes.getARRAY())) {
+                    dialog = new NewOrEditRefArr(null, object.getTypeObject().equals(ObjectTypes.getREFERENCE()));
                 }
             } else {
-                if (object.getTypeObject().getCode().equals(TypeObject.TABLE.getName())) {
+                if (object.getTypeObject().equals(ObjectTypes.getTABLE())) {
                     dialog = new NewOrEditTable(object, object.getParent());
-                } else if (object.getTypeObject().getCode().equals(TypeObject.NUMBER.getName())) {
+                } else if (object.getTypeObject().equals(ObjectTypes.getNUMBER())) {
                     dialog = new NewOrEditNumber(object);
-                } else if (object.getTypeObject().getCode().equals(TypeObject.STRING.getName())) {
+                } else if (object.getTypeObject().equals(ObjectTypes.getSTRING())) {
                     dialog = new NewOrEditString(object);
-                } else if (object.getTypeObject().getCode().equals(TypeObject.REFERENCE.getName())
-                        || object.getTypeObject().getCode().equals(TypeObject.ARRAY.getName())) {
-                    dialog = new NewOrEditRefArr(object, object.getTypeObject().getCode().equals(TypeObject.REFERENCE.getName()));
+                } else if (object.getTypeObject().equals(ObjectTypes.getREFERENCE())
+                        || object.getTypeObject().equals(ObjectTypes.getARRAY())) {
+                    dialog = new NewOrEditRefArr(object, object.getTypeObject().equals(ObjectTypes.getREFERENCE()));
                 }
             }
             if (dialog != null) {
@@ -476,9 +453,47 @@ public class ADMDialog extends JAddDialog {
     }
 
     private void createUIComponents() {
-        colomnTable = new JTable(new JDBTableModel());
+        colomnTable = new JTable(new JDBTableColomnModel());
+        indexTable = new JTable(new JDBTableColomnModel());
         tree1 = JDBTree.getInstance();
         // TODO: place custom component creation code here
     }
 
+    private void fileTune_ActionPerformed(ActionEvent ae) {
+        VBdObjectEntity object;
+        try {
+            object = (VBdObjectEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject();
+        } catch (NullPointerException e) {
+            object = null;
+        }
+
+        if (object == null) {
+            new MessageWin("Не выбран тип, в который нужно дабавить колонку.");
+        } else if (!object.getTypeObject().getCode().equals("TABLE")) {
+            new MessageWin("Для объекта типа " + object.getTypeObject().getName() + " не предусмотрено добавление столбца.\nДобавление возможно только для таблицы");
+        } else {
+            if (ae.getActionCommand().equals("Add Index")) {
+                JAddDialog dialog = null;
+                if (object.getTypeObject() != null && !object.getTypeObject().equals(ObjectTypes.getTABLE())) {
+                    new MessageWin("Добавление индекса возможно только для таблицы.");
+                } else {
+                    dialog = new NewOrEditIndex(null, object);
+                }
+                if (dialog != null) {
+                    dialog.pack();
+                    dialog.setVisible(true);
+                }
+
+            } else {
+                //Todo  тут идет лишний запрос к BDObjType, далее в ЭФ добавления эта инфа не передается, надо пооптимальнее сделать
+                VBdColomnsEntity colomns = new VBdColomnsEntity();
+                colomns.setJavaClass(VBdColomnsEntity.class.toString());
+                colomns.setParent(object);
+                        /*BDObjType objType = new BDObjType();
+                        objType = (BDObjType) objType.selectFromBase("CODE", "COLOMN");
+                        colomns.setTypeObject(objType);*/
+                addOrEditColomn(colomns, true);
+            }
+        }
+    }
 }

@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 
 @Aspect
@@ -13,20 +14,24 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 //@Order(1)
 public class DDKCreateAspectJOnJava {
 
+
+//    @Autowired
+//    private DriverManagerDataSource dataSource;
+
+
 //    @Autowired
 //    @Qualifier("jpaVBdObjectEntityService")
 //    private VBdObjectEntityService bdObjectEntityService;
 
     @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.save(..))")
     //@Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.impl.*.save(..)) ")
-    //@Pointcut("execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEdit(..))")
+    //@Pointcut("execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEditColomn(..))")
     public void addOrEditObj() {
     }
 
 
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {
-
         long startTime = System.nanoTime();
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave.checkRun(proceedingJoinPoint, adding[0]);
@@ -49,15 +54,38 @@ public class DDKCreateAspectJOnJava {
             ret = proceedingJoinPoint.proceed(adding);
         } catch (Throwable throwable) {
             ret = null;
-            //throwable.printStackTrace();
+            throw new ApplicationException("Не удалось выполнить сохрание ", throwable);
         }
         // ========================================= Вызов основного метода==========================================
-
         if (ret != null) {
             if (adding[0] instanceof VBdObjectEntity) {
-                DDLSave.after(ret, create, oldEntity);
+                try {
+                    DDLSave.after(ret, create, oldEntity);
+                } catch (Exception e) {
+                    ret = null;
+                }
             }
         }
+/*        if (ret != null) {
+            try {
+                connection.commit();
+            } catch (SQLException e) {
+
+            }
+        } else {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+
+            }
+        }
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+
+        }*/
+
 
         long endTime = System.nanoTime();
         System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));

@@ -13,6 +13,7 @@ public interface VBdColomnsEntityService /*extends  ParentForAllServise/*extends
 
     List<VBdColomnsEntity> findByParent(VBdTableEntity parent);
 
+    VBdColomnsEntity findColomn(VBdTableEntity parent, String code);
     //List<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS);
 
 }

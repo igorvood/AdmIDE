@@ -115,7 +115,12 @@
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="681cc" class="javax.swing.JTable" binding="indexTable" custom-create="true">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
                   </scrollpane>
                 </children>
               </tabbedpane>

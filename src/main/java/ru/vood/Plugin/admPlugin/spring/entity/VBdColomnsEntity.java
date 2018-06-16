@@ -10,7 +10,7 @@ public class VBdColomnsEntity extends VBdObjectEntity {
 
     @Basic
     @Column(name = "NOT_NULL", nullable = true, length = 1)
-    private String notNull;
+    private String notNull = "0";
 
     @ManyToOne
     @JoinColumn(name = "TYPE_COLOMN", referencedColumnName = "ID", nullable = true)

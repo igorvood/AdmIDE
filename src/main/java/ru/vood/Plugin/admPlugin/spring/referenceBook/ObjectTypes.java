@@ -64,6 +64,16 @@ public class ObjectTypes {
         return get("ARRAY");
     }
 
+    public static VBdObjectTypeEntity getINDEX() {
+        return get("INDEX");
+    }
+
+    public static VBdObjectTypeEntity getOBJECT() {
+        return get("OBJECT");
+    }
+
+
+
    /* @PostConstruct
     private Map<String, VBdObjectTypeEntity> getObls() {
         if (objectTypeEntityMap == null) {

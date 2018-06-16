@@ -29,6 +29,10 @@ public class MessageWin extends JAddDialog {
         this.setVisible(true);
     }
 
+    public MessageWin(String textMessage, Exception e) {
+        this(textMessage + "\n" + e.getMessage());
+    }
+
     private void onOK() {
         // add your code here
         dispose();

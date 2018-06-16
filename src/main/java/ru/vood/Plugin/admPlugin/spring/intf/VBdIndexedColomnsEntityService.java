@@ -5,7 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexedColomnsEntity;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface VBdIndexedColomnsService {
+public interface VBdIndexedColomnsEntityService {
 
     VBdIndexedColomnsEntity save(VBdIndexedColomnsEntity entity);
 

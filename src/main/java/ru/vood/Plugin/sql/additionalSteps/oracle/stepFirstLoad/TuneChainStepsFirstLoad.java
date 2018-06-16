@@ -59,12 +59,11 @@ public class TuneChainStepsFirstLoad {
         // 5 создание Таблицы индексов
         queryTable.addAll(lIndex.additionOne());
 
-        // 6 создание Представлений
-        queryTable.addAll(lView.additionOne());
-
-        // 7 Создоание таблицы с индексированными колонками
+        // 6 Создоание таблицы с индексированными колонками
         queryTable.addAll(indexedColumns.additionOne());
 
+        // 7 создание Представлений
+        queryTable.addAll(lView.additionOne());
 
         // Запуск созданных DDL Комманд
         stepsCreate.runChain(queryTable);

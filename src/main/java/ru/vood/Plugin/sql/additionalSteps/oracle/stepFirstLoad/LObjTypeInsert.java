@@ -16,6 +16,13 @@ public class LObjTypeInsert {
 
     public QueryTableNew additionOne() {
 
+        VBdObjectTypeEntity bdObjType_obj = new VBdObjectTypeEntity();
+        bdObjType_obj.setCode("OBJECT");
+        bdObjType_obj.setName("Объект");
+        bdObjType_obj.setNeedDDL(false);
+        bdObjType_obj = entityService.save(bdObjType_obj);
+
+
         VBdObjectTypeEntity bdObjType_TYPE = new VBdObjectTypeEntity();
         bdObjType_TYPE.setCode("TABLE");
         bdObjType_TYPE.setName("Таблица");
@@ -49,10 +56,11 @@ public class LObjTypeInsert {
         bdObjType_DATE.setName("Дата");
         bdObjType_DATE = entityService.save(bdObjType_DATE);
 
-        VBdObjectTypeEntity bdObjType_BOOL = new VBdObjectTypeEntity();
-        bdObjType_BOOL.setCode("BOOLEAN");
-        bdObjType_BOOL.setName("Логика");
-        bdObjType_BOOL = entityService.save(bdObjType_BOOL);
+
+        VBdObjectTypeEntity bdObjType_BOOLEAN = new VBdObjectTypeEntity();
+        bdObjType_BOOLEAN.setCode("BOOLEAN");
+        bdObjType_BOOLEAN.setName("Логика");
+        bdObjType_BOOLEAN = entityService.save(bdObjType_BOOLEAN);
 
         VBdObjectTypeEntity bdObjType_colomn = new VBdObjectTypeEntity();
         bdObjType_colomn.setCode("COLOMN");

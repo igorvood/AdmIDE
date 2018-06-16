@@ -3,6 +3,9 @@ package ru.vood;
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
@@ -56,6 +59,37 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
+        VBdObjectTypeEntity bdObjectTypeEntity = new VBdObjectTypeEntity();
+        bdObjectTypeEntity.setCode("dasdasdasdas");
+        bdObjectTypeEntity.setName("dasdasdasdas");
+        VBdObjectTypeEntityService objectTypeEntityService = LoadedCTX.getService(VBdObjectTypeEntityService.class);
+        bdObjectTypeEntity = objectTypeEntityService.save(bdObjectTypeEntity);
+        objectTypeEntityService.delete(bdObjectTypeEntity);
+
+
+     /*   VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
+        VBdColomnsEntity colomnsEntity= colomnsEntityService.findColomn(Tables.getAny("CLIENT"),"NAME");
+
+        CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
+        VBdIndexEntityTestService entityTestService = LoadedCTX.getService(VBdIndexEntityTestService.class);
+
+        VBdIndexEntityTest vBdIndexEntityTest = new VBdIndexEntityTest();
+
+        vBdIndexEntityTest.setCode("IDX_");
+        vBdIndexEntityTest.setName("IDX_");
+        vBdIndexEntityTest.setTypeObject(ObjectTypes.getINDEX());
+        vBdIndexEntityTest.setParent(Tables.getTABLE());
+        vBdIndexEntityTest.setJavaClass(vBdIndexEntityTest.getClass().toString());
+        vBdIndexEntityTest.setColumns(commonFunctionService.nextId());
+
+        VBdIndexedColomnsEntity indexedColomnsEntity = new VBdIndexedColomnsEntity();
+        indexedColomnsEntity.setColomnRef(colomnsEntity);
+
+        vBdIndexEntityTest.addColomn(indexedColomnsEntity);
+
+        vBdIndexEntityTest = entityTestService.save(vBdIndexEntityTest);
+
+        entityTestService.delete(vBdIndexEntityTest);*/
 
 //        VBdObjectTypeEntity entity =new VBdObjectTypeEntity();
 //        entity.setCode("AAAAAAA");

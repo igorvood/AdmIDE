@@ -126,10 +126,16 @@ public class NewOrEditRefArr extends JAddDialog {
                 table.setToType((VBdTableEntity) bdTable);
 
                 VBdObjectEntityService colomnsEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
-                VBdTableEntity newTableEntity = (VBdTableEntity) colomnsEntityService.save(table);
+                try {
+                    VBdTableEntity newTableEntity = (VBdTableEntity) colomnsEntityService.save(table);
+                    this.setAddedObj(newTableEntity);
+                    dispose();
+                } catch (Exception e) {
+                    new MessageWin("Объект " + bdTable + " не удалось сохранить.", e);
+                }
 
-                this.setAddedObj(newTableEntity);
-                dispose();
+
+
             } else {
                 new MessageWin("Тип объекта " + bdTable.getTypeObject().getName() + " не предполагает создание ссылки или массива.");
             }

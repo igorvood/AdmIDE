@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdColomnsEntityRepository;
 
@@ -22,6 +23,9 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
     protected EntityManager em;
     @Autowired
     private VBdColomnsEntityRepository bdColomnsEntityRepository;
+
+    @Autowired
+    private CommonFunctionService commonFunctionService;
 
     @Override
     public List<VBdColomnsEntity> findByParent(VBdTableEntity parent) {
@@ -61,5 +65,22 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
         bdColomnsEntityRepository.delete(entity);
     }
 
+    @Override
+    public VBdColomnsEntity findColomn(VBdTableEntity parent, String code) {
+        Query query = em.createQuery("select a1 from VBdColomnsEntity a1 " +
+                //"  join fetch a2.typeObject a1 " +
+                "  join fetch a1.parent a3  " +
+                //"  join fetch a2.typeValue a5 " +
+                //"  join fetch a5.typeObject a6 " +
+                " where a1.parent = :parent " +
+                " and a1.code = :code" +
+                " ")
+                .setParameter("parent", parent)
+                .setParameter("code", code);
+
+        List list = query.getResultList();
+        commonFunctionService.checkOn(list);
+        return (VBdColomnsEntity) list.get(0);
+    }
 }
 

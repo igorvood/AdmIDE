@@ -42,6 +42,15 @@ public class LObjectInsert {
         bdObjectEntityService.save(bdObject_date);
 
 
+        VBdObjectEntity bdObject_bool = new VBdObjectEntity();
+        bdObject_bool.setCode("BOOLEAN");
+        bdObject_bool.setName("Логика");
+        bdObject_bool.setParent(bdObject_obj);
+        bdObject_bool.setTypeObject(ObjectTypes.getBOOLEAN());
+        bdObject_bool.setJavaClass(VBdObjectEntity.class.toString());
+        bdObjectEntityService.save(bdObject_bool);
+
+
         VBdObjectTypeEntity bdObjType_REFERENCE = ObjectTypes.getREFERENCE();
 
         VBdObjectEntity bdObject_REFERENCE = new VBdObjectEntity();

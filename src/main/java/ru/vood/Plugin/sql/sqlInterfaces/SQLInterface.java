@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public interface SQLInterface {
 
-    public final static String COLLECTION = "collectionid";
+    public final static String COLLECTION = "COLLECTIONID";
 
     String getSQLForAddCollectionId(String tableShortName);
 

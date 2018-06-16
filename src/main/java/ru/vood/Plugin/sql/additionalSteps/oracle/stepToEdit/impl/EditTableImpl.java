@@ -1,6 +1,7 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToEdit.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
@@ -12,9 +13,10 @@ import ru.vood.Plugin.sql.additionalSteps.oracle.stepToEdit.abstr.StepsEditServi
 @Component
 public class EditTableImpl implements StepsEditServise {
 
-//    @Autowired
-//    @Qualifier("addColomnImpl")
-//    private StepsEditServise nextStep;
+
+    @Autowired
+    @Qualifier("editColomnImpl")
+    private StepsEditServise nextStep;
 
     @Autowired
     private PluginTunes tunes;
@@ -42,6 +44,6 @@ public class EditTableImpl implements StepsEditServise {
 
     @Override
     public StepsEditServise getNextStep() {
-        return null;
+        return nextStep;
     }
 }

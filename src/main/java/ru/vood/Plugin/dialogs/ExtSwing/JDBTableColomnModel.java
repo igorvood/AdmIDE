@@ -10,12 +10,12 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBTableModel extends AbstractTableModel {
+public class JDBTableColomnModel extends AbstractTableModel {
     ArrayList<VBdObjectEntity> rows = new ArrayList<VBdObjectEntity>();
     //ArrayList<Object> rows = new ArrayList<Object>();
     ArrayList<String> cols = new ArrayList<String>();
 
-    public JDBTableModel() {
+    public JDBTableColomnModel() {
         cols.add("Длинное имя");
         cols.add("Короткое имя");
         cols.add("Наименование типа");

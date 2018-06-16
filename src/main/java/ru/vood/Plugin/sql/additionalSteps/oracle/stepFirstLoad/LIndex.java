@@ -30,15 +30,12 @@ public class LIndex {
                 "UNIQUE_I   VARCHAR2(1),\n" +
                 "GLOBAL_I   VARCHAR2(1),\n" +
                 "COLUMNS   NUMBER not null,\n" +
-                "LIST_COLUMNS   VARCHAR2(250) not null -- Старая колонка \n" +
+                "LIST_COLUMNS   VARCHAR2(250) --not null -- Старая колонка \n" +
                 ") tablespace \n" + pluginTunes.getTableSpaseSysTable() + "\n" +
                 pluginTunes.getStorageTable();
         queryTable.add(s);
 
         s = primaryKeySql.generateSys(tableName);
-        queryTable.add(s);
-
-        s = constraintSql.getSql(tableName, "ID", LColomns.tableName, "ID");
         queryTable.add(s);
 
         return queryTable;

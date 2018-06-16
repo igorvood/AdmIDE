@@ -28,6 +28,10 @@ public class AddTableImpl implements StepsCreateServise {
     @Autowired
     private PluginTunes tunes;
 
+//    @Autowired
+//    @Qualifier("jpaVBdColomnsEntityService")
+//    private VBdColomnsEntityService colomnsEntityService;
+
     @Override
     public QueryTableNew createDDL(VBdObjectEntity bdObject) {
         if (!(bdObject instanceof VBdTableEntity)) {
@@ -49,6 +53,17 @@ public class AddTableImpl implements StepsCreateServise {
 
             //Добавление первичного ключа
             queryTable.addAll(primaryKey.createDDL(bdTable));
+
+            // Автоматически добавить ID в колонки
+//            VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
+//            colomnsEntity.setParent(bdObject);
+//            colomnsEntity.setCode("ID");
+//            colomnsEntity.setName("ID");
+//            colomnsEntity.setNotNull("1");
+//            colomnsEntity.setTypeColomn(ObjectTypes.getNUMBER());
+//            colomnsEntity.setTypeValue(Tables.getAny("NUM"));
+//            colomnsEntity = colomnsEntityService.save(colomnsEntity);
+
 
             //если добавляем таблицу с настоящим родителем, то надо их связать внешним ключем
             if (!bdTable.getParent().equals(Tables.getTABLE())) {

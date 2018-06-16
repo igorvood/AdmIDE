@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
+import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
 
 import javax.persistence.EntityManager;
@@ -23,6 +26,9 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
 
     @Autowired
     protected VBdObjectEntityRepository vBdObjectEntityRepository;
+
+    @Autowired
+    private CommonFunctionService commonFunctionService;
 
     @Autowired
     protected EntityManager em;
@@ -87,5 +93,27 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
         List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
         return (VBdObjectEntity) list1.get(0);
 //        return vBdObjectEntityRepository.findOne(id);
+    }
+
+    @Override
+    public List<VBdObjectEntity> findByParentAndTypeObject(VBdObjectEntity parent, VBdObjectTypeEntity objectTypeEntity) {
+        Query query = em.createQuery("select a1 from VBdObjectEntity a1 " +
+                //"  join VBdObjectEntity a2 on a2 = :parent " +
+                //"  join VBdObjectTypeEntity a3 on a3 = :objectTypeEntity " +
+                " where a1.parent = :parent " +
+                " and a1.typeObject = :objectType" +
+                //" order by a2.id " +
+                " ")
+                .setParameter("parent", parent)
+                .setParameter("objectType", objectTypeEntity);
+        List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
+        return list1;
+    }
+
+    @Override
+    public VBdObjectEntity findByCode(String code) {
+        List list = vBdObjectEntityRepository.findByCodeAndTypeObject(code, ObjectTypes.getOBJECT());
+        commonFunctionService.checkOn(list);
+        return (VBdObjectEntity) commonFunctionService.checkOn(list);
     }
 }

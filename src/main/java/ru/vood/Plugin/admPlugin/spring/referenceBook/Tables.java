@@ -1,11 +1,10 @@
 package ru.vood.Plugin.admPlugin.spring.referenceBook;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectEntityRepository;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,60 +13,64 @@ import java.util.Map;
 @Service
 public class Tables {
 
-    private static Map<String, VBdObjectEntity> bdObjectEntityMap;
+    private static Map<String, VBdTableEntity> bdObjectEntityMap;
 
-    @Autowired
-    private VBdObjectEntityRepository objectEntityRepository;
+//    @Autowired
+//    private VBdTableEntityRepository tableEntityRepository;
 
-    private static VBdObjectEntity get(String s) {
+    private static VBdTableEntity get(String s) {
         if (bdObjectEntityMap == null) {
             bdObjectEntityMap = new HashMap<>();
         }
-        VBdObjectEntity entity = bdObjectEntityMap.get(s);
+        VBdTableEntity entity = bdObjectEntityMap.get(s);
         if (entity == null) {
-            VBdObjectEntityRepository objectEntityRepository = LoadedCTX.getService(VBdObjectEntityRepository.class);
-            entity = objectEntityRepository.findByCode(s).get(0);
+            VBdTableEntityService tableEntityService = LoadedCTX.getService(VBdTableEntityService.class);
+            entity = tableEntityService.findByCode(s);
             bdObjectEntityMap.put(entity.getCode(), entity);
         }
         return entity;
     }
 
-    public static VBdObjectEntity getOBJECT() {
+    public static VBdTableEntity getOBJECT() {
         return get("OBJECT");
     }
 
-    public static VBdObjectEntity getDATE() {
+    public static VBdTableEntity getDATE() {
         return get("DATE");
     }
 
-    public static VBdObjectEntity getREFERENCE() {
+    public static VBdTableEntity getBOOLEAN() {
+        return get("BOOLEAN");
+    }
+
+    public static VBdTableEntity getREFERENCE() {
         return get("REFERENCE");
     }
 
-    public static VBdObjectEntity getARRAY() {
+    public static VBdTableEntity getARRAY() {
         return get("ARRAY");
     }
 
-    public static VBdObjectEntity getSTRING() {
+    public static VBdTableEntity getSTRING() {
         return get("STRING");
     }
 
-    public static VBdObjectEntity getNUMBER() {
+    public static VBdTableEntity getNUMBER() {
         return get("NUMBER");
     }
 
-    public static VBdObjectEntity getTABLE() {
+    public static VBdTableEntity getTABLE() {
         return get("TABLE");
     }
 
-    public static VBdObjectEntity getAny(String tableName) {
+    public static VBdTableEntity getAny(String tableName) {
         return get(tableName);
     }
 
 /*    @PostConstruct
-    private Map<String, VBdObjectEntity> getMainTables() {
+    private Map<String, VBdTableEntity> getMainTables() {
         if (bdObjectEntityMap == null) {
-            Iterable<VBdObjectEntity> iterable = objectEntityRepository.findAll();
+            Iterable<VBdTableEntity> iterable = objectEntityRepository.findAll();
             bdObjectEntityMap = StreamSupport.stream(iterable.spliterator(), false)
                     .collect(Collectors.toMap(p -> p.getCode(), q -> q));
         }

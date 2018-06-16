@@ -1,5 +1,7 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,6 +17,8 @@ import java.sql.Statement;
 
 @Component
 public class TuneChainStepsCreate {
+
+    private final static Logger lOG = LoggerFactory.getLogger(TuneChainStepsCreate.class);
 
 
     @Autowired
@@ -45,10 +49,14 @@ public class TuneChainStepsCreate {
                 try {
                     if (!conn.isClosed()) {
                         stmt = conn.createStatement();
+                        if (lOG.isDebugEnabled()) {
+                            lOG.debug("Попытка выполнить запрос '" + q + "'");
+                        }
                         r = stmt.executeQuery(q);
                     }
                 } catch (SQLException e) {
                     int i = queryTable.indexOf(q);
+                    lOG.error("Попытка выполнить запрос №" + i + " " + q + " не удалась. ", e);
                     e.printStackTrace();
                 } finally {
                     try {

@@ -1,6 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.intf;
 
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,10 +17,13 @@ public interface VBdObjectEntityService /*extends ParentForAllServise*/ {
     //-----------------------individual--------------------------------
 
     List<VBdObjectEntity> findByParent(VBdObjectEntity parent);
+
+    List<VBdObjectEntity> findByParentAndTypeObject(VBdObjectEntity parent, VBdObjectTypeEntity objectTypeEntity);
     //<S extends VBdObjectEntity> List<S> findByCode(String code);
 
     List<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS);
 
+    VBdObjectEntity findByCode(String code);
     //List<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent(String codeS, String typeObjectCode, VBdObjectEntity parent);
 
     //ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent_TEST(String code, String typeObjectCode, VBdObjectEntity parent);

@@ -1,17 +1,15 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 
 @Entity
 @Table(name = "V_BD_INDEX", schema = SCHEMA, catalog = "")
-public class VBdIndexEntity extends VBdObjectEntity {
-
+public class VBdIndexEntityTest extends VBdObjectEntity {
     @Basic
     @Column(name = "UNIQUE_I", nullable = true, length = 1)
     private String uniqueI;
@@ -20,16 +18,13 @@ public class VBdIndexEntity extends VBdObjectEntity {
     @Column(name = "GLOBAL_I", nullable = true, length = 1)
     private String globalI;
 
+    @OneToMany(mappedBy = "collectionId")//(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "COLUMNS", referencedColumnName = "COLLECTION_ID")
+    private List<VBdIndexedColomnsEntity> colomnsEntities;
+
     @Basic
-//    @SequenceGenerator(name = "seqId", sequenceName = "SEQ_ID")
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqId")
     @Column(name = "COLUMNS", nullable = true, length = 1)
     private BigDecimal columns;
-
-
-//    @Basic
-//    @Column(name = "LIST_COLUMNS", nullable = false, length = 250)
-//    private String listColumns;
 
     public String getUniqueI() {
         return uniqueI;
@@ -47,6 +42,14 @@ public class VBdIndexEntity extends VBdObjectEntity {
         this.globalI = globalI;
     }
 
+    public List<VBdIndexedColomnsEntity> getColomnsEntities() {
+        return colomnsEntities;
+    }
+
+    public void setColomnsEntities(List<VBdIndexedColomnsEntity> colomnsEntities) {
+        this.colomnsEntities = colomnsEntities;
+    }
+
     public BigDecimal getColumns() {
         return columns;
     }
@@ -55,12 +58,11 @@ public class VBdIndexEntity extends VBdObjectEntity {
         this.columns = columns;
     }
 
-    public String toString() {
-        return "VBdIndexEntity{" +
-                "uniqueI='" + uniqueI + '\'' +
-                ", globalI='" + globalI + '\'' +
-                ", listColumns='" + columns + '\'' +
-                '}';
+    public void addColomn(VBdIndexedColomnsEntity entity) {
+        if (colomnsEntities == null) {
+            colomnsEntities = new ArrayList<VBdIndexedColomnsEntity>();
+        }
+        entity.setCollectionId(columns);
+        colomnsEntities.add(entity);
     }
-
 }

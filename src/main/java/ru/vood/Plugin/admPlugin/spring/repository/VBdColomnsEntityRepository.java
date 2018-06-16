@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface VBdColomnsEntityRepository extends CrudRepository<VBdColomnsEntity, BigDecimal> {
 
+
     //------------------------------individual-----------------------------
 
     List<VBdColomnsEntity> findByCode(String code);
