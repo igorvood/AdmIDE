@@ -3,9 +3,9 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
-import ru.vood.Plugin.sql.ExeptObjectName;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepToEdit.TuneChainStepsEdit;
+import ru.vood.Plugin.admPlugin.sql.ExeptObjectName;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToEdit.TuneChainStepsEdit;
 
 public class DDLSave {
 

@@ -135,7 +135,6 @@ public class NewOrEditRefArr extends JAddDialog {
                 }
 
 
-
             } else {
                 new MessageWin("Тип объекта " + bdTable.getTypeObject().getName() + " не предполагает создание ссылки или массива.");
             }

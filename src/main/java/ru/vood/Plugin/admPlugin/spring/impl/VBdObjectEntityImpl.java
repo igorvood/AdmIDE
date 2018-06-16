@@ -26,12 +26,10 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
 
     @Autowired
     protected VBdObjectEntityRepository vBdObjectEntityRepository;
-
-    @Autowired
-    private CommonFunctionService commonFunctionService;
-
     @Autowired
     protected EntityManager em;
+    @Autowired
+    private CommonFunctionService commonFunctionService;
 
     @Cacheable("сacheFromDBTree")
     public ArrayList<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS) {

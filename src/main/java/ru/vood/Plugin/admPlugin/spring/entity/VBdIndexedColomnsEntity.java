@@ -1,7 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad.LIndexedColumns;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad.LIndexedColumns;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

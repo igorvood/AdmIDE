@@ -6,12 +6,12 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.dialogs.ExtSwing.DBTreeCellRenderer;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTableColomnModel;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
-import ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 import ru.vood.core.runtime.exception.CoreRuntimeException;
 
