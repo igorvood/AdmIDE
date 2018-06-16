@@ -1,7 +1,6 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepFirstLoad;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
@@ -13,7 +12,6 @@ import ru.vood.Plugin.sql.QueryTableNew;
 public class LObjectInsert {
 
     @Autowired
-    @Qualifier("jpaVBdObjectEntityService")
     private VBdObjectEntityService bdObjectEntityService;
 
     QueryTableNew additionOne() {

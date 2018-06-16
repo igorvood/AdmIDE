@@ -110,7 +110,7 @@ public class NewOrEditRefArr extends JAddDialog {
 
             if (bdTable.getTypeObject().equals(ObjectTypes.getTABLE())) {
                 VBdTableEntity table = new VBdTableEntity();
-                table.setCode(codeField.getText());
+                table.setCode(codeField.getText().toUpperCase());
                 table.setName(nameField.getText());
                 VBdObjectTypeEntity bdObjType;
                 if (isRef) {

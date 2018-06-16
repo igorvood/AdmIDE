@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
-@Service("jpaVBdColomnsEntityService")
+@Service//("jpaVBdColomnsEntityService")
 @Repository
 @Transactional
 

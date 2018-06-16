@@ -90,7 +90,7 @@ public class NewOrEditColumn extends JAddDialog {
             VBdColomnsEntity colomns = new VBdColomnsEntity();
             colomns.setJavaClass(VBdColomnsEntity.class.toString());
             colomns.setParent(this.parentObject);
-            colomns.setCode(codeField.getText());
+            colomns.setCode(codeField.getText().toUpperCase());
             colomns.setName(nameField.getText());
             colomns.setNotNull(((notNullCheckBox.isSelected()) ? "1" : "0"));
 

@@ -8,7 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectTypeEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdObjectTypeEntityRepository;
 
-@Service("jpaVBdObjectTypeEntityService")
+@Service//("jpaVBdObjectTypeEntityService")
 @Repository
 @Transactional
 public class VBdObjectTypeEntityImpl /*extends ParentForAllImpl*/ implements VBdObjectTypeEntityService {

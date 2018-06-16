@@ -1,7 +1,6 @@
 package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.*;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
@@ -35,15 +34,15 @@ public class AddArrayTypeImpl implements StepsCreateServise {
     private AddIndexSql addIndexSql;
 
     @Autowired
-    @Qualifier("jpaVBdColomnsEntityService")
+    //@Qualifier("jpaVBdColomnsEntityService")
     private VBdColomnsEntityService colomnsEntityService;
 
     @Autowired
-    @Qualifier("jpaVBdIndexEntityTestImpService")
+    //@Qualifier("jpaVBdIndexEntityTestImpService")
     private VBdIndexEntityService indexEntityService;
 
     @Autowired
-    @Qualifier("jpaVBdIndexedColomnsService")
+    //@Qualifier("jpaVBdIndexedColomnsService")
     private VBdIndexedColomnsEntityService indexedColomnsEntityService;
 
 

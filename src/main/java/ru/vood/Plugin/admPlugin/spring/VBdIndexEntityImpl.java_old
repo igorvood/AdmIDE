@@ -11,7 +11,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexEntityRepository;
 
 import java.util.List;
 
-@Service("jpaVBdIndexEntityService")
+@Service//("jpaVBdIndexEntityService")
 @Repository
 @Transactional
 public class VBdIndexEntityImpl implements VBdIndexEntityService {

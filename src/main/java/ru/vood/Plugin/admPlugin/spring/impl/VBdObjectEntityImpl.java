@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Service("jpaVBdObjectEntityService")
+@Service//("jpaVBdObjectEntityService")
 @Repository
 @Transactional
 public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObjectEntityService {

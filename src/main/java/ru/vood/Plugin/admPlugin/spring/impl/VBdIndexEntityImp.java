@@ -11,7 +11,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexedColomnsEntityReposit
 
 import javax.persistence.EntityManager;
 
-@Service("jpaVBdIndexEntityTestImpService")
+@Service//("jpaVBdIndexEntityTestImpService")
 @Repository
 @Transactional
 

@@ -12,7 +12,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdTableEntityRepository;
 
 import java.util.List;
 
-@Service("jpaVBdTableEntityService")
+@Service//("jpaVBdTableEntityService")
 @Repository
 @Transactional
 public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*/ implements VBdTableEntityService {

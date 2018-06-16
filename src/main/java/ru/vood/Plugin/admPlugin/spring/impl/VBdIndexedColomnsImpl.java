@@ -11,7 +11,7 @@ import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexedColomnsEntityReposit
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service("jpaVBdIndexedColomnsService")
+@Service//("jpaVBdIndexedColomnsService")
 @Repository
 @Transactional
 public class VBdIndexedColomnsImpl implements VBdIndexedColomnsEntityService {
