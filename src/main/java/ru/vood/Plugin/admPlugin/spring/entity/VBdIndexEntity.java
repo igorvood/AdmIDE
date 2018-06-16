@@ -71,4 +71,11 @@ public class VBdIndexEntity extends VBdObjectEntity {
         entity.setCollectionId(columns);
         colomnsEntities.add(entity);
     }
+
+    public void addColomn(VBdColomnsEntity entity) {
+        VBdIndexedColomnsEntity indexedColomnsEntity = new VBdIndexedColomnsEntity();
+        indexedColomnsEntity.setColomnRef(entity);
+        addColomn(indexedColomnsEntity);
+    }
+
 }

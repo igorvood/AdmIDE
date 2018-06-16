@@ -70,7 +70,7 @@ public class NewOrEditTable extends JAddDialog {
         if (checkText(codeField) && checkText(nameField)) {
             PluginTunes pluginTunes = LoadedCTX.getService(PluginTunes.class);
             VBdTableEntity newBDTable = isEdit ? (VBdTableEntity) object : new VBdTableEntity();
-            ;
+
             newBDTable.setParent(this.parent);
             newBDTable.setTypeObject(this.parent.getTypeObject());
             newBDTable.setCode(this.codeField.getText().toUpperCase().trim());

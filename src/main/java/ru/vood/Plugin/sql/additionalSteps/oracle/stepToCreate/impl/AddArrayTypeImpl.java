@@ -2,11 +2,13 @@ package ru.vood.Plugin.sql.additionalSteps.oracle.stepToCreate.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.vood.Plugin.admPlugin.spring.entity.*;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexEntityService;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexedColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
@@ -34,17 +36,10 @@ public class AddArrayTypeImpl implements StepsCreateServise {
     private AddIndexSql addIndexSql;
 
     @Autowired
-    //@Qualifier("jpaVBdColomnsEntityService")
     private VBdColomnsEntityService colomnsEntityService;
 
     @Autowired
-    //@Qualifier("jpaVBdIndexEntityTestImpService")
     private VBdIndexEntityService indexEntityService;
-
-    @Autowired
-    //@Qualifier("jpaVBdIndexedColomnsService")
-    private VBdIndexedColomnsEntityService indexedColomnsEntityService;
-
 
     @Override
     public QueryTableNew createDDL(VBdObjectEntity bdObject) {
@@ -76,13 +71,10 @@ public class AddArrayTypeImpl implements StepsCreateServise {
             indexEntity.setParent(((VBdTableEntity) bdObject).getToType());
             indexEntity.setJavaClass(indexEntity.getClass().toString());
             indexEntity.setColumns(commonFunction.nextId());
+
+            indexEntity.addColomn(colomnsEntity);
             indexEntity = indexEntityService.save(indexEntity);
 
-            VBdIndexedColomnsEntity indexedColomnsEntity = new VBdIndexedColomnsEntity();
-            indexedColomnsEntity.setCollectionId(indexEntity.getColumns());
-            indexedColomnsEntity.setColomnRef(colomnsEntity);
-
-            indexedColomnsEntityService.save(indexedColomnsEntity);
 
             //String tmp = SQLFactory.getInstance().getSQLForAddCollectionId(bdTable.getToType().getCode());
 //            queryTable.add(tmp);
