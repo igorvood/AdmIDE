@@ -75,6 +75,7 @@ public class JDBTableIndexsModel extends AbstractTableModel {
     }
 
     public boolean loadTableByObj(VBdTableEntity bdObject) {
+        clear();
         boolean isEmpty = true;
         if (bdObject == null) {
             return false;

@@ -8,6 +8,8 @@ import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
+import java.util.ArrayList;
+
 @Service
 public class LObjType {
 
@@ -43,8 +45,9 @@ public class LObjType {
 
         s = constraintSql.getSql(tableName, "PARENT", tableName, "ID");
         queryTable.add(s);
-
-        s = addIndexSql.generateSys(tableName, true, false, "CODE");
+        ArrayList<String> listCol = new ArrayList<>();
+        listCol.add("CODE");
+        s = addIndexSql.generateSys(tableName, true, false, listCol);
         queryTable.add(s);
 
         return queryTable;

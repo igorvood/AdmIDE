@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdColomnsEntityRepository;
@@ -52,7 +53,7 @@ public class VBdColomnsEntityImpl /*extends VBdObjectEntityImpl /*ParentForAllIm
     }
 
     @Override
-    public VBdColomnsEntity findColomn(VBdTableEntity parent, String code) {
+    public VBdColomnsEntity findColomn(VBdTableEntity parent, String code) throws CoreExeption {
         Query query = em.createQuery("select a1 from VBdColomnsEntity a1 " +
                 //"  join fetch a2.typeObject a1 " +
                 "  join fetch a1.parent a3  " +

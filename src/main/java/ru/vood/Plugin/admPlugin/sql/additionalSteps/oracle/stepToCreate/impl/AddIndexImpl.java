@@ -9,6 +9,9 @@ import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class AddIndexImpl implements StepsCreateServise {
 
@@ -33,10 +36,10 @@ public class AddIndexImpl implements StepsCreateServise {
         QueryTableNew queryTable = new QueryTableNew();
         VBdIndexEntity bdIndex = (VBdIndexEntity) bdObject;
         if (bdIndex.getColomnsEntities() != null) {
-            String s = bdIndex.getColomnsEntities().stream()
+            List s = bdIndex.getColomnsEntities().stream()
                     .map((c) -> c.getColomnRef().getCode())
-                    .reduce((s1, s2) -> s1 + ", " + s2).orElse(" ");
-            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI().equals("1"), s);
+                    .collect(Collectors.toList());
+            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI().equals("1"), s, null);
             queryTable.add(sql);
         }
 

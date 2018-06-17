@@ -53,4 +53,7 @@ public class JDBTableIndexColomnsModel extends AbstractTableModel {
         rows.remove(colomnsEntity);
     }
 
+    public ArrayList<VBdObjectEntity> getRows() {
+        return rows;
+    }
 }

@@ -1,5 +1,6 @@
 package ru.vood.Plugin.admPlugin.spring.intf;
 
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException;
 import ru.vood.Plugin.admPlugin.spring.except.TooManyRowsException;
 
@@ -10,19 +11,21 @@ public interface CommonFunctionService {
 
     BigDecimal nextId();
 
-    default void checkOnNoDataFound(List list) {
+    default Object checkOnNoDataFound(List list) throws NoDataFoundException {
         if (list == null || list.isEmpty()) {
             throw new NoDataFoundException();
         }
+        return list;
     }
 
-    default void checkOnTooManyRows(List list) {
+    default Object checkOnTooManyRows(List list) throws TooManyRowsException {
         if (list == null || list.size() > 1) {
             throw new TooManyRowsException();
         }
+        return list;
     }
 
-    default Object checkOn(List list) {
+    default Object checkOn(List list) throws CoreExeption {
         checkOnNoDataFound(list);
         checkOnTooManyRows(list);
         return list.get(0);

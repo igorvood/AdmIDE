@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
@@ -29,7 +30,7 @@ public class LTableInsert {
     //@Qualifier("jpaVBdColomnsEntityService")
     private VBdColomnsEntityService colomnsEntityService;
 
-    public QueryTableNew additionOne() {
+    public QueryTableNew additionOne() throws CoreExeption {
 
         VBdTableEntity bdObject_date_table = new VBdTableEntity();
         bdObject_date_table.setCode("DATE");

@@ -51,6 +51,7 @@
             <!--Propagation.NEVER — правило, которое явно запрещает исполнение в контексте транзакции. Если при входе в метод будет существовать транзакция, будет выброшено исключение.            -->
             <tx:method name="attributesType" propagation="REQUIRED"
                        rollback-for="java.lang.RuntimeException"
+                       no-rollback-for="ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException,TooManyRowsException"
                        read-only="false"
             />
         </tx:attributes>

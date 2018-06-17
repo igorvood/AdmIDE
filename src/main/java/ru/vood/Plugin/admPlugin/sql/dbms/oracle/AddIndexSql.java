@@ -6,6 +6,8 @@ import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
+import java.util.List;
+
 import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.INDEX_PREFIX;
 
 @Service
@@ -17,37 +19,37 @@ public class AddIndexSql {
     @Autowired
     private LimitingNameDBMS limitingNameDBMS;
 
-    public String generateSys(String tableName, boolean isUnique, String... colomns) {
+    public String generateSys(String tableName, boolean isUnique, List<String> colomns) {
         return generateSys(tableName, isUnique, false, colomns);
     }
 
-    public String generateSys(String tableName, String... colomns) {
+    public String generateSys(String tableName, List<String> colomns) {
         return generateSys(tableName, false, false, colomns);
     }
 
-    public String generateUser(String tableName, boolean isUnique, String... colomns) {
-        return generateUser(tableName, isUnique, false, colomns);
+    public String generateUser(String tableName, boolean isUnique, List<String> colomns, String nameIdx) {
+        return generateUser(tableName, isUnique, false, colomns, nameIdx);
     }
 
-    public String generateUser(String tableName, String... colomns) {
-        return generateUser(tableName, false, false, colomns);
+    public String generateUser(String tableName, List<String> colomns, String nameIdx) {
+        return generateUser(tableName, false, false, colomns, nameIdx);
     }
 
 
-    public String generateSys(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
-        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
+    public String generateSys(String tableName, boolean isUnique, boolean isReverse, List<String> colomns) {
+        return generateAll(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns, null);
     }
 
-    public String generateSys(String tableName, boolean isUnique, boolean isReverse, String colomns) {
-        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
+    /*public String generateSys(String tableName, boolean isUnique, boolean isReverse, String colomns) {
+        return generateAll(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
+    }*/
+
+    public String generateUser(String tableName, boolean isUnique, boolean isReverse, List<String> colomns, String nameIdx) {
+        return generateAll(pluginTunes.getPrefixTable() + tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns, nameIdx);
     }
 
-    public String generateUser(String tableName, boolean isUnique, boolean isReverse, String... colomns) {
-        return generate(tableName, isUnique, isReverse, pluginTunes.getTableSpaseSysIndex(), colomns);
-    }
-
-    private String generate(String tableName, boolean isUnique, boolean isReverse, String tableSpace, String... colomns) {
-        if (colomns == null) {
+    private String generateAll(String tableName, boolean isUnique, boolean isReverse, String tableSpace, List<String> colomns, String nameIdx) {
+        if (colomns == null || colomns.isEmpty()) {
             throw new ApplicationErrorException("Не определен список колонок для индекса.");
         }
 
@@ -63,20 +65,14 @@ public class AddIndexSql {
             res = new StringBuffer("create unique index ");
         }
 
-        for (int i = 0; i < colomns.length; i++) {
-            nameIndex.append("_");
-            nameIndex.append(colomns[i]);
-            if (i == 0) {
-                col.append(colomns[i]);
-            } else {
-                col.append(", ");
-                col.append(colomns[i]);
-            }
-        }
+        nameIndex.append(colomns.stream().reduce((s1, s2) -> s1 + "_" + s2).orElse(" "));
+        col.append(colomns.stream().reduce((s1, s2) -> s1 + ", " + s2).orElse(" "));
 
-        res.append(limitingNameDBMS.getNameObj(nameIndex.toString()));
+        if (nameIdx == null || nameIdx.length() == 0) {
+            res.append(limitingNameDBMS.getNameObj(nameIndex.toString()));
+        } else res.append(nameIdx);
         res.append(" on ");
-        res.append(pluginTunes.getPrefixTable() + tableName);
+        res.append(tableName);
         res.append(col);
         res.append(" ) ");
         //res.append(AppConst.getTune(ListTunes.TABLE_SPASE_SYS_TABLE));

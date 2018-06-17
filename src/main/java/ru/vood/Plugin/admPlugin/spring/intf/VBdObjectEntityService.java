@@ -2,6 +2,7 @@ package ru.vood.Plugin.admPlugin.spring.intf;
 
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface VBdObjectEntityService /*extends ParentForAllServise*/ {
 
     List<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS);
 
-    VBdObjectEntity findByCode(String code);
+    VBdObjectEntity findByCode(String code) throws CoreExeption;
     //List<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent(String codeS, String typeObjectCode, VBdObjectEntity parent);
 
     //ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent_TEST(String code, String typeObjectCode, VBdObjectEntity parent);

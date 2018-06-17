@@ -3,6 +3,7 @@ package ru.vood.Plugin.admPlugin.sql.sqlFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.SQLFistrLoadShemeOra;
 import ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLFistrLoadShemeInterface;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
@@ -25,7 +26,7 @@ public class SQLFistrLoadShemeFactory implements SQLFistrLoadShemeInterface {
     }
 
     @Override
-    public void getSQL() {
+    public void getSQL() throws CoreExeption {
         sql.getSQL();
     }
 

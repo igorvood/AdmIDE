@@ -8,6 +8,10 @@ import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class LObject {
 
@@ -51,8 +55,10 @@ public class LObject {
         s = constraintSql.getSql(tableName, "TYPE_OBJECT", "V_BD_OBJECT_TYPE", "ID");
         queryTable.add(s);
 
-        String[] col = {"CODE", "PARENT", "TYPE_OBJECT"};
-        s = addIndexSql.generateSys(tableName, true, col);
+//        ArrayList<String> listColom = new ArrayList<>();
+//        listColom.add(COLLECTION);
+        List<String> listCol = Arrays.asList("CODE", "PARENT", "TYPE_OBJECT").stream().collect(Collectors.toList());
+        s = addIndexSql.generateSys(tableName, true, listCol);
         queryTable.add(s);
 
         return queryTable;

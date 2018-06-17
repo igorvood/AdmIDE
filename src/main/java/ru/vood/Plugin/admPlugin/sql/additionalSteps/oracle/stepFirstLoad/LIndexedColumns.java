@@ -8,6 +8,8 @@ import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
+import java.util.ArrayList;
+
 import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.COLLECTION;
 
 @Service
@@ -40,7 +42,9 @@ public class LIndexedColumns {
         s = primaryKeySql.generateSys(tableName);
         queryTable.add(s);
 
-        s = addIndexSql.generateSys(tableName, false, COLLECTION);
+        ArrayList<String> listColom = new ArrayList<>();
+        listColom.add(COLLECTION);
+        s = addIndexSql.generateSys(tableName, false, listColom);
         queryTable.add(s);
 
         s = constraintSql.getSql(tableName, "COLUMN_REF", "V_BD_OBJECT", "ID");

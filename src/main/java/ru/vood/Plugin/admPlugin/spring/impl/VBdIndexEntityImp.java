@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexedColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
+import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexEntityRepository;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdIndexedColomnsEntityRepository;
@@ -17,10 +19,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service//("jpaVBdIndexEntityTestImpService")
+@Service
 @Repository
 @Transactional
-
 public class VBdIndexEntityImp implements VBdIndexEntityService {
 
     @Autowired
@@ -28,6 +29,8 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
     @Autowired
     protected VBdIndexedColomnsEntityRepository colomnsEntityRepository;
 
+    @Autowired
+    private CommonFunctionService commonFunctionService;
     @Autowired
     protected EntityManager em;
 
@@ -71,8 +74,12 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
                 }
             }
         }
-        System.out.println(listVBdIndexEntity);
         return listVBdIndexEntity;
+    }
 
+    @Override
+    public VBdIndexEntity findByCode(String code) throws CoreExeption {
+        List<VBdIndexEntity> indexEntities = entityTestRepository.findByCode(code);
+        return (VBdIndexEntity) commonFunctionService.checkOn(indexEntities);
     }
 }

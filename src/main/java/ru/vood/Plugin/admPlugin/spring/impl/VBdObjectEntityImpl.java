@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
@@ -109,9 +110,8 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
     }
 
     @Override
-    public VBdObjectEntity findByCode(String code) {
+    public VBdObjectEntity findByCode(String code) throws CoreExeption {
         List list = vBdObjectEntityRepository.findByCodeAndTypeObject(code, ObjectTypes.getOBJECT());
-        commonFunctionService.checkOn(list);
         return (VBdObjectEntity) commonFunctionService.checkOn(list);
     }
 }

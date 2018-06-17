@@ -4,6 +4,8 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdIndexedColomnsEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
@@ -102,8 +104,32 @@ public class NewOrEditIndex extends JAddDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        if (indexEntity == null) {
+            indexEntity = new VBdIndexEntity();
+            indexEntity.setParent(parentObject);
+            indexEntity.setJavaClass(indexEntity.getClass().toString());
+            indexEntity.setTypeObject(ObjectTypes.getINDEX());
+        }
+        List<VBdObjectEntity> listColomn = ((JDBTableIndexColomnsModel) includeTable.getModel()).getRows();
+        String nameIdx = listColomn.stream()
+                .map(q -> q.getCode())
+                .reduce((s1, s2) -> s1 + "_" + s2).orElse(" ");
+        indexEntity.setName(INDEX_PREFIX + parentObject.getCode() + "_" + nameIdx);
+        indexEntity.setCode(INDEX_PREFIX + parentObject.getCode() + "_" + nameIdx);
+        indexEntity.setGlobalI("0");
+        indexEntity.setUniqueI("0");
+        indexEntity.setColomnsEntities(null);
+        for (VBdObjectEntity ic : listColomn) {
+            indexEntity.addColomn((VBdColomnsEntity) ic);
+        }
+        VBdIndexEntityService indexEntityService = LoadedCTX.getService(VBdIndexEntityService.class);
+        try {
+            indexEntityService.findByCode(indexEntity.getCode());
+            new MessageWin("Такой индекс уже существует");
+        } catch (CoreExeption e) {
+            indexEntity = indexEntityService.save(indexEntity);
+            dispose();
+        }
     }
 
     private void onCancel() {

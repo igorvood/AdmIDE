@@ -64,6 +64,7 @@ public class JDBTree extends JTree {
     public void refresh() {
         loaded = false;
         loadTree();
+        updateUI();
     }
 
     public void loadTree() {

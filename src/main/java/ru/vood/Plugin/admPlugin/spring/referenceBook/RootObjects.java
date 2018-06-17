@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class RootObjects {
             try {
                 entity = tableEntityService.findByCode(s);
                 bdObjectEntityMap.put(entity.getCode(), entity);
-            } catch (ApplicationException e) {
+            } catch (CoreExeption e) {
                 entity = null;
             }
         }

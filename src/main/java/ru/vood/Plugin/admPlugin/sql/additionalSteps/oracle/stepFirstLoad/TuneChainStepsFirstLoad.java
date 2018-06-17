@@ -2,6 +2,7 @@ package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 
@@ -42,7 +43,7 @@ public class TuneChainStepsFirstLoad {
     @Autowired
     private LTableInsert lTableInsert;
 
-    public void run() {
+    public void run() throws CoreExeption {
         QueryTableNew queryTable = new QueryTableNew();
         // 1 создание таблицы типов объектов
         queryTable.addAll(lObjType.additionOne());

@@ -4,6 +4,7 @@ import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad;
@@ -274,10 +275,15 @@ public class ADMDialog extends JAddDialog {
                     }
                 }
 
-                private void FirstLoad_ActionPerformed(ActionEvent ae) {
-                    LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
-                    workTree();
-                }
+              /*  private void FirstLoad_ActionPerformed(ActionEvent ae) {
+                    try {
+                        LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
+                        workTree();
+                    } catch (CoreExeption coreExeption) {
+                        new MessageWin("Не удалось инициализировать таблицы", coreExeption);
+                    }
+
+                }*/
             });
             menuTools.add(menuFileToosRefresh);
         }
@@ -295,8 +301,12 @@ public class ADMDialog extends JAddDialog {
                 }
 
                 private void FirstLoad_ActionPerformed(ActionEvent ae) {
-                    LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
-                    workTree();
+                    try {
+                        LoadedCTX.getService(TuneChainStepsFirstLoad.class).run();
+                        workTree();
+                    } catch (CoreExeption coreExeption) {
+                        new MessageWin("Не удалось инициализировать таблицы", coreExeption);
+                    }
                 }
             });
             menuTools.add(menuFileToosFirstLoad);
@@ -407,8 +417,7 @@ public class ADMDialog extends JAddDialog {
         } else {
             if (adding) {
                 if (object instanceof VBdColomnsEntity) {
-                    if (object == null ||
-                            object.getParent() == null ||
+                    if (object.getParent() == null ||
                             object.getParent().getTypeObject() == null ||
                             !object.getParent().getTypeObject().equals(ObjectTypes.getTABLE()) ||
                             object.getParent().equals(RootObjects.getTABLE())
@@ -446,6 +455,14 @@ public class ADMDialog extends JAddDialog {
                 if ((dialog.getAddedObj() instanceof VBdTableEntity)) {
                     tree1.addToTree(dialog.getAddedObj());
                     tree1.refresh();
+                } else {
+                    JDBTableIndexsModel indexTableModel = ((JDBTableIndexsModel) indexTable.getModel());
+                    indexTableModel.loadTableByObj((VBdTableEntity) object);
+                    indexTable.updateUI();
+
+                    JDBTableColomnModel colomnTableModel = ((JDBTableColomnModel) colomnTable.getModel());
+                    colomnTableModel.loadTableByObj((VBdTableEntity) object);
+                    colomnTable.updateUI();
                 }
                 return dialog.getAddedObj();
             }

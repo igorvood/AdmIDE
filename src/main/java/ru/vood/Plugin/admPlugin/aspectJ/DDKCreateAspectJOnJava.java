@@ -14,24 +14,15 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 //@Order(1)
 public class DDKCreateAspectJOnJava {
 
-
-//    @Autowired
-//    private DriverManagerDataSource dataSource;
-
-
-//    @Autowired
-//    @Qualifier("jpaVBdObjectEntityService")
-//    private VBdObjectEntityService bdObjectEntityService;
-
     @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.save(..))")
-    //@Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.impl.*.save(..)) ")
+    // @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.impl.*.save(..)) ")
     //@Pointcut("execution(* ru.vood.Plugin.dialogs.ADMDialog.addOrEditColomn(..))")
     public void addOrEditObj() {
     }
 
 
     @Around("addOrEditObj()")
-    public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.nanoTime();
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave.checkRun(proceedingJoinPoint, adding[0]);

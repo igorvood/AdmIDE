@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdTableEntityRepository;
@@ -51,7 +52,7 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
     }
 
     @Override
-    public VBdTableEntity findByCode(String code) {
+    public VBdTableEntity findByCode(String code) throws CoreExeption {
         List list = bdTableEntityRepository.findByCode(code);
         commonFunction.checkOn(list);
         return (VBdTableEntity) list.get(0);
