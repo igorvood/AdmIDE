@@ -28,12 +28,10 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
     protected VBdIndexEntityRepository entityTestRepository;
     @Autowired
     protected VBdIndexedColomnsEntityRepository colomnsEntityRepository;
-
-    @Autowired
-    private CommonFunctionService commonFunctionService;
     @Autowired
     protected EntityManager em;
-
+    @Autowired
+    private CommonFunctionService commonFunctionService;
 
     @Override
     public VBdIndexEntity save(VBdIndexEntity entity) {

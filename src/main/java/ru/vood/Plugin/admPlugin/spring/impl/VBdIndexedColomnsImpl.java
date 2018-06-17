@@ -18,11 +18,9 @@ import java.util.List;
 public class VBdIndexedColomnsImpl implements VBdIndexedColomnsEntityService {
 
     @Autowired
-    private VBdIndexedColomnsEntityRepository bdColomnsEntityRepository;
-
-    @Autowired
     protected EntityManager em;
-
+    @Autowired
+    private VBdIndexedColomnsEntityRepository bdColomnsEntityRepository;
 
     @Override
     public VBdIndexedColomnsEntity save(VBdIndexedColomnsEntity entity) {

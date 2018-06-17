@@ -129,7 +129,6 @@ public class LTableInsert {
         table = bdTableEntityService.save(table);
 
 
-
 //        for (int i = 0; i <10000 ; i++) {
 //            bdObject_table_aderss = new VBdTableEntity();
 //            bdObject_table_aderss.setCode("TMP_"+i);
