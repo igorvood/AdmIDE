@@ -5,14 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToEdit.abstr.StepsEditServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToEdit.abstr.TuneChainStepsEditService;
 
 @Component
-public class TuneChainStepsEdit {
+public class TuneChainStepsEdit extends TuneChainStepsEditService {
 
-    @Autowired
-    TuneChainStepsCreate chainStepsCreate;
     @Autowired
     @Qualifier("editTableImpl")
     private StepsEditServise table;

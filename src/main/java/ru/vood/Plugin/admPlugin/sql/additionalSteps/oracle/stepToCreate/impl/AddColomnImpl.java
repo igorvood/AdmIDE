@@ -8,8 +8,8 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddConstraintSql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
@@ -27,7 +27,8 @@ public class AddColomnImpl implements StepsCreateServise {
     private AddConstraintSql constraintSql;
 
     @Autowired
-    private TuneChainStepsCreate stepsCreate;
+    @Qualifier("tuneChainStepsCreate")
+    private TuneChainStepsCreateServise stepsCreate;
 
 
     @Override

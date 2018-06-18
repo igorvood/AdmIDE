@@ -1,17 +1,19 @@
 package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.TuneChainStepsCreate;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 
 
 @Component
 public class TuneChainStepsFirstLoad {
 
     @Autowired
-    private TuneChainStepsCreate stepsCreate;
+    @Qualifier("tuneChainStepsCreate")
+    private TuneChainStepsCreateServise stepsCreate;
 
     @Autowired
     private LObjType lObjType;

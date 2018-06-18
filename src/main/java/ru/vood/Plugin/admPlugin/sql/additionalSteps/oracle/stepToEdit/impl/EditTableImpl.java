@@ -21,7 +21,6 @@ public class EditTableImpl implements StepsEditServise {
     @Autowired
     private PluginTunes tunes;
 
-
     @Override
     public QueryTableNew editDDL(VBdObjectEntity bdObjectOld, VBdObjectEntity bdObjectNew) {
 

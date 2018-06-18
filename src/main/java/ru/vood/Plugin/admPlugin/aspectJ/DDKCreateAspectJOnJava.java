@@ -25,7 +25,8 @@ public class DDKCreateAspectJOnJava {
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.nanoTime();
         Object[] adding = proceedingJoinPoint.getArgs();
-        DDLSave.checkRun(proceedingJoinPoint, adding[0]);
+        DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
+        ddlSave.checkRun(proceedingJoinPoint, adding[0]);
         boolean create = false;
         VBdObjectEntity newEntity = null;
         VBdObjectEntity oldEntity = null;
@@ -35,7 +36,7 @@ public class DDKCreateAspectJOnJava {
             if (!create) {
                 oldEntity = (VBdObjectEntity) LoadedCTX.getService(VBdObjectEntityService.class).findOne(newEntity.getId()).copy();
             }
-            DDLSave.before(proceedingJoinPoint, adding, oldEntity);
+            ddlSave.before(proceedingJoinPoint, adding, oldEntity);
         }
         //System.out.println(adding);
 
@@ -44,7 +45,7 @@ public class DDKCreateAspectJOnJava {
         try {
             ret = proceedingJoinPoint.proceed(adding);
         } catch (Throwable throwable) {
-            DDLSave.error(throwable);
+            ddlSave.error(throwable);
             ret = null;
             throw new ApplicationException("Не удалось выполнить сохрание ", throwable);
         }
@@ -52,7 +53,7 @@ public class DDKCreateAspectJOnJava {
         if (ret != null) {
             if (adding[0] instanceof VBdObjectEntity) {
                 try {
-                    DDLSave.after(ret, create, oldEntity);
+                    ddlSave.after(ret, create, oldEntity);
                 } catch (Exception e) {
                     ret = null;
                 }

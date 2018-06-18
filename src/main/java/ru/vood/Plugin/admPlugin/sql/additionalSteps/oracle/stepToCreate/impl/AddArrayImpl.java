@@ -47,7 +47,6 @@ public class AddArrayImpl implements StepsCreateServise {
             return null;
         }
 
-
         VBdTableEntity bdTable = (VBdTableEntity) bdObject;
         QueryTableNew queryTable = null;
         if (bdTable.getTypeObject().equals(ObjectTypes.getARRAY())) {
@@ -84,12 +83,6 @@ public class AddArrayImpl implements StepsCreateServise {
 
 
         }
-
         return queryTable;
-    }
-
-    @Override
-    public StepsCreateServise getNextStep() {
-        return null;
     }
 }
