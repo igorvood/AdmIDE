@@ -1,6 +1,7 @@
 package ru.vood.Plugin.dialogs.ExtSwing.treeWhithCheckBox;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
@@ -9,7 +10,7 @@ import java.awt.event.MouseEvent;
 public class NodeSelectionListener extends MouseAdapter {
     JTree tree;
 
-    NodeSelectionListener(JTree tree) {
+    public NodeSelectionListener(JTree tree) {
         this.tree = tree;
     }
 
@@ -18,24 +19,25 @@ public class NodeSelectionListener extends MouseAdapter {
         int y = e.getY();
         int row = tree.getRowForLocation(x, y);
         TreePath path = tree.getPathForRow(row);
-        //TreePath  path = tree.getSelectionPath();
         if (path != null) {
-            CheckNode node = (CheckNode) path.getLastPathComponent();
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            CheckNode node = (CheckNode) currentNode.getUserObject();
             boolean isSelected = !(node.isSelected());
             node.setSelected(isSelected);
-            /*if (node.getSelectionMode() == CheckNode.DIG_IN_SELECTION) {
-                if ( isSelected) {
-                    tree.expandPath(path);
-                } else {
-                    tree.collapsePath(path);
-                }
-            }*/
+            DefaultMutableTreeNode nextNode = currentNode.getNextNode();
+            while (nextNode != null && currentNode.getLevel() < nextNode.getLevel()) {
+                CheckNode nodetmp = ((CheckNode) nextNode.getUserObject());
+                nodetmp.setSelected(node.isSelected());
+                System.out.println(this.getClass().toString() + " " + nodetmp);
+                nextNode = nextNode.getNextNode();
+            }
             ((DefaultTreeModel) tree.getModel()).nodeChanged(node);
             // I need revalidate if node is root.  but why?
             if (row == 0) {
                 tree.revalidate();
                 tree.repaint();
             }
+            tree.updateUI();
         }
     }
 }

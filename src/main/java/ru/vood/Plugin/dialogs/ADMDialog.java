@@ -269,7 +269,7 @@ public class ADMDialog extends JAddDialog {
             menuFileToosRefresh.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        tree1.refresh();
+                        tree1.refresh(true);
                     } catch (CoreRuntimeException e) {
                         new ErrWin(null, "Обновление структуры данных не удалось.", true, "Обновление структуры данных не удалось. \n" + e.getErrorMessage(), e);
                     }
@@ -325,7 +325,7 @@ public class ADMDialog extends JAddDialog {
 
     private void workTree() {
         try {
-            tree1.loadTree();
+            tree1.loadTree(true);
             tree1.setCellRenderer(new DBTreeCellRenderer());
         } catch (ApplicationErrorException exception) {
             exception.printStackTrace();
@@ -454,7 +454,7 @@ public class ADMDialog extends JAddDialog {
                 dialog.setVisible(true);
                 if ((dialog.getAddedObj() instanceof VBdTableEntity)) {
                     tree1.addToTree(dialog.getAddedObj());
-                    tree1.refresh();
+                    tree1.refresh(true);
                 } else {
                     JDBTableIndexsModel indexTableModel = ((JDBTableIndexsModel) indexTable.getModel());
                     indexTableModel.loadTableByObj((VBdTableEntity) object);

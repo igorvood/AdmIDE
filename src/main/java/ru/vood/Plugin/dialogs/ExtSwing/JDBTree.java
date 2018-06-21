@@ -3,6 +3,7 @@ package ru.vood.Plugin.dialogs.ExtSwing;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
+import ru.vood.Plugin.dialogs.ExtSwing.treeWhithCheckBox.CheckNode;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
 
 import javax.persistence.PersistenceException;
@@ -61,19 +62,23 @@ public class JDBTree extends JTree {
 
         model.reload();
     }*/
-    public void refresh() {
+    public void refresh(boolean onlyTable) {
         loaded = false;
-        loadTree();
+        loadTree(onlyTable);
         updateUI();
     }
 
-    public void loadTree() {
+    public void loadTree(boolean onlyTable) {
         if (loaded) {
             return;
         }
         VBdObjectEntityService bdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
-
-        String[] typeObjectCodeS = {"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN", "OBJECT"};
+        String[] typeObjectCodeS;
+        if (onlyTable) {
+            typeObjectCodeS = new String[]{"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN", "OBJECT"};
+        } else {
+            typeObjectCodeS = new String[]{"TABLE", "REFERENCE", "ARRAY", "STRING", "NUMBER", "DATE", "BOOLEAN", "OBJECT", "COLOMN", "INDEX"};
+        }
 
         ArrayList<VBdObjectEntity> bdObjects = null;
         try {
@@ -88,26 +93,48 @@ public class JDBTree extends JTree {
 
         DefaultMutableTreeNode sel;
         DefaultMutableTreeNode tmp;
+        if (onlyTable) {
+            for (VBdObjectEntity obj1 : bdObjects) {
+                if (obj1.getParent() != null) {
+                    sel = nodeTreeMap.get(obj1.getParent().getId());
+                    tmp = new DefaultMutableTreeNode(obj1);
 
-        for (VBdObjectEntity obj1 : bdObjects) {
-
-            if (obj1.getParent() != null) {
-                sel = nodeTreeMap.get(obj1.getParent().getId());
-                tmp = new DefaultMutableTreeNode(obj1);
-
-                model.insertNodeInto(tmp, sel,
-                        sel.getChildCount());
-                model.nodeStructureChanged(sel);
-                nodeTreeMap.put(obj1.getId(), tmp);
-            } else {
-                //добавление корневых элементов
-                sel = new DefaultMutableTreeNode(obj1);
-                model = new DefaultTreeModel(sel);
-                this.setModel(model);
-                this.setRootVisible(true);
-                model.nodeStructureChanged(sel);
-                nodeTreeMap.put(obj1.getId(), sel);
+                    model.insertNodeInto(tmp, sel,
+                            sel.getChildCount());
+                    model.nodeStructureChanged(sel);
+                    nodeTreeMap.put(obj1.getId(), tmp);
+                } else {
+                    //добавление корневых элементов
+                    sel = new DefaultMutableTreeNode(obj1);
+                    model = new DefaultTreeModel(sel);
+                    this.setModel(model);
+                    this.setRootVisible(true);
+                    model.nodeStructureChanged(sel);
+                    nodeTreeMap.put(obj1.getId(), sel);
+                }
             }
+        } else {
+            for (VBdObjectEntity objCheck : bdObjects) {
+                CheckNode checkNode = new CheckNode(objCheck);
+                if (objCheck.getParent() != null) {
+                    sel = nodeTreeMap.get(objCheck.getParent().getId());
+                    tmp = new DefaultMutableTreeNode(checkNode);
+
+                    model.insertNodeInto(tmp, sel,
+                            sel.getChildCount());
+                    model.nodeStructureChanged(sel);
+                    nodeTreeMap.put(objCheck.getId(), tmp);
+                } else {
+                    //добавление корневых элементов
+                    sel = new DefaultMutableTreeNode(checkNode);
+                    model = new DefaultTreeModel(sel);
+                    this.setModel(model);
+                    this.setRootVisible(true);
+                    model.nodeStructureChanged(sel);
+                    nodeTreeMap.put(objCheck.getId(), sel);
+                }
+            }
+
         }
         loaded = true;
     }

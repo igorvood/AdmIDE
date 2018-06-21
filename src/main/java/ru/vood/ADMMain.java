@@ -6,7 +6,9 @@ import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
+import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.MessageWin;
+import ru.vood.Plugin.dialogs.SelectedDialog;
 import ru.vood.core.runtime.exception.CoreRuntimeException;
 
 import java.io.IOException;
@@ -56,6 +58,10 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
+        JAddDialog dialog = new SelectedDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.out.println(dialog);
 
       /*  VBdObjectEntity tables = Tables.getAny("address");
         VBdIndexEntityService indexEntityService = LoadedCTX.getService(VBdIndexEntityService.class);

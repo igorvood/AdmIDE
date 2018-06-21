@@ -2,6 +2,7 @@ package ru.vood.Plugin.dialogs.ExtSwing.treeWhithCheckBox;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 
@@ -24,7 +25,9 @@ public class CheckRenderer extends JPanel implements TreeCellRenderer {
         String stringValue = tree.convertValueToText(value, isSelected,
                 expanded, leaf, row, hasFocus);
         setEnabled(tree.isEnabled());
-        check.setSelected(((CheckNode) value).isSelected());
+
+        //check.setSelected(((CheckNode)  value).isSelected());
+        check.setSelected(((CheckNode) ((DefaultMutableTreeNode) value).getUserObject()).isSelected());
         label.setFont(tree.getFont());
         label.setText(stringValue);
         label.setSelected(isSelected);

@@ -11,7 +11,7 @@ public class CheckNode extends DefaultMutableTreeNode {
 
     protected int selectionMode;
 
-    protected boolean isSelected;
+    private boolean isSelected;
 
     public CheckNode() {
         this(null);
