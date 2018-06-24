@@ -1,7 +1,7 @@
 package ru.vood.Plugin.admPlugin.spring.generateCode.impl;
 
 import org.springframework.stereotype.Component;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
 import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenImportService;
 
@@ -9,7 +9,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenImportService;
 public class GenImportImpl implements GenImportService {
 
     @Override
-    public StringBuilder genCode(VBdTableEntity entity, TypeOfGenClass typeOfGenClass) {
+    public StringBuilder genCode(VBdObjectEntity entity, TypeOfGenClass typeOfGenClass) {
         StringBuilder code = new StringBuilder();
         return code;
 

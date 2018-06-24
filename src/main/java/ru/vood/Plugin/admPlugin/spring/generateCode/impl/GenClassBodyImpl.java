@@ -26,7 +26,7 @@ public class GenClassBodyImpl implements GenClassBodyService {
     private GenFieldsService genFieldsService;
 
     @Override
-    public StringBuilder genCode(VBdTableEntity entity, TypeOfGenClass typeOfGenClass) {
+    public StringBuilder genCode(VBdObjectEntity entity, TypeOfGenClass typeOfGenClass) {
         StringBuilder code = new StringBuilder();
         if (typeOfGenClass == TypeOfGenClass.ENTITY_CLASS) return genCodeEntiy(entity);
         return code;
@@ -41,7 +41,7 @@ public class GenClassBodyImpl implements GenClassBodyService {
         List<VBdColomnsEntity> colomnsEntities = colomnsEntityService.findByParent((VBdTableEntity) entity);
 
         for (VBdColomnsEntity colomn : colomnsEntities) {
-            code.append(genFieldsService.genCode((VBdTableEntity) entity, TypeOfGenClass.ENTITY_CLASS));
+            code.append(genFieldsService.genCode(colomn, TypeOfGenClass.ENTITY_CLASS));
         }
 
         return code;

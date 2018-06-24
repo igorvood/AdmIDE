@@ -54,7 +54,7 @@ public class GenCodeCommonFunction {
         return code;
     }
 
-    private StringBuilder toCamelCase(String s) {
+    public StringBuilder toCamelCase(String s) {
         if (s == null)
             return null;
 

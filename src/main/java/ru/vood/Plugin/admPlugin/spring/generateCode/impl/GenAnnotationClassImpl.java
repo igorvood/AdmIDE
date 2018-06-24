@@ -2,6 +2,7 @@ package ru.vood.Plugin.admPlugin.spring.generateCode.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.generateCode.GenCodeCommonFunction;
 import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
@@ -18,10 +19,10 @@ public class GenAnnotationClassImpl implements GenAnnotationClassService {
     private PluginTunes pluginTunes;
 
     @Override
-    public StringBuilder genCode(VBdTableEntity entity, TypeOfGenClass typeOfGenClass) {
+    public StringBuilder genCode(VBdObjectEntity entity, TypeOfGenClass typeOfGenClass) {
         StringBuilder code = new StringBuilder("");
 
-        if (typeOfGenClass.equals(TypeOfGenClass.ENTITY_CLASS)) code.append(genCodeEntity(entity));
+        if (typeOfGenClass.equals(TypeOfGenClass.ENTITY_CLASS)) code.append(genCodeEntity((VBdTableEntity) entity));
         return code;
     }
 
