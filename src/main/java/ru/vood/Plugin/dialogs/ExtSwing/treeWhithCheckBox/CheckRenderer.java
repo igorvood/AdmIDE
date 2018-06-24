@@ -1,5 +1,8 @@
 package ru.vood.Plugin.dialogs.ExtSwing.treeWhithCheckBox;
 
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.dialogs.ExtSwing.TreeIcons;
+
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,13 +35,26 @@ public class CheckRenderer extends JPanel implements TreeCellRenderer {
         label.setText(stringValue);
         label.setSelected(isSelected);
         label.setFocus(hasFocus);
-        if (leaf) {
+
+        DefaultMutableTreeNode treenode = (DefaultMutableTreeNode) value;
+
+        if (treenode.getUserObject() instanceof CheckNode) {
+            CheckNode ch = (CheckNode) treenode.getUserObject();
+            if (ch.getUserObject() instanceof VBdObjectEntity) {
+                VBdObjectEntity ob = (VBdObjectEntity) ch.getUserObject();
+                label.setIcon(TreeIcons.getIconByType(ob));
+            }
+        }
+
+
+        /*if (leaf) {
             label.setIcon(UIManager.getIcon("Tree.leafIcon"));
         } else if (expanded) {
             label.setIcon(UIManager.getIcon("Tree.openIcon"));
         } else {
             label.setIcon(UIManager.getIcon("Tree.closedIcon"));
-        }
+        }*/
+
         return this;
     }
 

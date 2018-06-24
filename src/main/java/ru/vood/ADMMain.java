@@ -3,12 +3,16 @@ package ru.vood;
 import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
+import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
+import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenClassService;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
-import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.MessageWin;
-import ru.vood.Plugin.dialogs.SelectedDialog;
 import ru.vood.core.runtime.exception.CoreRuntimeException;
 
 import java.io.IOException;
@@ -31,7 +35,8 @@ public class ADMMain {
 
 
     private static void init() {
-        Gson gson = GsonTune.getGson();
+        Gson gson = LoadedCTX.getService(GsonTune.class).getGson();
+
 
         StringBuffer gsonStr = new StringBuffer();
         Configarations tunesList = new Configarations();
@@ -58,10 +63,40 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
-        JAddDialog dialog = new SelectedDialog();
+        VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
+        VBdObjectEntity entity = null;
+        try {
+            entity = vBdObjectEntityService.findByCodeAndParenCode("address", "TABLE");
+        } catch (CoreExeption coreExeption) {
+            coreExeption.printStackTrace();
+        }
+
+        GenClassService genClassService = LoadedCTX.getService(GenClassService.class);
+
+        StringBuilder code = genClassService.genCode(entity, TypeOfGenClass.ENTITY_CLASS);
+
+        System.out.println(code);
+
+        /*
+        JAddDialog dialog = new SelectedDialog(null);
         dialog.pack();
         dialog.setVisible(true);
-        System.out.println(dialog);
+        System.out.println(dialog);*/
+
+
+        /*JFileChooser fileopen = new JFileChooser();
+        fileopen.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Storage", "zip");
+        fileopen.setFileFilter(filter);
+        int ret = fileopen.showDialog(null, "Load File");
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileopen.getSelectedFile();
+            JAddDialog dialog = new SelectedDialog(file);
+            dialog.pack();
+            dialog.setVisible(true);
+            System.out.println(dialog);
+        }*/
 
       /*  VBdObjectEntity tables = Tables.getAny("address");
         VBdIndexEntityService indexEntityService = LoadedCTX.getService(VBdIndexEntityService.class);

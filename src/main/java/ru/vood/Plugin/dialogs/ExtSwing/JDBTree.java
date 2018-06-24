@@ -12,9 +12,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * ВАЖНО - работа с уже готовым деревом может производится только через модель дерева.
@@ -28,16 +27,16 @@ import java.util.TreeMap;
 
 public class JDBTree extends JTree {
     private static JDBTree tree;
-    private static boolean loaded = false;
+    //private static boolean loaded = false;
     //private ResultSet _r = null;
 
-    private JDBTree() {
+    public JDBTree() {
         super();
         this.setRootVisible(false);
         //this.loadTree();
     }
 
-    public static JDBTree getInstance() {
+    private static JDBTree getInstance() {
         if (tree == null) {
             tree = new JDBTree();
         }
@@ -63,15 +62,11 @@ public class JDBTree extends JTree {
         model.reload();
     }*/
     public void refresh(boolean onlyTable) {
-        loaded = false;
         loadTree(onlyTable);
         updateUI();
     }
 
     public void loadTree(boolean onlyTable) {
-        if (loaded) {
-            return;
-        }
         VBdObjectEntityService bdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
         String[] typeObjectCodeS;
         if (onlyTable) {
@@ -87,56 +82,86 @@ public class JDBTree extends JTree {
             throw new ApplicationErrorException("Не удалось загрузить дерево");
         }
 
-        TreeMap<BigDecimal, DefaultMutableTreeNode> nodeTreeMap = new TreeMap<>();
+        loadList(bdObjects, onlyTable);
 
+    }
+
+    public void loadList(ArrayList<VBdObjectEntity> entityList) {
+        loadList(entityList, false);
+    }
+
+    private void loadList(ArrayList<VBdObjectEntity> entityList, boolean onlyTable) {
+        //TreeMap<BigDecimal, DefaultMutableTreeNode> nodeTreeMap = new TreeMap<>();
+        NodeMap nodeTreeMap = new NodeMap();
         DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 
-        DefaultMutableTreeNode sel;
-        DefaultMutableTreeNode tmp;
-        if (onlyTable) {
-            for (VBdObjectEntity obj1 : bdObjects) {
-                if (obj1.getParent() != null) {
-                    sel = nodeTreeMap.get(obj1.getParent().getId());
-                    tmp = new DefaultMutableTreeNode(obj1);
-
-                    model.insertNodeInto(tmp, sel,
-                            sel.getChildCount());
-                    model.nodeStructureChanged(sel);
-                    nodeTreeMap.put(obj1.getId(), tmp);
-                } else {
-                    //добавление корневых элементов
-                    sel = new DefaultMutableTreeNode(obj1);
-                    model = new DefaultTreeModel(sel);
-                    this.setModel(model);
-                    this.setRootVisible(true);
-                    model.nodeStructureChanged(sel);
-                    nodeTreeMap.put(obj1.getId(), sel);
-                }
-            }
-        } else {
-            for (VBdObjectEntity objCheck : bdObjects) {
-                CheckNode checkNode = new CheckNode(objCheck);
-                if (objCheck.getParent() != null) {
-                    sel = nodeTreeMap.get(objCheck.getParent().getId());
-                    tmp = new DefaultMutableTreeNode(checkNode);
-
-                    model.insertNodeInto(tmp, sel,
-                            sel.getChildCount());
-                    model.nodeStructureChanged(sel);
-                    nodeTreeMap.put(objCheck.getId(), tmp);
-                } else {
-                    //добавление корневых элементов
-                    sel = new DefaultMutableTreeNode(checkNode);
-                    model = new DefaultTreeModel(sel);
-                    this.setModel(model);
-                    this.setRootVisible(true);
-                    model.nodeStructureChanged(sel);
-                    nodeTreeMap.put(objCheck.getId(), sel);
-                }
-            }
-
+        for (VBdObjectEntity entity : entityList) {
+            model = put(nodeTreeMap, entity, onlyTable, model);
         }
-        loaded = true;
+
+        this.setModel(model);
+
+
+        System.out.println(this.getModel());
+    }
+
+    private DefaultTreeModel put(NodeMap nodeTreeMap, VBdObjectEntity entity, boolean onlyTable, DefaultTreeModel model) {
+
+        Object treeObj;
+        if (onlyTable) {
+            treeObj = entity;
+        } else {
+            treeObj = new CheckNode(entity);
+        }
+        if (!nodeTreeMap.containsKey(getKey(entity))) {
+            if (entity.getParent() != null) {
+                if (!nodeTreeMap.containsKey(getParentKey(entity))) {
+                    model = put(nodeTreeMap, entity.getParent(), onlyTable, model);
+                }
+                DefaultMutableTreeNode sel = nodeTreeMap.get(getParentKey(entity));
+                DefaultMutableTreeNode tmp = new DefaultMutableTreeNode(treeObj);
+                model.insertNodeInto(tmp, sel, sel.getChildCount());
+                model.nodeStructureChanged(sel);
+                nodeTreeMap.put(getKey(entity), tmp);
+            } else { //добавление корневых элементов
+                //добавление корневых элементов
+                DefaultMutableTreeNode sel = new DefaultMutableTreeNode(treeObj);
+                model = new DefaultTreeModel(sel);
+                this.setModel(model);
+                this.setRootVisible(true);
+                model.nodeStructureChanged(sel);
+                nodeTreeMap.put(getKey(entity), sel);
+            }
+        }
+
+        return model;
+    }
+
+    private String getKey(VBdObjectEntity entity) {
+        return (entity.getParent() == null ? "NULL" : entity.getParent().getCode()) + "->" + entity.getCode();
+    }
+
+    private String getParentKey(VBdObjectEntity entity) {
+        return (entity.getParent().getParent() == null ? "NULL" : entity.getParent().getParent().getCode()) + "->" + entity.getParent().getCode();
+    }
+
+    private void putWhenParenNotNull(NodeMap nodeTreeMap, VBdObjectEntity entity, DefaultTreeModel model, Object obj) {
+        DefaultMutableTreeNode sel = nodeTreeMap.get(getParentKey(entity));
+        DefaultMutableTreeNode tmp = new DefaultMutableTreeNode(obj);
+        model.insertNodeInto(tmp, sel, sel.getChildCount());
+        model.nodeStructureChanged(sel);
+        nodeTreeMap.put(getKey(entity), tmp);
+    }
+
+    private DefaultTreeModel putWhenParenNull(NodeMap nodeTreeMap, VBdObjectEntity entity, Object obj) {
+        //добавление корневых элементов
+        DefaultMutableTreeNode sel = new DefaultMutableTreeNode(obj);
+        DefaultTreeModel model = new DefaultTreeModel(sel);
+        this.setModel(model);
+        this.setRootVisible(true);
+        model.nodeStructureChanged(sel);
+        nodeTreeMap.put(getKey(entity), sel);
+        return model;
     }
 
     public void addToTree(VBdObjectEntity bdTable) {
@@ -166,6 +191,9 @@ public class JDBTree extends JTree {
         TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(defaultMutableTreeNode);
         TreePath tpath = new TreePath(nodes);
         tree.setSelectionPath(tpath);
+    }
+
+    private class NodeMap extends HashMap<String, DefaultMutableTreeNode> {
     }
 
 

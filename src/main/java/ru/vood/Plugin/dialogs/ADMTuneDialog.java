@@ -5,6 +5,7 @@ import jfork.nproperty.ConfigParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.Plugin.db.SupportedDBMS;
@@ -258,7 +259,8 @@ public class ADMTuneDialog extends JAddDialog {
 
     private void saveTune() {
         addNewConfig();
-        Gson gson = GsonTune.getGson();
+        Gson gson = LoadedCTX.getService(GsonTune.class).getGson();
+
         Properties properties = System.getProperties();
 
         PluginTunes pluginTunes = configurations.stream().filter(pt -> pt.getDefaultConfiguration()).findFirst().get();

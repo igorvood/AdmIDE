@@ -66,4 +66,9 @@ public class RootObjects {
         return get("TABLE");
     }
 
+    public static boolean isRoot(VBdObjectEntity entity) {
+        if (entity.equals(getTABLE())) return true;
+        return false;
+    }
+
 }

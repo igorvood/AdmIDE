@@ -148,7 +148,7 @@ public class NewOrEditRefArr extends JAddDialog {
     }
 
     private void createUIComponents() {
-        tree1 = JDBTree.getInstance();
+        tree1 = new JDBTree();//JDBTree.getInstance();
         ((JDBTree) tree1).loadTree(true);
         tree1.setCellRenderer(new DBTreeCellRenderer());
     }

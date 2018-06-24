@@ -474,7 +474,9 @@ public class ADMDialog extends JAddDialog {
     private void createUIComponents() {
         colomnTable = new JTable(new JDBTableColomnModel());
         indexTable = new JTable(new JDBTableIndexsModel());
-        tree1 = JDBTree.getInstance();
+        tree1 = new JDBTree();// JDBTree.getInstance();
+        tree1.loadTree(true);
+
         // TODO: place custom component creation code here
     }
 

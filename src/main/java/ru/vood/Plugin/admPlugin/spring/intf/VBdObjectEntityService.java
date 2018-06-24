@@ -25,6 +25,8 @@ public interface VBdObjectEntityService /*extends ParentForAllServise*/ {
     List<VBdObjectEntity> findByTypeObjectCodeIn(String... codeS);
 
     VBdObjectEntity findByCode(String code) throws CoreExeption;
+
+    VBdObjectEntity findByCodeAndParenCode(String code, String parentCode) throws CoreExeption;
     //List<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent(String codeS, String typeObjectCode, VBdObjectEntity parent);
 
     //ArrayList<VBdObjectEntity> findByCodeAndTypeObjectCodeAndParent_TEST(String code, String typeObjectCode, VBdObjectEntity parent);

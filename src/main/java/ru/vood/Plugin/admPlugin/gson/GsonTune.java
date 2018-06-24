@@ -2,8 +2,9 @@ package ru.vood.Plugin.admPlugin.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class GsonTune {
 
     private static Gson gson;
@@ -17,7 +18,7 @@ public class GsonTune {
         gson = gsonBuilder.create();
     }
 
-    public static Gson getGson() {
+    public Gson getGson() {
         if (gson == null) {
             new GsonTune();
         }

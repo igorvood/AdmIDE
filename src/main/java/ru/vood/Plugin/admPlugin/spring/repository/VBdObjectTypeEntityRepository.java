@@ -15,5 +15,4 @@ public interface VBdObjectTypeEntityRepository extends CrudRepository<VBdObjectT
 
     List<VBdObjectTypeEntity> findByCode(String code);
 
-
 }

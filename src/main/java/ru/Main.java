@@ -1,14 +1,10 @@
 package ru;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
+import ru.vood.Plugin.admPlugin.spring.generateCode.impl.KotkinTest;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -20,6 +16,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        KotkinTest kotkinTest = new KotkinTest();
+        String s = kotkinTest.toCamelCase("sdfdsaf_asdasdsad");
+        System.out.println(s);
 
 /*
         VBdObjectTypeEntity typeEntity_9;
@@ -90,15 +89,15 @@ public class Main {
         }
     }
 
-    public static void gson(ArrayList<VBdObjectEntity> vBdObjectEntities) {
-
-        Gson gson = GsonTune.getGson();
-        String s = gson.toJson(vBdObjectEntities);
-
-        Type type = new TypeToken<ArrayList<VBdObjectEntity>>() {
-        }.getType();
-        ArrayList<VBdObjectEntity> entities = gson.fromJson(s, type);
-    }
+//    public static void gson(ArrayList<VBdObjectEntity> vBdObjectEntities) {
+//
+//        Gson gson = GsonTune.getGson();
+//        String s = gson.toJson(vBdObjectEntities);
+//
+//        Type type = new TypeToken<ArrayList<VBdObjectEntity>>() {
+//        }.getType();
+//        ArrayList<VBdObjectEntity> entities = gson.fromJson(s, type);
+//    }
 
 
 

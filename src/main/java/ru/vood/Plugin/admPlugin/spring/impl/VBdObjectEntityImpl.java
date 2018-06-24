@@ -114,4 +114,26 @@ public class VBdObjectEntityImpl /*extends ParentForAllImpl*/ implements VBdObje
         List list = vBdObjectEntityRepository.findByCodeAndTypeObject(code, ObjectTypes.getOBJECT());
         return (VBdObjectEntity) commonFunctionService.checkOn(list);
     }
+
+    @Override
+    public VBdObjectEntity findByCodeAndParenCode(String code, String parentCode) throws CoreExeption {
+        Query query = em.createQuery("select a1 from VBdObjectEntity a1" +
+                " left join VBdObjectEntity a2 on a1.parent = a2 " + // and a2.code = :parentCode" +
+                " join fetch a1.parent  " +
+                " where a1.code = :code " +
+                " and (a2.code = :parentCode or (:parentCode is null and  a2 is null ))" +
+                //" order by a2.id " +
+                " ")
+                .setParameter("code", code)
+                .setParameter("parentCode", parentCode);
+        List list1 = (ArrayList<VBdObjectEntity>) query.getResultList();
+
+//        try {
+//            commonFunctionService.checkOn(list1);
+//        } catch (CoreExeption e) {
+//            e.printStackTrace();
+//        }
+
+        return (VBdObjectEntity) commonFunctionService.checkOn(list1);
+    }
 }

@@ -1,7 +1,7 @@
 package ru.vood.Plugin.dialogs;
 
-import com.google.gson.Gson;
-import ru.vood.Plugin.admPlugin.gson.GsonTune;
+import ru.vood.Plugin.admPlugin.gson.UploadStorage;
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.dialogs.ExtSwing.JAddDialog;
 import ru.vood.Plugin.dialogs.ExtSwing.JDBTree;
@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,11 @@ public class SelectedDialog extends JAddDialog {
     private JButton buttonCancel;
     private JTree allTree;
     private JButton saveButton;
+    private JButton generateButton;
+    private File file;
 
-    public SelectedDialog() {
+    public SelectedDialog(File file) {
+        this.file = file;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -55,6 +59,11 @@ public class SelectedDialog extends JAddDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         saveButton.addActionListener(new SaveActionListener());
+        generateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
     }
 
     private void onOK() {
@@ -69,13 +78,27 @@ public class SelectedDialog extends JAddDialog {
 
     @Override
     protected void extension() {
-        this.setSize(new Dimension(500, 500));
+        this.setSize(new Dimension(1000, 500));
+
+        if (file != null) {
+            generateButton.setEnabled(false);
+        }
 
     }
 
     private void createUIComponents() {
-        allTree = JDBTree.getInstance();
-        ((JDBTree) allTree).loadTree(false);
+
+        allTree = new JDBTree();//JDBTree.getInstance();
+        // загрызка из базы
+        if (file == null) {
+            ((JDBTree) allTree).loadTree(false);
+        } else {
+            UploadStorage uploadStorage = LoadedCTX.getService(UploadStorage.class);
+            ArrayList<VBdObjectEntity> bdObjects = uploadStorage.load(file);
+            ((JDBTree) allTree).loadList(bdObjects);
+
+
+        }
         //allTree.setCellRenderer(new DBTreeCellRenderer());
 
         allTree.setCellRenderer(new CheckRenderer());
@@ -87,27 +110,28 @@ public class SelectedDialog extends JAddDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) allTree.getModel().getRoot();
-            System.out.println("======================selected---------------------------");
-            List<VBdObjectEntity> entityList = new ArrayList<>();
+            File file;
+            JFileChooser fileopen = new JFileChooser();
+            fileopen.setDialogType(JFileChooser.SAVE_DIALOG);
+            int ret = fileopen.showDialog(null, "Save File");
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                file = fileopen.getSelectedFile();
 
-            while (root != null) {
-                CheckNode checkNode = (CheckNode) root.getUserObject();
-                if (checkNode.isSelected()) {
-                    entityList.add((VBdObjectEntity) checkNode.getUserObject());
-                    System.out.println(this.getClass().toString() + " " + checkNode);
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode) allTree.getModel().getRoot();
+                List<VBdObjectEntity> entityList = new ArrayList<>();
+                while (root != null) {
+                    CheckNode checkNode = (CheckNode) root.getUserObject();
+                    if (checkNode.isSelected()) {
+                        entityList.add((VBdObjectEntity) checkNode.getUserObject());
+                    }
+                    root = root.getNextNode();
                 }
-                root = root.getNextNode();
+
+                UploadStorage uploadStorage = LoadedCTX.getService(UploadStorage.class);
+                uploadStorage.upload(file, entityList);
             }
-            Gson gson = GsonTune.getGson();
-
-            System.out.println("======================selected---------------------------");
-            String s = gson.toJson(entityList);
-
-
-//            List<VBdObjectEntity>
-            //         List<VBdObjectEntity> dsadsadasd= gson.fromJson(s,VBdObjectEntity.class );
-            System.out.println(gson.toJson(entityList));
         }
     }
+
+
 }
