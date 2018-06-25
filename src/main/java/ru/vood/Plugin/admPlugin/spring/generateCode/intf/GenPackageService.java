@@ -5,6 +5,7 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.generateCode.GenCodeCommonFunction;
 import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
 
+@Deprecated
 public abstract class GenPackageService implements GenAnyPart {
 
     @Autowired

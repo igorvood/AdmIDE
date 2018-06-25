@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface VBdIndexEntityRepository extends CrudRepository<VBdIndexEntity, BigDecimal> {
 
+
     List<VBdIndexEntity> findByCode(String code);
 
 }

@@ -6,6 +6,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
 import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenAnnitationFieldsService;
 
 @Component
+@Deprecated
 public class GenAnnitationFieldsImpl implements GenAnnitationFieldsService {
     @Override
     public StringBuilder genCode(VBdObjectEntity entity, TypeOfGenClass typeOfGenClass) {

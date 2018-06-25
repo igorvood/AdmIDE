@@ -10,6 +10,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenAnnotationClassServi
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 @Component
+@Deprecated
 public class GenAnnotationClassImpl implements GenAnnotationClassService {
 
     @Autowired

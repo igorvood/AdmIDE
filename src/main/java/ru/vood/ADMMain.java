@@ -4,11 +4,8 @@ import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
-import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
-import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenClassService;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
+import ru.vood.Plugin.admPlugin.spring.generateCode.testKotlin.BDObject;
+import ru.vood.Plugin.admPlugin.spring.generateCode.testKotlin.BdObjectService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
@@ -63,7 +60,13 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
-        VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
+        BdObjectService bdObjectService = LoadedCTX.getService(BdObjectService.class);
+        BDObject bdObject = bdObjectService.findByCodeAndParenCode("address", "TABLE");
+
+        System.out.println(bdObject);
+        System.out.println(bdObject);
+
+        /*VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
         VBdObjectEntity entity = null;
         try {
             entity = vBdObjectEntityService.findByCodeAndParenCode("address", "TABLE");
@@ -73,9 +76,9 @@ public class ADMMain {
 
         GenClassService genClassService = LoadedCTX.getService(GenClassService.class);
 
-        StringBuilder code = genClassService.genCode(entity, TypeOfGenClass.ENTITY_CLASS);
+        StringBuilder code = genClassService.genCode(entity, TypeOfGenClassKT.ENTITY_CLASSKT);
 
-        System.out.println(code);
+        System.out.println(code);*/
 
         /*
         JAddDialog dialog = new SelectedDialog(null);

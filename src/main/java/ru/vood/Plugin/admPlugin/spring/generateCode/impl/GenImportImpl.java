@@ -6,6 +6,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.TypeOfGenClass;
 import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenImportService;
 
 @Component
+@Deprecated
 public class GenImportImpl implements GenImportService {
 
     @Override

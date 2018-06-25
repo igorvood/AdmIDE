@@ -14,6 +14,7 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
 import java.util.List;
 
 @Component
+@Deprecated
 public class GenClassBodyImpl implements GenClassBodyService {
 
     @Autowired

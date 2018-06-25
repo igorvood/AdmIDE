@@ -1,5 +1,6 @@
 package ru.vood.Plugin.admPlugin.spring.generateCode;
 
+@Deprecated
 public enum TypeOfGenClass {
 
     ENTITY_CLASS("Entity"),

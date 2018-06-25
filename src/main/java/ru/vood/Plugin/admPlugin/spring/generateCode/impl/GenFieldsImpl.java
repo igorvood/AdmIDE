@@ -11,6 +11,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.intf.GenFieldsService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 
 @Component
+@Deprecated
 public class GenFieldsImpl implements GenFieldsService {
 
     @Autowired

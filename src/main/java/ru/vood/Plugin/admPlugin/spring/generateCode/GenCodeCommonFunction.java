@@ -8,6 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 @Component
+@Deprecated
 public class GenCodeCommonFunction {
 
     @Autowired

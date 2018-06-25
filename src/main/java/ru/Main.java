@@ -3,7 +3,6 @@ package ru;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
-import ru.vood.Plugin.admPlugin.spring.generateCode.impl.KotkinTest;
 
 import java.util.List;
 
@@ -16,9 +15,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        KotkinTest kotkinTest = new KotkinTest();
-        String s = kotkinTest.toCamelCase("sdfdsaf_asdasdsad");
-        System.out.println(s);
 
 /*
         VBdObjectTypeEntity typeEntity_9;
