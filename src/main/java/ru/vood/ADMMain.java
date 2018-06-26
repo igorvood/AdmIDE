@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
-import ru.vood.Plugin.admPlugin.spring.generateCode.testKotlin.BDObject;
-import ru.vood.Plugin.admPlugin.spring.generateCode.testKotlin.BdObjectService;
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
+import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT;
+import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.impl.GenClassServiceKT;
+import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
@@ -60,13 +63,13 @@ public class ADMMain {
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
 
-        BdObjectService bdObjectService = LoadedCTX.getService(BdObjectService.class);
+        /*BdObjectService bdObjectService = LoadedCTX.getService(BdObjectService.class);
         BDObject bdObject = bdObjectService.findByCodeAndParenCode("address", "TABLE");
 
         System.out.println(bdObject);
-        System.out.println(bdObject);
+        System.out.println(bdObject);*/
 
-        /*VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
+        VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
         VBdObjectEntity entity = null;
         try {
             entity = vBdObjectEntityService.findByCodeAndParenCode("address", "TABLE");
@@ -74,11 +77,11 @@ public class ADMMain {
             coreExeption.printStackTrace();
         }
 
-        GenClassService genClassService = LoadedCTX.getService(GenClassService.class);
+        GenClassServiceKT genClassService = LoadedCTX.getService(GenClassServiceKT.class);
 
-        StringBuilder code = genClassService.genCode(entity, TypeOfGenClassKT.ENTITY_CLASSKT);
+        StringBuilder code = genClassService.genCode(entity, TypeOfGenClassKT.ENTITY_CLASS);
 
-        System.out.println(code);*/
+        System.out.println(code);
 
         /*
         JAddDialog dialog = new SelectedDialog(null);

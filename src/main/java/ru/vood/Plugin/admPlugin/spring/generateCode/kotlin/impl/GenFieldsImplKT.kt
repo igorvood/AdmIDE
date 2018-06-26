@@ -43,8 +43,10 @@ class GenFieldsImplKT : GenFieldsServiceKT {
             ObjectTypes.getNUMBER() -> code.append(" BigDecimal ")
             ObjectTypes.getREFERENCE() -> code.append(genCodeCommonFunction.getFullClassName(entity.typeValue, TypeOfGenClassKT.ENTITY_CLASS))
             ObjectTypes.getARRAY() -> code.append(" BigDecimal ")
+            else -> code.append("genCodeTypeField: НЕ предусмотерна обработка ${entity.typeColomn}")
         }
-        return code.append("genCodeTypeField: НЕ предусмотерна обработка ")
+
+        return code
     }
 
 }

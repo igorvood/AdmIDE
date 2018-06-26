@@ -8,6 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.GenAnnitationFie
 @Component
 class GenAnnitationFieldsImplKT : GenAnnitationFieldsServiceKT {
     override fun genCode(entity: VBdObjectEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        return StringBuilder("")
     }
 }

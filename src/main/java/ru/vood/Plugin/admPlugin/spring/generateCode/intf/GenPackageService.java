@@ -13,6 +13,7 @@ public abstract class GenPackageService implements GenAnyPart {
 
     @Override
     public StringBuilder genCode(VBdObjectEntity entity, TypeOfGenClass typeOfGenClass) {
+
         return new StringBuilder("package " + genCodeCommonFunction.getPackegeName(typeOfGenClass) + ";\n\n");
     }
 }

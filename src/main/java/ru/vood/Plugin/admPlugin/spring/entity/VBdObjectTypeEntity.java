@@ -79,6 +79,21 @@ public class VBdObjectTypeEntity extends ParentForAll {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VBdObjectTypeEntity)) return false;
+
+        VBdObjectTypeEntity that = (VBdObjectTypeEntity) o;
+
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "VBdObjectTypeEntity{" +
                 "id=" + this.getId() +
@@ -88,18 +103,4 @@ public class VBdObjectTypeEntity extends ParentForAll {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VBdObjectTypeEntity)) return false;
-
-        VBdObjectTypeEntity entity = (VBdObjectTypeEntity) o;
-
-        return getCode().equals(entity.getCode());
-    }
-
-    @Override
-    public int hashCode() {
-        return getCode().hashCode();
-    }
 }
