@@ -6,10 +6,10 @@ interface AddAnyAnnotation : AddAnyClass {
     fun getImport() = "import $importString;"
 
     fun getAnnotation(): String {
-        var s: String = ""
-        if (!paramOfAnnotation.pairParam.isEmpty()) {
-            paramOfAnnotation.pairParam.forEach()
-        }
-        return "@$name"
+        var s: String = paramOfAnnotation?.asSequence()
+                .map { pa -> pa.key + if (pa.value?.isEmpty()) "" else "= " + pa.value }
+                .reduce { total, next -> total + " , " + next }
+        s = if (s.isEmpty()) "" else "($s)"
+        return "@$name$s"
     }
 }
