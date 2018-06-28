@@ -135,7 +135,7 @@ public class UploadStorage {
             }
 
             /* теперь надо поискать настоящие ID в базе и записать их в нужные экземпляры,
-            * найденный в базе буду обновлять не найденны создавать
+             * найденный в базе буду обновлять не найденны создавать
              */
             for (Map.Entry<BigDecimal, VBdObjectEntity> entry : objectEntityHashMap.entrySet()) {
                 VBdObjectEntity entity = entry.getValue();

@@ -1,5 +1,3 @@
 package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.addingImport
 
-import java.util.*
-
-class ParamOfAnnotation : TreeMap<String, String>()
+class TypeAndItImport(val code: String, val importSring: String)

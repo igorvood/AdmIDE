@@ -1,17 +1,13 @@
 package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.addingImport
 
-import org.springframework.context.ApplicationListener
-import ru.vood.Plugin.admPlugin.spring.generateCode.Message.AddImportEvent
-import java.lang.reflect.Type
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity
 
-interface AddAnyClass : ApplicationListener<AddImportEvent> {
-    val name: Type
-    val importString: String
+open class AddAnyClass() : AddAnyClassService, CreateApplicationEvent {
+    override fun getFullNameClass(entity: VBdObjectEntity): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-//    var addedImport: HashMap<Type, String>
-//
-//    override fun onApplicationEvent(event: AddImportEvent) {
-//        if (addedImport == null) addedImport = HashMap<Type, String>()
-//        val msgEvt = event
-//    }
+    override fun getCode(entity: VBdObjectEntity): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
