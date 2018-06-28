@@ -70,7 +70,7 @@ public class LObjTypeInsert {
 
         VBdObjectTypeEntity bdObjType_index = new VBdObjectTypeEntity();
         bdObjType_index.setCode("INDEX");
-        bdObjType_index.setName("Индек таблицы");
+        bdObjType_index.setName("Индекс таблицы");
         bdObjType_index.setParent(bdObjType_TYPE);
         bdObjType_index.setNeedDDL(true);
         bdObjType_index = entityService.save(bdObjType_index);
