@@ -6,12 +6,12 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 @Component
-public class AddPrimaryKeyImpl implements StepsCreateServise {
+public class AddPrimaryKeyImpl implements StepsCreateAndDropServise {
 
 /*    @Autowired
     @Qualifier("addColomnImpl")
@@ -40,7 +40,7 @@ public class AddPrimaryKeyImpl implements StepsCreateServise {
 
     }
 
-    public StepsCreateServise getNextStep() {
+    public StepsCreateAndDropServise getNextStep() {
         return null;
     }
 }

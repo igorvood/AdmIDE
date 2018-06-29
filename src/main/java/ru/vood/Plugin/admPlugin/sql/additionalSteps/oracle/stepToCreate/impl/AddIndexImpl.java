@@ -6,24 +6,24 @@ import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AddIndexImpl implements StepsCreateServise {
+public class AddIndexImpl implements StepsCreateAndDropServise {
 
     @Autowired
     @Qualifier("addArrayImpl")
-    private StepsCreateServise nextStep;
+    private StepsCreateAndDropServise nextStep;
 
     @Autowired
     private AddIndexSql indexSql;
 
     @Override
-    public StepsCreateServise getNextStep() {
+    public StepsCreateAndDropServise getNextStep() {
         return nextStep;
     }
 

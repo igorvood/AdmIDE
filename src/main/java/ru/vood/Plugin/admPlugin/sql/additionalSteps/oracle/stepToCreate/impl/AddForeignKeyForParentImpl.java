@@ -8,16 +8,16 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddConstraintSql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 @Component
-public class AddForeignKeyForParentImpl implements StepsCreateServise {
+public class AddForeignKeyForParentImpl implements StepsCreateAndDropServise {
 
     @Autowired
     @Qualifier("addArrayImpl")
-    private StepsCreateServise nextStep;
+    private StepsCreateAndDropServise nextStep;
 
 
     @Autowired
@@ -45,7 +45,7 @@ public class AddForeignKeyForParentImpl implements StepsCreateServise {
 
     }
 
-    public StepsCreateServise getNextStep() {
+    public StepsCreateAndDropServise getNextStep() {
         return nextStep;
     }
 }

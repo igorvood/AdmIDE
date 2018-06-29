@@ -3,7 +3,7 @@ package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 
-public interface StepsCreateServise {
+public interface StepsCreateAndDropServise {
 
     QueryTableNew createDDL(VBdObjectEntity bdObject);
 
@@ -20,7 +20,7 @@ public interface StepsCreateServise {
         return queryTable;
     }
 
-    default StepsCreateServise getNextStep() {
+    default StepsCreateAndDropServise getNextStep() {
         return null;
     }
 

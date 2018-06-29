@@ -7,12 +7,12 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 
 @Component
-public class AddTableImpl implements StepsCreateServise {
+public class AddTableImpl implements StepsCreateAndDropServise {
 
     @Autowired
     AddPrimaryKeyImpl primaryKey;
@@ -22,7 +22,7 @@ public class AddTableImpl implements StepsCreateServise {
 
     @Autowired
     @Qualifier("addColomnImpl")
-    private StepsCreateServise nextStep;
+    private StepsCreateAndDropServise nextStep;
 
     @Autowired
     private PluginTunes tunes;
@@ -74,7 +74,7 @@ public class AddTableImpl implements StepsCreateServise {
     }
 
     @Override
-    public StepsCreateServise getNextStep() {
+    public StepsCreateAndDropServise getNextStep() {
         return nextStep;
     }
 

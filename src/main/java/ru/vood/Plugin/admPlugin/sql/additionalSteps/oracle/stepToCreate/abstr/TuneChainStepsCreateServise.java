@@ -20,7 +20,7 @@ public abstract class TuneChainStepsCreateServise {
 
     public abstract void runChain(Object bdobj);
 
-    protected void runChain(QueryTableNew queryTable) {
+    public void runChain(QueryTableNew queryTable) {
         Connection conn;
         Statement stmt = null;
         ResultSet r = null;

@@ -20,7 +20,6 @@ public class DDKCreateAspectJOnJava {
     public void addOrEditObj() {
     }
 
-
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.nanoTime();
@@ -53,81 +52,40 @@ public class DDKCreateAspectJOnJava {
         if (ret != null) {
             if (adding[0] instanceof VBdObjectEntity) {
                 try {
-                    ddlSave.after(ret, create, oldEntity);
+                    ddlSave.afterSave(ret, create, oldEntity);
                 } catch (Exception e) {
                     ret = null;
                 }
             }
         }
-/*        if (ret != null) {
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-
-            }
-        } else {
-            try {
-                connection.rollback();
-            } catch (SQLException e) {
-
-            }
-        }
-
-        try {
-            connection.close();
-        } catch (SQLException e) {
-
-        }*/
-
 
         long endTime = System.nanoTime();
         System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
         return ret;
     }
 
-//    private void after(Object savedObj, boolean create, Object oldObj) {
-//        if (create & savedObj != null) {
-//            if (savedObj instanceof VBdObjectEntity) {
-//                VBdObjectEntity entity = (VBdObjectEntity) savedObj;
-//                if (entity.getTypeObject().isNeedDDL()) {
-//                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
-//                    if (exeptObjectName.allowAdd(entity.getCode())) {
-//                        TuneChainStepsCreate create1 = LoadedCTX.getService(TuneChainStepsCreate.class);
-//                        create1.runChain(savedObj);
-//                    }
-//                }
-//            }
-//        } else if (!create) {
-//            if (savedObj instanceof VBdObjectEntity && oldObj instanceof VBdObjectEntity) {
-//                VBdTableEntity bdTableOld = (VBdTableEntity) oldObj;
-//                VBdTableEntity bdTableNew = (VBdTableEntity) savedObj;
-//                if (bdTableNew.getTypeObject().isNeedDDL()) {
-//                    ExeptObjectName exeptObjectName = LoadedCTX.getService(ExeptObjectName.class);
-//                    if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
-//
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println(savedObj);
-//    }
+    @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.delete(..))")
+    public void deleteObj() {
+    }
 
-//    @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.save(..))")
-//    public void save() {
-//    }
-//
-//    @Around("save()")
-//    public Object saveArround(ProceedingJoinPoint proceedingJoinPoint)  {
-//
-//        Object ret = null;
-//        try {
-//            ret = proceedingJoinPoint.proceed();
-//        } catch (Throwable throwable) {
-//            throwable.printStackTrace();
-//        }
-//
-//        return ret;
-//    }
+    @Around("deleteObj()")
+    public Object deleteObjObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        long startTime = System.nanoTime();
+        Object[] droped = proceedingJoinPoint.getArgs();
+        DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
+        //ddlSave.checkRun(proceedingJoinPoint, adding[0]);
+        Object ret;
+        try {
+            ret = proceedingJoinPoint.proceed(droped);
+        } catch (Throwable throwable) {
+            ddlSave.error(throwable);
+            throw new ApplicationException("Не удалось выполнить Удаление ", throwable);
+        }
+        ddlSave.afterDrop(droped);
+        long endTime = System.nanoTime();
+        System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
 
+        return ret;
 
+    }
 }
