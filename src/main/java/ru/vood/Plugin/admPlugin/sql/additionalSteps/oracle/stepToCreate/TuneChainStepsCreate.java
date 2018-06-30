@@ -8,6 +8,7 @@ import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 
+
 @Service
 public class TuneChainStepsCreate extends TuneChainStepsCreateServise {
 
@@ -15,12 +16,12 @@ public class TuneChainStepsCreate extends TuneChainStepsCreateServise {
     @Qualifier("addTableImpl")
     private StepsCreateAndDropServise table;
 
-    public void runChain(Object bdobj) {
+    public void runChain(VBdObjectEntity bdobj) {
         // Вызов первого, остальное пойдет по цепочке
         QueryTableNew queryTable = null;
         try {
-            queryTable = table.runSteps((VBdObjectEntity) bdobj);
-            runChain(queryTable);
+            queryTable = table.runSteps(bdobj);
+            runQueryes(queryTable);
         } catch (Exception e) {
 
         }

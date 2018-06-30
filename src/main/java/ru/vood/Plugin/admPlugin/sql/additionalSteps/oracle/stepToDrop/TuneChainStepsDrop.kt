@@ -13,12 +13,12 @@ class TuneChainStepsDrop : TuneChainStepsDropService() {
     @Qualifier("dropTableImpl")
     private lateinit var table: StepsCreateAndDropServise
 
-    override fun runChain(bdobj: Any) {
+    override fun runChain(bdobj: VBdObjectEntity) {
         // Вызов первого, остальное пойдет по цепочке
 
         try {
-            val queryTable = table.runSteps(bdobj as VBdObjectEntity)
-            runChain(queryTable)
+            val queryTable = table.runSteps(bdobj)
+            runQueryes(queryTable)
         } catch (e: Exception) {
 
         }

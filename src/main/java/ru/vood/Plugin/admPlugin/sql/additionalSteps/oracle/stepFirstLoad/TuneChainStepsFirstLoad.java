@@ -69,7 +69,7 @@ public class TuneChainStepsFirstLoad {
         queryTable.addAll(lView.additionOne());
 
         // Запуск созданных DDL Комманд
-        stepsCreate.runChain(queryTable);
+        stepsCreate.runQueryes(queryTable);
 
 
         // --------------------- пеовоначальная залива созданных таблиц-------------------------

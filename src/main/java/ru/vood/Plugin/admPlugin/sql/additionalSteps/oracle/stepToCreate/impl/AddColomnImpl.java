@@ -74,7 +74,7 @@ public class AddColomnImpl implements StepsCreateAndDropServise {
             //Если работа идет с массивом то сначала добавить колонку, потом заполнить ее значениями, и поптом ее сделать не пустой.
             stringBuffer.append(" NUMBER ");
             queryTable.add(stringBuffer.toString());
-            stepsCreate.runChain(queryTable);
+            stepsCreate.runQueryes(queryTable);
             stringBuffer = new StringBuffer();
             stringBuffer.append(" UPDATE  " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdColomns.getParent().getCode() + "\n");
             stringBuffer.append(" SET " + bdColomns.getCode() + " = SEQ_ID.nextval  ");
@@ -91,7 +91,7 @@ public class AddColomnImpl implements StepsCreateAndDropServise {
             //ALTER TABLE Employees MODIFY(ID int NOT NULL,Name nvarchar2(30) NOT NULL);
             queryTable.add(stringBuffer.toString());
 
-            stepsCreate.runChain(queryTable);
+            stepsCreate.runQueryes(queryTable);
         }
         if (!bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getARRAY())) {
             queryTable.add(stringBuffer.toString());

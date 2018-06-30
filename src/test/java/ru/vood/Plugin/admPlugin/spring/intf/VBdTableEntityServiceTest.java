@@ -31,8 +31,49 @@ public class VBdTableEntityServiceTest extends BaseTest {
     }
 
     @Test
-    public void saveTest() {
+    public void editTest() {
+        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
+        VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
+        AssertSqlCount.reset();
+        if (vBdObjectEntityParent != null) {
+            VBdTableEntity bdTableEntity = new VBdTableEntity();
+            String tabName = "TEST_CODE_TABLE";
+            bdTableEntity.setCode(tabName);
+            bdTableEntity.setName("TEST_NAME_TABLE");
+            bdTableEntity.setJavaClass(VBdTableEntity.class.toString());
+            bdTableEntity.setParent(vBdObjectEntityParent);
+            bdTableEntity.setTypeObject(typeEntity);
 
+            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+
+            String checkTable = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + tabName + "'";
+            String checkTableRenamed = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + tabName + "1'";
+            Query query = em.createNativeQuery(checkTable);
+            List existsList = query.getResultList();
+
+            bdTableEntity.setCode(tabName + "1");
+
+            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+
+            List notExistsListRenamed = em.createNativeQuery(checkTableRenamed).getResultList();
+            vBdTableEntityService.delete(bdTableEntity);
+
+            List notExistsList = em.createNativeQuery(checkTable).getResultList();
+
+            AssertSqlCount.assertInsertCount(2);
+            AssertSqlCount.assertUpdateCount(1);
+            AssertSqlCount.assertSelectCount(9);
+            Assert.assertNotNull(bdTableEntity.getId());
+            AssertSqlCount.assertDeleteCount(2);
+
+            Assert.assertEquals(existsList.size(), 1);
+            Assert.assertEquals(notExistsListRenamed.size(), 1);
+            Assert.assertEquals(notExistsList.size(), 0);
+        }
+    }
+
+    @Test
+    public void saveTest() {
         VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
         VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
@@ -65,15 +106,15 @@ public class VBdTableEntityServiceTest extends BaseTest {
             Assert.assertEquals(existsList.size(), 1);
             Assert.assertEquals(notExistsList.size(), 0);
         }
-
-    }
-
-    @Test
-    public void delete() {
     }
 
     @Test
     public void findByParent() {
+        VBdObjectEntity entityParent = RootObjects.getTABLE();
+        AssertSqlCount.reset();
+        List list = vBdTableEntityService.findByParent(entityParent);
+        AssertSqlCount.assertSelectCount(2);
+        Assert.assertEquals(list.size(), 3);
     }
 
     @Test

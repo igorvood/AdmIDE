@@ -48,7 +48,7 @@ public class DDLSave {
                 VBdObjectEntity entity = (VBdObjectEntity) savedObj;
                 if (entity.getTypeObject().isNeedDDL()) {
                     if (exeptObjectName.allowAdd(entity.getCode())) {
-                        tuneChainStepsCreateServise.runChain(savedObj);
+                        tuneChainStepsCreateServise.runChain(entity);
                     }
                 }
             }
@@ -58,7 +58,7 @@ public class DDLSave {
                 VBdTableEntity bdTableNew = (VBdTableEntity) savedObj;
                 if (bdTableNew.getTypeObject().isNeedDDL()) {
                     if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
-                        tuneChainStepsEdit.runChain(bdTableOld, savedObj);
+                        tuneChainStepsEdit.runChain(bdTableOld, bdTableNew);
                     }
                 }
             }

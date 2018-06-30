@@ -29,10 +29,14 @@ abstract class BaseTest {
     fun dbAllSet() {
         Arrays.stream(DB_UNIT_SET_UP).forEach { println(it) }
         AssertSqlCount.reset()
+
         ctx = GenericXmlApplicationContext()
-        ctx.load("classpath:spring-config.xml")
-        ctx.refresh()
-        em = ctx.getBean(EntityManager::class.java)
+        if (!ctx.isRunning) {
+            ctx.load("classpath:spring-config.xml")
+            ctx.refresh()
+            em = ctx.getBean(EntityManager::class.java)
+        }
+
         //  session = em.unwrap(Session::class.java)
     }
 

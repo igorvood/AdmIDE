@@ -1,11 +1,8 @@
 package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToEdit.abstr;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.ChainQueryServise;
 
-public abstract class TuneChainStepsEditService {
+public abstract class TuneChainStepsEditService extends ChainQueryServise {
 
-    @Autowired
-    protected TuneChainStepsCreateServise chainStepsCreate;
 
 }

@@ -1,19 +1,10 @@
 package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToDrop.abstr
 
-import org.springframework.beans.factory.annotation.Autowired
-import ru.vood.Plugin.admPlugin.sql.QueryTableNew
-import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise
+import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.ChainQueryServise
 
-abstract class TuneChainStepsDropService {
+abstract class TuneChainStepsDropService : ChainQueryServise() {
 
-    @Autowired
-    protected lateinit var tuneChainStepsCreateServise: TuneChainStepsCreateServise
-
-    abstract fun runChain(bdobj: Any)
-
-    protected fun runChain(queryTable: QueryTableNew) {
-        tuneChainStepsCreateServise.runChain(queryTable)
-    }
-
+    abstract fun runChain(bdobj: VBdObjectEntity)
 
 }
