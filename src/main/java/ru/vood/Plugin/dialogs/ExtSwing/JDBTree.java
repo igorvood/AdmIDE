@@ -78,11 +78,11 @@ public class JDBTree extends JTree {
         ArrayList<VBdObjectEntity> bdObjects = null;
         try {
             bdObjects = (ArrayList<VBdObjectEntity>) bdObjectEntityService.findByTypeObjectCodeIn(typeObjectCodeS);
+            loadList(bdObjects, onlyTable);
         } catch (PersistenceException e) {
             throw new ApplicationErrorException("Не удалось загрузить дерево");
         }
 
-        loadList(bdObjects, onlyTable);
 
     }
 

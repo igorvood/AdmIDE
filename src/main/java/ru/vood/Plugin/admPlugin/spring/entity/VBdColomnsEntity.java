@@ -9,8 +9,8 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 public class VBdColomnsEntity extends VBdObjectEntity {
 
     @Basic
-    @Column(name = "NOT_NULL", nullable = true, length = 1)
-    private String notNull = "0";
+    @Column(name = "NOT_NULL")
+    private boolean notNull = false;
 
     @ManyToOne
     @JoinColumn(name = "TYPE_COLOMN", referencedColumnName = "ID", nullable = true)
@@ -20,11 +20,11 @@ public class VBdColomnsEntity extends VBdObjectEntity {
     @JoinColumn(name = "TYPE_VALUE", referencedColumnName = "ID", nullable = true)
     private VBdObjectEntity typeValue;
 
-    public String getNotNull() {
+    public boolean getNotNull() {
         return notNull;
     }
 
-    public void setNotNull(String notNull) {
+    public void setNotNull(boolean notNull) {
         this.notNull = notNull;
     }
 

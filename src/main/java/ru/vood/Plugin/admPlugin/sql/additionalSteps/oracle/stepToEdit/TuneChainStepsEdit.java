@@ -17,7 +17,7 @@ public class TuneChainStepsEdit extends TuneChainStepsEditService {
 
     public void runChain(VBdObjectEntity bdobjOld, VBdObjectEntity bdobjNew) {
         // Вызов первого, остальное пойдет по цепочке
-        QueryTableNew queryTable = table.runSteps((VBdObjectEntity) bdobjOld, (VBdObjectEntity) bdobjNew);
+        QueryTableNew queryTable = table.runSteps(bdobjOld, bdobjNew);
         runQueryes(queryTable);
     }
 }

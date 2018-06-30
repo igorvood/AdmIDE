@@ -1,8 +1,0 @@
-package ru.vood.Plugin.admPlugin.aspectJ.observerSave;
-
-/**
- * Этот интерфейс используется расширяющими аспектами для указания типов,
- * которыми могут быть Subjects.
- */
-public interface Subject {
-}

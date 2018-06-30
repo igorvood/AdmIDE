@@ -62,7 +62,7 @@ public class VBdTableEntityServiceTest extends BaseTest {
 
             AssertSqlCount.assertInsertCount(2);
             AssertSqlCount.assertUpdateCount(1);
-            AssertSqlCount.assertSelectCount(9);
+            AssertSqlCount.assertSelectCount(7);
             Assert.assertNotNull(bdTableEntity.getId());
             AssertSqlCount.assertDeleteCount(2);
 
@@ -98,7 +98,7 @@ public class VBdTableEntityServiceTest extends BaseTest {
 
             AssertSqlCount.assertInsertCount(2);
             AssertSqlCount.assertUpdateCount(0);
-            AssertSqlCount.assertSelectCount(7);
+            AssertSqlCount.assertSelectCount(5);
             Assert.assertNotNull(bdTableEntity.getId());
             AssertSqlCount.assertDeleteCount(2);
 

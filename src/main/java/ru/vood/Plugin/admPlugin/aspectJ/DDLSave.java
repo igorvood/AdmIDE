@@ -3,7 +3,6 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.sql.ExeptObjectName;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToDrop.TuneChainStepsDrop;
@@ -54,8 +53,8 @@ public class DDLSave {
             }
         } else if (!create) {
             if (savedObj instanceof VBdObjectEntity && oldObj instanceof VBdObjectEntity) {
-                VBdTableEntity bdTableOld = (VBdTableEntity) oldObj;
-                VBdTableEntity bdTableNew = (VBdTableEntity) savedObj;
+                VBdObjectEntity bdTableOld = (VBdObjectEntity) oldObj;
+                VBdObjectEntity bdTableNew = (VBdObjectEntity) savedObj;
                 if (bdTableNew.getTypeObject().isNeedDDL()) {
                     if (exeptObjectName.allowAdd(bdTableNew.getCode())) {
                         tuneChainStepsEdit.runChain(bdTableOld, bdTableNew);

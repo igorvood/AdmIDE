@@ -48,25 +48,25 @@ public class AddColomnImpl implements StepsCreateAndDropServise {
 
         if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getSTRING())) {
             String length = vBdTableEntity.getLength() == null ? " " : "(" + vBdTableEntity.getLength() + ")";
-            stringBuffer.append(" VARCHAR2" + length + " " + ((bdColomns.getNotNull().equals("1")) ? " not null" : " "));
+            stringBuffer.append(" VARCHAR2" + length + " " + ((bdColomns.getNotNull()) ? " not null" : " "));
         } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getNUMBER())) {
             Long len = vBdTableEntity.getLength();
             Long pres = vBdTableEntity.getPrecision();
             String paramNum = "";
             if (len == null && pres == null) {
-                stringBuffer.append(" NUMBER" + " " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
+                stringBuffer.append(" NUMBER" + " " + ((bdColomns.getNotNull()) ? "not null" : ""));
             } else {
                 if (len > 0 && pres > 0) {
                     paramNum = "(" + len + "," + pres + ")";
                 } else if (len > 0) {
                     paramNum = "(" + len + ")";
                 }
-                stringBuffer.append(" NUMBER" + paramNum + " " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
+                stringBuffer.append(" NUMBER" + paramNum + " " + ((bdColomns.getNotNull()) ? "not null" : ""));
             }
         } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getDATE())) {
-            stringBuffer.append(" DATE " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
+            stringBuffer.append(" DATE " + ((bdColomns.getNotNull()) ? "not null" : ""));
         } else if (bdColomns.getTypeValue().getTypeObject().equals(ObjectTypes.getREFERENCE())) {
-            stringBuffer.append(" NUMBER " + ((bdColomns.getNotNull().equals("1")) ? "not null" : ""));
+            stringBuffer.append(" NUMBER " + ((bdColomns.getNotNull()) ? "not null" : ""));
             queryTable.add(stringBuffer.toString());
             String pref = tunes.getPrefixTable();
             stringBuffer = new StringBuffer(constraintSql.getSql(pref + (bdColomns).getParent().getCode(), (bdColomns).getCode(), pref + vBdTableEntity.getToType().getCode(), "ID"));

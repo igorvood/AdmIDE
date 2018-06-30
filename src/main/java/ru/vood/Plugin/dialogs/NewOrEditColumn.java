@@ -92,7 +92,7 @@ public class NewOrEditColumn extends JAddDialog {
             colomns.setParent(this.parentObject);
             colomns.setCode(codeField.getText().toUpperCase());
             colomns.setName(nameField.getText());
-            colomns.setNotNull(((notNullCheckBox.isSelected()) ? "1" : "0"));
+            colomns.setNotNull(((notNullCheckBox.isSelected()) ? true : false));
 
             colomns.setTypeObject(ObjectTypes.getCOLOMN());
             colomns.setTypeValue((VBdTableEntity) ((DefaultMutableTreeNode) tree1.getLastSelectedPathComponent()).getUserObject());

@@ -14,12 +14,12 @@ import static ru.vood.Plugin.admPlugin.spring.entity.ParentForAll.SCHEMA;
 @Table(name = "V_BD_INDEX", schema = SCHEMA, catalog = "")
 public class VBdIndexEntity extends VBdObjectEntity {
     @Basic
-    @Column(name = "UNIQUE_I", nullable = true, length = 1)
-    private String uniqueI = "0";
+    @Column(name = "UNIQUE_I")
+    private boolean uniqueI = false;
 
     @Basic
-    @Column(name = "GLOBAL_I", nullable = true, length = 1)
-    private String globalI = "0";
+    @Column(name = "GLOBAL_I")
+    private boolean globalI = false;
 
     //    @JoinTable(name = "contact_hobby_detail",
 //            joinColumns = @JoinColumn(name = "CONTACT_ID"),
@@ -35,19 +35,19 @@ public class VBdIndexEntity extends VBdObjectEntity {
     @Column(name = "COLUMNS", nullable = true, length = 1)
     private BigDecimal columns;
 
-    public String getUniqueI() {
+    public boolean getUniqueI() {
         return uniqueI;
     }
 
-    public void setUniqueI(String uniqueI) {
+    public void setUniqueI(boolean uniqueI) {
         this.uniqueI = uniqueI;
     }
 
-    public String getGlobalI() {
+    public boolean getGlobalI() {
         return globalI;
     }
 
-    public void setGlobalI(String globalI) {
+    public void setGlobalI(boolean globalI) {
         this.globalI = globalI;
     }
 

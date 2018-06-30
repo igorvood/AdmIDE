@@ -39,7 +39,7 @@ public class AddIndexImpl implements StepsCreateAndDropServise {
             List s = bdIndex.getColomnsEntities().stream()
                     .map((c) -> c.getColomnRef().getCode())
                     .collect(Collectors.toList());
-            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI().equals("1"), s, null);
+            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI(), s, null);
             queryTable.add(sql);
         }
 

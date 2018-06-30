@@ -4,11 +4,6 @@ import com.google.gson.Gson;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.vood.Plugin.admPlugin.gson.GsonTune;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
-import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
-import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT;
-import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.impl.GenClassServiceKT;
-import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.tune.Configarations;
 import ru.vood.Plugin.dialogs.ADMDialog;
 import ru.vood.Plugin.dialogs.ADMTuneDialog;
@@ -58,30 +53,9 @@ public class ADMMain {
 
     public static void main(String[] args) {
 
-        //init();
         ctx = new GenericXmlApplicationContext();
         ctx.load("classpath:spring-config.xml"); //move from src.main.java to src.main.resources
         ctx.refresh();
-
-        /*BdObjectService bdObjectService = LoadedCTX.getService(BdObjectService.class);
-        BDObject bdObject = bdObjectService.findByCodeAndParenCode("address", "TABLE");
-
-        System.out.println(bdObject);
-        System.out.println(bdObject);*/
-
-        VBdObjectEntityService vBdObjectEntityService = LoadedCTX.getService(VBdObjectEntityService.class);
-        VBdObjectEntity entity = null;
-        try {
-            entity = vBdObjectEntityService.findByCodeAndParenCode("address", "TABLE");
-        } catch (CoreExeption coreExeption) {
-            coreExeption.printStackTrace();
-        }
-
-        GenClassServiceKT genClassService = LoadedCTX.getService(GenClassServiceKT.class);
-
-        StringBuilder code = genClassService.genCode(entity, TypeOfGenClassKT.ENTITY_CLASS);
-
-        System.out.println(code);
 
         /*
         JAddDialog dialog = new SelectedDialog(null);
@@ -104,85 +78,11 @@ public class ADMMain {
             System.out.println(dialog);
         }*/
 
-      /*  VBdObjectEntity tables = Tables.getAny("address");
-        VBdIndexEntityService indexEntityService = LoadedCTX.getService(VBdIndexEntityService.class);
-        List<VBdIndexEntity> colomns = indexEntityService.findByParent(tables);
-
-        System.out.println(colomns);*/
-
-
-/*
-
-        VBdColomnsEntityService colomnsEntityService = LoadedCTX.getService(VBdColomnsEntityService.class);
-        VBdColomnsEntity colomnsEntity= colomnsEntityService.findColomn(Tables.getAny("CLIENT"),"NAME");
-        VBdColomnsEntity colomnsEntity_date= colomnsEntityService.findColomn(Tables.getAny("CLIENT"),"DATE_BIRTH");
-
-        CommonFunctionService commonFunctionService = LoadedCTX.getService(CommonFunctionService.class);
-        VBdIndexEntityService entityTestService = LoadedCTX.getService(VBdIndexEntityService.class);
-
-        VBdIndexEntity vBdIndexEntityTest = new VBdIndexEntity();
-
-        vBdIndexEntityTest.setCode("IDX_");
-        vBdIndexEntityTest.setName("IDX_");
-        vBdIndexEntityTest.setTypeObject(ObjectTypes.getINDEX());
-        vBdIndexEntityTest.setParent(Tables.getTABLE());
-        vBdIndexEntityTest.setJavaClass(vBdIndexEntityTest.getClass().toString());
-        vBdIndexEntityTest.setColumns(commonFunctionService.nextId());
-
-        VBdIndexedColomnsEntity indexedColomnsEntity = new VBdIndexedColomnsEntity();
-        indexedColomnsEntity.setColomnRef(colomnsEntity);
-        vBdIndexEntityTest.addColomn(indexedColomnsEntity);
-
-        indexedColomnsEntity = new VBdIndexedColomnsEntity();
-        indexedColomnsEntity.setColomnRef(colomnsEntity_date);
-        vBdIndexEntityTest.addColomn(indexedColomnsEntity);
-
-
-        vBdIndexEntityTest = entityTestService.save(vBdIndexEntityTest);
-
-        entityTestService.delete(vBdIndexEntityTest);*/
-
-//        VBdObjectTypeEntity entity =new VBdObjectTypeEntity();
-//        entity.setCode("AAAAAAA");
-//        entity.setName("AAAAAAA");
-//
-//
-//        VBdObjectTypeEntityRepository vBdObjectTypeEntityRepository = LoadedCTX.getService(VBdObjectTypeEntityRepository.class);
-//
-//        entity = vBdObjectTypeEntityRepository.save(entity);
-//
-//        BigDecimal bigDecimal = entity.getId();
-//
-//        entity =new VBdObjectTypeEntity();
-//        entity.setCode("AAAAAAA");
-//        entity.setId(bigDecimal);
-//        entity.setName("qwqqwerrerewr");
-//
-//        entity = vBdObjectTypeEntityRepository.save(entity);
-//
-//        vBdObjectTypeEntityRepository.delete(entity);
-
-
-//        System.out.println("----------------------------------------");
-//        DriverManagerDataSource dataSource = ADMMain.getCtx().getBean(DriverManagerDataSource.class);
-//        System.out.println(dataSource + " - " + dataSource.getUrl());
-//
-//        LocalContainerEntityManagerFactoryBean factoryBean = ADMMain.getCtx().getBean(LocalContainerEntityManagerFactoryBean.class);
-//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        factoryBean.getJpaPropertyMap().entrySet().stream().peek(e -> System.out.println(e.getKey() + " -" + e.getValue()));
-//
-//        System.out.println("----------------------------------------");
         try {
             new ADMMain();
         } catch (CoreRuntimeException e) {
             new MessageWin(e.toString());
         }
-
-//        try {
-//            DBConnect.closeConnection();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
     }
 
 

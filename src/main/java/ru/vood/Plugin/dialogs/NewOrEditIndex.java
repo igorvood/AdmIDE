@@ -116,8 +116,8 @@ public class NewOrEditIndex extends JAddDialog {
                 .reduce((s1, s2) -> s1 + "_" + s2).orElse(" ");
         indexEntity.setName(INDEX_PREFIX + parentObject.getCode() + "_" + nameIdx);
         indexEntity.setCode(INDEX_PREFIX + parentObject.getCode() + "_" + nameIdx);
-        indexEntity.setGlobalI("0");
-        indexEntity.setUniqueI("0");
+        indexEntity.setGlobalI(false);
+        indexEntity.setUniqueI(false);
         indexEntity.setColomnsEntities(null);
         for (VBdObjectEntity ic : listColomn) {
             indexEntity.addColomn((VBdColomnsEntity) ic);

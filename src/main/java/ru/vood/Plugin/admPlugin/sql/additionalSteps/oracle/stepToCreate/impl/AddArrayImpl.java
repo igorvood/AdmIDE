@@ -56,7 +56,7 @@ public class AddArrayImpl implements StepsCreateAndDropServise {
             colomnsEntity.setParent(((VBdTableEntity) bdObject).getToType());
             colomnsEntity.setCode(COLLECTION);
             colomnsEntity.setName("Идентификатор коллекции");
-            colomnsEntity.setNotNull("1");
+            colomnsEntity.setNotNull(true);
             colomnsEntity.setTypeColomn(ObjectTypes.getNUMBER());
             colomnsEntity.setTypeValue(Tables.getAny("NUM"));
             colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());

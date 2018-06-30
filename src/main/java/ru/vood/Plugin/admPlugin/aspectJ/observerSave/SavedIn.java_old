@@ -1,8 +1,0 @@
-package ru.vood.Plugin.admPlugin.aspectJ.observerSave;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SavedIn {
-}

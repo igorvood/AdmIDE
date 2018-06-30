@@ -142,6 +142,8 @@
 
     <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
     <context:annotation-config/>
+    <!-- Spring AOP -->
+    <!--<aop:aspectj-autoproxy/>-->
 
     <!--Scanning components in base-package (look for annotations) -->
     <context:component-scan base-package="ru.vood"/>

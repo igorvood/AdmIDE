@@ -10,6 +10,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.AfterTransaction
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener
 import org.springframework.transaction.annotation.Transactional
+import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX
+import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad.TuneChainStepsFirstLoad
 import java.util.*
 import javax.persistence.EntityManager
 
@@ -37,7 +40,17 @@ abstract class BaseTest {
             em = ctx.getBean(EntityManager::class.java)
         }
 
-        //  session = em.unwrap(Session::class.java)
+//        val drop = em.createNativeQuery(" call VOOD.DROP_ALL_TABLES()")
+//        try {
+//            drop.resultList
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+        try {
+            RootObjects.getTABLE()
+        } catch (e: Exception) {
+            LoadedCTX.getService(TuneChainStepsFirstLoad::class.java).run()
+        }
     }
 
     @AfterTransaction

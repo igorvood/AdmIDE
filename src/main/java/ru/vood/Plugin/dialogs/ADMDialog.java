@@ -475,7 +475,11 @@ public class ADMDialog extends JAddDialog {
         colomnTable = new JTable(new JDBTableColomnModel());
         indexTable = new JTable(new JDBTableIndexsModel());
         tree1 = new JDBTree();// JDBTree.getInstance();
-        tree1.loadTree(true);
+        try {
+            tree1.loadTree(true);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
 
         // TODO: place custom component creation code here
     }
