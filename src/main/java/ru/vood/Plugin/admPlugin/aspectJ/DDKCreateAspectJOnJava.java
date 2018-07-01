@@ -3,16 +3,25 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.context.LoadedCTX;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
+import ru.vood.Plugin.dialogs.ADMTuneDialog;
+
+import javax.transaction.Transactional;
 
 @Aspect
-//@Component
-//@Order(1)
+@Component
+@Transactional
 public class DDKCreateAspectJOnJava {
+
+    private final static Logger lOG = LoggerFactory.getLogger(ADMTuneDialog.class);
 
     @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.save(..))")
     // @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.impl.*.save(..)) ")
@@ -20,8 +29,14 @@ public class DDKCreateAspectJOnJava {
     public void addOrEditObj() {
     }
 
+    @Before("addOrEditObj()")
+    public void beforeAdd() {
+        DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
+        ddlSave.beforeTest();
+    }
+
     @Around("addOrEditObj()")
-    public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {
         long startTime = System.nanoTime();
         Object[] adding = proceedingJoinPoint.getArgs();
         DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
@@ -46,6 +61,7 @@ public class DDKCreateAspectJOnJava {
         } catch (Throwable throwable) {
             ddlSave.error(throwable);
             ret = null;
+            lOG.error("Не удалось выполнить сохрание ", throwable);
             throw new ApplicationException("Не удалось выполнить сохрание ", throwable);
         }
         // ========================================= Вызов основного метода==========================================
@@ -54,7 +70,9 @@ public class DDKCreateAspectJOnJava {
                 try {
                     ddlSave.afterSave(ret, create, oldEntity);
                 } catch (Exception e) {
-                    ret = null;
+                    long endTime = System.nanoTime();
+                    System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
+                    throw new ApplicationException(e.getMessage(), e);
                 }
             }
         }
@@ -79,9 +97,17 @@ public class DDKCreateAspectJOnJava {
             ret = proceedingJoinPoint.proceed(droped);
         } catch (Throwable throwable) {
             ddlSave.error(throwable);
+            lOG.error("Не удалось выполнить Удаление ", throwable);
             throw new ApplicationException("Не удалось выполнить Удаление ", throwable);
         }
-        ddlSave.afterDrop(droped);
+        try {
+            ddlSave.afterDrop(droped);
+        } catch (Exception e) {
+            long endTime = System.nanoTime();
+            System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
+            throw new ApplicationException(e.getMessage(), e);
+        }
+
         long endTime = System.nanoTime();
         System.out.println("Method " + proceedingJoinPoint.getSignature().toShortString() + " took " + (endTime - startTime));
 

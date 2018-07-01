@@ -26,13 +26,6 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
 
     @Override
     public VBdTableEntity save(VBdTableEntity entity) {
-//        if (entity.getDateCreate() == null) {
-//            entity.setDateCreate(new Date());
-//        }
-//        if (entity.getId()==null){
-//            entity.setId(commonFunction.nextId());
-//        }
-
         return bdTableEntityRepository.save(entity);
     }
 

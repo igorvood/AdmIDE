@@ -69,6 +69,10 @@ class VBdIndexEntityServiceTest : BaseTest() {
 
     @Test
     fun findByCode() {
+    }
+
+    @Test
+    fun save() {
         val indexName = "IDX_Test_col_CODE".toUpperCase()
         var index = VBdIndexEntity()
         index.code = indexName
@@ -96,14 +100,6 @@ class VBdIndexEntityServiceTest : BaseTest() {
 //        index.notNull = false
 //        index.typeColomn = ObjectTypes.getSTRING()
 //        index.typeValue = vBdTableEntityService.findByCode("STR_160")
-
-
-    }
-
-    @Test
-    fun save() {
-
-
     }
 
     @Test

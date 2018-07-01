@@ -3,6 +3,7 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
+import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
 import ru.vood.Plugin.admPlugin.sql.ExeptObjectName;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToDrop.TuneChainStepsDrop;
@@ -47,7 +48,11 @@ public class DDLSave {
                 VBdObjectEntity entity = (VBdObjectEntity) savedObj;
                 if (entity.getTypeObject().isNeedDDL()) {
                     if (exeptObjectName.allowAdd(entity.getCode())) {
-                        tuneChainStepsCreateServise.runChain(entity);
+                        try {
+                            tuneChainStepsCreateServise.runChain(entity);
+                        } catch (Exception e) {
+                            throw new ApplicationException(e.getMessage(), e);
+                        }
                     }
                 }
             }
@@ -79,4 +84,7 @@ public class DDLSave {
         throwable.printStackTrace();
     }
 
+    public void beforeTest() {
+        //throw new ApplicationException("Случилось страшное не сохраняем");
+    }
 }

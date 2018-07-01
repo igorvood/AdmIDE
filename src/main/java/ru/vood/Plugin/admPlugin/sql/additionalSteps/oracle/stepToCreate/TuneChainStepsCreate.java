@@ -19,11 +19,7 @@ public class TuneChainStepsCreate extends TuneChainStepsCreateServise {
     public void runChain(VBdObjectEntity bdobj) {
         // Вызов первого, остальное пойдет по цепочке
         QueryTableNew queryTable = null;
-        try {
-            queryTable = table.runSteps(bdobj);
-            runQueryes(queryTable);
-        } catch (Exception e) {
-
-        }
+        queryTable = table.runSteps(bdobj);
+        runQueryes(queryTable);
     }
 }
