@@ -21,6 +21,13 @@ class GenCodeCommonFunctionKT {
         return StringBuilder(toCamelCase(getTableName(entity).toString() + "_" + typeOfGenClassKT)!!)
     }
 
+    @JvmOverloads
+    fun getParametrName(entity: VBdObjectEntity
+                        , typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
+        val parameterName = getClassName(entity, typeOfGenClassKT)
+        return StringBuilder(parameterName.get(0).toLowerCase() + parameterName.substring(1) + "Val")
+    }
+
     fun getPackegeName(typeOfGenClassKT: TypeOfGenClassKT): StringBuilder {
         return StringBuilder(pluginTunes.packageIn + "." + typeOfGenClassKT.toString().toLowerCase())
     }
@@ -28,7 +35,7 @@ class GenCodeCommonFunctionKT {
     @JvmOverloads
     fun getFullClassName(entity: VBdObjectEntity
                          , typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
-        val code = StringBuilder(getPackegeName(typeOfGenClassKT))
+        val code = StringBuilder(getPackegeName(typeOfGenClassKT)).append(".")
         return code.append(getClassName(entity, typeOfGenClassKT))
     }
 
@@ -44,7 +51,7 @@ class GenCodeCommonFunctionKT {
             typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS
     ): Boolean {
         return if (typeOfGenClassKT == TypeOfGenClassKT.ENTITY_CLASS) {
-            entity.parent != null && RootObjects.isRoot(entity.parent)
+            entity.parent != null && !RootObjects.isRoot(entity.parent) /*&& entity.parent.typeObject.equals(ObjectTypes.getTABLE())*/
         } else false
     }
 

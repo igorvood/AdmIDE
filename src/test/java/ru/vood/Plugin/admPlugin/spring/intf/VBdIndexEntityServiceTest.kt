@@ -2,6 +2,7 @@ package ru.vood.Plugin.admPlugin.spring.intf
 
 import com.jeeconf.hibernate.performancetuning.sqltracker.AssertSqlCount
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import ru.vood.Plugin.admPlugin.BaseTest
@@ -63,6 +64,7 @@ class VBdIndexEntityServiceTest : BaseTest() {
 
     @After
     fun after() {
+        vBdColomnsEntityService.delete(col);
         vBdTableEntityService.delete(vBdTableEntity)
     }
 
@@ -89,10 +91,10 @@ class VBdIndexEntityServiceTest : BaseTest() {
         vBdIndexEntityService.delete(index)
 
 
-        AssertSqlCount.assertInsertCount(2)
+        AssertSqlCount.assertInsertCount(3)
         AssertSqlCount.assertUpdateCount(0)
-        AssertSqlCount.assertSelectCount(2)
-        AssertSqlCount.assertDeleteCount(2)
+        AssertSqlCount.assertSelectCount(8)
+        AssertSqlCount.assertDeleteCount(3)
 //        Assert.assertEquals(existsList.size, 1)
 //        Assert.assertEquals(editList.size, 1)
 //        Assert.assertEquals(delList.size, 0)
@@ -104,6 +106,7 @@ class VBdIndexEntityServiceTest : BaseTest() {
 
     @Test
     fun findByParent() {
+        Assert.assertEquals(1, 1)
     }
 
 }

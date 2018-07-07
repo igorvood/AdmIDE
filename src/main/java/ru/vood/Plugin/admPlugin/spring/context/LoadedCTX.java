@@ -23,8 +23,11 @@ public class LoadedCTX {
     }
 
     public static <T> T getService(Class<T> requiredType) {
-        //load();
         return applicationContext.getBean(requiredType);
+    }
+
+    public ApplicationContext getAppContext() {
+        return applicationContext;
     }
 
 /*    private static void load() {

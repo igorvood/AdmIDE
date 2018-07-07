@@ -107,7 +107,7 @@ public class VBdObjectEntity extends ParentForAll {
         if (!(o instanceof VBdObjectEntity)) return false;
 
         VBdObjectEntity that = (VBdObjectEntity) o;
-
+        if (getId() == null) return false;
         return getId().equals(that.getId());
     }
 

@@ -27,7 +27,7 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
     @Autowired
     protected VBdIndexEntityRepository entityTestRepository;
     @Autowired
-    protected VBdIndexedColomnsEntityRepository colomnsEntityRepository;
+    protected VBdIndexedColomnsEntityRepository indexedColomnsEntityRepository;
     @Autowired
     protected EntityManager em;
     @Autowired
@@ -36,7 +36,7 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
     @Override
     public VBdIndexEntity save(VBdIndexEntity entity) {
         if (entity.getColomnsEntities() != null) {
-            entity.getColomnsEntities().stream().forEach(col -> colomnsEntityRepository.save(col));
+            entity.getColomnsEntities().stream().forEach(col -> indexedColomnsEntityRepository.save(col));
         }
         return entityTestRepository.save(entity);
     }
@@ -44,7 +44,7 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
     @Override
     public void delete(VBdIndexEntity entity) {
         if (entity.getColomnsEntities() != null) {
-            entity.getColomnsEntities().stream().forEach(col -> colomnsEntityRepository.delete(col));
+            entity.getColomnsEntities().stream().forEach(col -> indexedColomnsEntityRepository.delete(col));
         }
         entityTestRepository.delete(entity);
     }
@@ -64,7 +64,7 @@ public class VBdIndexEntityImp implements VBdIndexEntityService {
                 .setParameter("parent", parent);
         List<VBdIndexEntity> listVBdIndexEntity = query.getResultList();
         List<BigDecimal> bigDecimals = listVBdIndexEntity.stream().map(q -> q.getColumns()).collect(Collectors.toList());
-        List<VBdIndexedColomnsEntity> indexedColomnsEntities = colomnsEntityRepository.findByCollectionIdIn(bigDecimals);
+        List<VBdIndexedColomnsEntity> indexedColomnsEntities = indexedColomnsEntityRepository.findByCollectionIdIn(bigDecimals);
         for (VBdIndexEntity li : listVBdIndexEntity) {
             for (VBdIndexedColomnsEntity col : indexedColomnsEntities) {
                 if (li.getColumns().equals(col.getCollectionId())) {

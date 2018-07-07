@@ -3,7 +3,6 @@ package ru.vood.Plugin.admPlugin.aspectJ;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +28,16 @@ public class DDKCreateAspectJOnJava {
     public void addOrEditObj() {
     }
 
-    @Before("addOrEditObj()")
-    public void beforeAdd() {
-        DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
-        ddlSave.beforeTest();
-    }
+//    @Pointcut("execution(* ru.vood.Plugin.admPlugin.spring.intf.*.save(..))")
+//    public void addOrEditObjBefore(Object o) {
+//    }
+//
+//
+//    @Before("addOrEditObjBefore(o)")
+//    public void beforeAdd( Object o) {
+//        DDLSave ddlSave = LoadedCTX.getService(DDLSave.class);
+//        ddlSave.beforeTest(o);
+//    }
 
     @Around("addOrEditObj()")
     public Object addOrEditObjArround(ProceedingJoinPoint proceedingJoinPoint) {

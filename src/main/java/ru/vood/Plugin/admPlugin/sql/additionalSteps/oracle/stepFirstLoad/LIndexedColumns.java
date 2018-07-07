@@ -3,8 +3,8 @@ package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.impl.AddIndexImpl;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddConstraintSql;
-import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
@@ -23,7 +23,9 @@ public class LIndexedColumns {
     private AddPrimaryKeySql primaryKeySql;
 
     @Autowired
-    private AddIndexSql addIndexSql;
+    //private AddIndexSql addIndexSql;
+    private AddIndexImpl addIndex;
+
     @Autowired
     private AddConstraintSql constraintSql;
 
@@ -44,7 +46,7 @@ public class LIndexedColumns {
 
         ArrayList<String> listColom = new ArrayList<>();
         listColom.add(COLLECTION);
-        s = addIndexSql.generateSys(tableName, false, listColom);
+        s = addIndex.generateSys(tableName, false, listColom);
         queryTable.add(s);
 
         s = constraintSql.getSql(tableName, "COLUMN_REF", "V_BD_OBJECT", "ID");

@@ -193,4 +193,25 @@ public class VBdTableEntityServiceTest extends BaseTest {
         }
     }
 
+    @Test
+    public void modifyTooLongCode() {
+        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
+        VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
+        AssertSqlCount.reset();
+        if (vBdObjectEntityParent != null) {
+            VBdTableEntity bdTableEntity = new VBdTableEntity();
+            //String tabName = "TEST_CODE_TABLE_modifyTooLongCode".toUpperCase();
+            String tabName = "TEST_CODE_TABLE_".toUpperCase();
+            bdTableEntity.setCode(tabName);
+            bdTableEntity.setName("TEST_NAME_TABLE");
+            bdTableEntity.setJavaClass(VBdTableEntity.class.toString());
+            bdTableEntity.setParent(vBdObjectEntityParent);
+            bdTableEntity.setTypeObject(typeEntity);
+
+            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+
+            vBdTableEntityService.delete(bdTableEntity);
+        }
+
+    }
 }

@@ -1,7 +1,6 @@
 package ru.vood.Plugin.admPlugin.sql.dbms.oracle;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 import ru.vood.core.runtime.exception.ApplicationErrorException;
@@ -10,7 +9,8 @@ import java.util.List;
 
 import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.INDEX_PREFIX;
 
-@Service
+//@Service
+@Deprecated
 public class AddIndexSql {
 
     @Autowired

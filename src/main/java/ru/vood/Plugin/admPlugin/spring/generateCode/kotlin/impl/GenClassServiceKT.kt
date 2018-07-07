@@ -34,12 +34,14 @@ class GenClassServiceKT : GenAnyPartKT {
 
         code.append(genPackageImpl!!.genCode(entity, typeOfGenClass))
 
-        code.append(genImportService!!.genCode(entity, typeOfGenClass))
+        //code.append(genImportService!!.genCode(entity, typeOfGenClass))
 
         code.append(genAnnotationClassService!!.genCode(entity, typeOfGenClass))
 
         code.append("public class " + commonFunction!!.getClassName(entity, typeOfGenClass) + commonFunction!!.getExtendsClassName(entity, typeOfGenClass) + " {\n")
+
         code.append(classBodyService!!.genCode(entity, typeOfGenClass))
+
         code.append(" }")
 
         return code

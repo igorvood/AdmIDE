@@ -1,4 +1,4 @@
-package ru.vood.Plugin.admPlugin.spring.generateCode.Message
+package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.addingImport.Message
 
 import org.springframework.context.ApplicationEvent
 
@@ -8,6 +8,5 @@ class AddImportEvent : ApplicationEvent {
 
     constructor(source: Any, fullNameClass: String) : super(source) {
         this.fullNameClass = fullNameClass
-
     }
 }

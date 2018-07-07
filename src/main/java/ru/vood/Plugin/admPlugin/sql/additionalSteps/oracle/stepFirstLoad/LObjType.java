@@ -3,8 +3,8 @@ package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.impl.AddIndexImpl;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddConstraintSql;
-import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
 import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddPrimaryKeySql;
 import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
@@ -25,7 +25,7 @@ public class LObjType {
     private AddConstraintSql constraintSql;
 
     @Autowired
-    private AddIndexSql addIndexSql;
+    private AddIndexImpl addIndexSql;
 
     public QueryTableNew additionOne() {
         QueryTableNew queryTable = new QueryTableNew();
@@ -47,7 +47,7 @@ public class LObjType {
         queryTable.add(s);
         ArrayList<String> listCol = new ArrayList<>();
         listCol.add("CODE");
-        s = addIndexSql.generateSys(tableName, true, false, listCol);
+        s = addIndexSql.generateSys(tableName, true, listCol);
         queryTable.add(s);
 
         return queryTable;

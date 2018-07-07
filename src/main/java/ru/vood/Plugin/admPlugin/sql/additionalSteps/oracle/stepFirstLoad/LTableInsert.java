@@ -35,7 +35,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_date_table = new VBdTableEntity();
         bdObject_date_table.setCode("DATE");
         bdObject_date_table.setName("Дата");
-        bdObject_date_table.setParent(objectEntityService.findByCode("DATE"));
+        bdObject_date_table.setParent(RootObjects.getDATE());
         bdObject_date_table.setTypeObject(ObjectTypes.getDATE());
         bdObject_date_table.setJavaClass(VBdTableEntity.class.toString());
         VBdTableEntity newTableEntity = bdTableEntityService.save(bdObject_date_table);
@@ -43,7 +43,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_boolean_table = new VBdTableEntity();
         bdObject_boolean_table.setCode("BOOLEAN");
         bdObject_boolean_table.setName("Логика");
-        bdObject_boolean_table.setParent(objectEntityService.findByCode("BOOLEAN"));
+        bdObject_boolean_table.setParent(RootObjects.getBOOLEAN());
         bdObject_boolean_table.setTypeObject(ObjectTypes.getBOOLEAN());
         bdObject_boolean_table.setJavaClass(VBdTableEntity.class.toString());
         VBdTableEntity newbdObject_boolean_table = bdTableEntityService.save(bdObject_boolean_table);
@@ -52,7 +52,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_num1_table = new VBdTableEntity();
         bdObject_num1_table.setCode("NUM");
         bdObject_num1_table.setName("Число");
-        bdObject_num1_table.setParent(objectEntityService.findByCode("NUMBER"));
+        bdObject_num1_table.setParent(RootObjects.getNUMBER());
         bdObject_num1_table.setTypeObject(ObjectTypes.getNUMBER());
         bdObject_num1_table.setJavaClass(VBdTableEntity.class.toString());
         VBdTableEntity newbdObject_num_table = bdTableEntityService.save(bdObject_num1_table);
@@ -60,7 +60,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_str_table = new VBdTableEntity();
         bdObject_str_table.setCode("STR_160");
         bdObject_str_table.setName("Стока(160)");
-        bdObject_str_table.setParent(objectEntityService.findByCode("STRING"));
+        bdObject_str_table.setParent(RootObjects.getSTRING());
         bdObject_str_table.setTypeObject(ObjectTypes.getSTRING());
         bdObject_str_table.setLength(160L);
         bdObject_str_table.setJavaClass(VBdTableEntity.class.toString());
@@ -71,7 +71,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_num_table = new VBdTableEntity();
         bdObject_num_table.setCode("NUM_17_2");
         bdObject_num_table.setName("Число(17,2)");
-        bdObject_num_table.setParent(objectEntityService.findByCode("NUMBER"));
+        bdObject_num_table.setParent(RootObjects.getNUMBER());
         bdObject_num_table.setTypeObject(ObjectTypes.getNUMBER());
         bdObject_num_table.setLength(17L);
         bdObject_num_table.setPrecision(2L);
@@ -83,7 +83,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_table = new VBdTableEntity();
         bdObject_table.setCode("CLIENT");
         bdObject_table.setName("Клиенты");
-        bdObject_table.setParent(objectEntityService.findByCode("TABLE"));
+        bdObject_table.setParent(RootObjects.getTABLE());
         bdObject_table.setTypeObject(ObjectTypes.getTABLE());
         bdObject_table.setJavaClass(VBdTableEntity.class.toString());
 
@@ -92,7 +92,7 @@ public class LTableInsert {
         VBdTableEntity bdObject_table_aderss = new VBdTableEntity();
         bdObject_table_aderss.setCode("address");
         bdObject_table_aderss.setName("Адреса");
-        bdObject_table_aderss.setParent(objectEntityService.findByCode("TABLE"));
+        bdObject_table_aderss.setParent(RootObjects.getTABLE());
         bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
         bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
 

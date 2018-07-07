@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdIndexEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
-import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
+import ru.vood.Plugin.admPlugin.tune.PluginTunes;
+import ru.vood.core.runtime.exception.ApplicationErrorException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +22,13 @@ public class AddIndexImpl implements StepsCreateAndDropServise {
     private StepsCreateAndDropServise nextStep;
 
     @Autowired
-    private AddIndexSql indexSql;
+    private LimitingNameDBMS limitingNameDBMS;
+
+//    @Autowired
+//    private AddIndexSql indexSql;
+
+    @Autowired
+    private PluginTunes pluginTunes;
 
     @Override
     public StepsCreateAndDropServise getNextStep() {
@@ -39,11 +47,53 @@ public class AddIndexImpl implements StepsCreateAndDropServise {
             List s = bdIndex.getColomnsEntities().stream()
                     .map((c) -> c.getColomnRef().getCode())
                     .collect(Collectors.toList());
-            String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI(), s, null);
+            //String sql = indexSql.generateUser(bdIndex.getParent().getCode(), bdIndex.getUniqueI(), s, null);
+            String sql = generateAll(pluginTunes.getPrefixTable() + bdIndex.getParent().getCode(), bdIndex.getUniqueI(), false, pluginTunes.getTableSpaseUserIndex(), s, bdIndex.getCode());
             queryTable.add(sql);
         }
 
         return queryTable;
 
     }
+
+    private String generateAll(String tableName, boolean isUnique, boolean isReverse, String tableSpace, List<String> colomns, String nameIdx) {
+        if (colomns == null || colomns.isEmpty()) {
+            throw new ApplicationErrorException("Не определен список колонок для индекса.");
+        }
+
+        StringBuffer nameIndex = new StringBuffer(nameIdx);
+        //nameIndex.append(tableName.toUpperCase());
+
+        StringBuffer col = new StringBuffer(" (");
+
+        StringBuffer res;
+        if (!isUnique) {
+            res = new StringBuffer("create index ");
+        } else {
+            res = new StringBuffer("create unique index ");
+        }
+        res.append(nameIndex);
+        col.append(colomns.stream().reduce((s1, s2) -> s1 + ", " + s2).orElse(" "));
+
+        res.append(" on ");
+        res.append(tableName);
+        res.append(col);
+        res.append(" ) ");
+        res.append(" tablespace ");
+        res.append(tableSpace);
+        res.append(" ");
+        res.append(pluginTunes.getStorageIndex());
+        if (isReverse) {
+            res.append(" REVERSE");
+        }
+        return res.toString();
+    }
+
+    public String generateSys(String tableName, boolean isUnique, List<String> colomns) {
+        String nameSysIndex = colomns.stream().reduce((s1, s2) -> s1 + "_" + s2).orElse(" ");
+        nameSysIndex = "SYS_IDX_" + tableName + "_" + nameSysIndex;
+        nameSysIndex = limitingNameDBMS.getNameObj(nameSysIndex);
+        return generateAll(tableName, isUnique, false, pluginTunes.getTableSpaseSysIndex(), colomns, nameSysIndex);
+    }
+
 }

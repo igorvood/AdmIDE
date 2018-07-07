@@ -13,8 +13,6 @@ import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.StepsCreateAndDropServise;
-import ru.vood.Plugin.admPlugin.sql.dbms.oracle.AddIndexSql;
-import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 import static ru.vood.Plugin.admPlugin.sql.sqlInterfaces.SQLInterface.COLLECTION;
 
@@ -29,11 +27,11 @@ public class AddArrayImpl implements StepsCreateAndDropServise {
     @Autowired
     private CommonFunctionService commonFunction;
 
-    @Autowired
-    private PluginTunes pluginTunes;
-
-    @Autowired
-    private AddIndexSql addIndexSql;
+//    @Autowired
+//    private PluginTunes pluginTunes;
+//
+//    @Autowired
+//    private AddIndexSql addIndexSql;
 
     @Autowired
     private VBdColomnsEntityService colomnsEntityService;

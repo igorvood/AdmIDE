@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity;
 import ru.vood.Plugin.admPlugin.spring.except.ApplicationException;
 import ru.vood.Plugin.admPlugin.sql.ExeptObjectName;
+import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.LimitingNameDBMS;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToCreate.abstr.TuneChainStepsCreateServise;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToDrop.TuneChainStepsDrop;
 import ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepToEdit.TuneChainStepsEdit;
@@ -24,7 +25,13 @@ public class DDLSave {
     @Autowired
     private ExeptObjectName exeptObjectName;
 
+    @Autowired
+    private LimitingNameDBMS limitingNameDBMS;
+
     public void checkRun(Object joinPoint, Object o) {
+        if (o instanceof VBdObjectEntity) {
+            beforeTest((VBdObjectEntity) o);
+        }
         System.out.println(joinPoint);
         System.out.println(o);
     }
@@ -84,7 +91,7 @@ public class DDLSave {
         throwable.printStackTrace();
     }
 
-    public void beforeTest() {
-        //throw new ApplicationException("Случилось страшное не сохраняем");
+    public void beforeTest(VBdObjectEntity o) {
+        limitingNameDBMS.getNameObj(o);
     }
 }
