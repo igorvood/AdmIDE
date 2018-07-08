@@ -45,6 +45,13 @@ class GenCodeCommonFunctionKT {
             "    @Column(name = \"ID\", nullable = false, precision = 0)\n" +
             "    private BigDecimal id;\n")
 
+    fun genFieldName(entity: VBdObjectEntity): StringBuilder {
+        val s = toCamelCase(entity.code)
+        val res = StringBuilder()
+        res.append(s!!.get(0).toLowerCase()).append(s.substring(1))
+        return res
+    }
+
     @JvmOverloads
     fun isRootEntity(
             entity: VBdObjectEntity,

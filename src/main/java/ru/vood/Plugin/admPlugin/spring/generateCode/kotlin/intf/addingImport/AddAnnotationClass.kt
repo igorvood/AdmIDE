@@ -14,7 +14,7 @@ class AddAnnotationClass : AddJavaClass() {
         val par = paramOfAnnotation.asSequence()
                 .map { pp -> pp.key + if (!pp.value?.isEmpty()) "=" + pp.value else "" }
                 .reduce { s1, s2 -> s1 + ", " + s2 }
-        return "@" + super.getCode(type) + "(" + par + ")"
+        return "@" + super.getCode(type) + "(" + par + ")\n"
     }
 
     // fun getTypeAndItImport(type: Type, paramOfAnnotation: ParamOfAnnotation): TypeAndItImport = TypeAndItImport(getCode(type, paramOfAnnotation), getFullNameClass(type))

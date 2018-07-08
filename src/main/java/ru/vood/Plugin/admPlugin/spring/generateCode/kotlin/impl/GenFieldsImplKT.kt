@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity
 import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity
+import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity
+import ru.vood.Plugin.admPlugin.spring.except.ApplicationException
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.GenCodeCommonFunctionKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.GenAnnitationFieldsServiceKT
@@ -25,15 +27,29 @@ class GenFieldsImplKT : GenFieldsServiceKT {
         if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) {
             val bdColomnsEntity = entity as VBdColomnsEntity
             code.append(genAnnitationFieldsService.genCode(entity, typeOfGenClass))
-
-            code.append("private ")
-            code.append(genCodeTypeField(bdColomnsEntity)).append(" ")
-            code.append(genCodeCommonFunction.toCamelCase(bdColomnsEntity.code)!!.toString() + ";\n")
-
+            code.append("val ")
+            code.append(genCodeCommonFunction.genFieldName(bdColomnsEntity).toString()).append(" : ")
+            code.append(genColumnClass(bdColomnsEntity)).append("\n")
         }
         return code
     }
 
+    private fun genColumnClass(col: VBdColomnsEntity): String =
+            when (col.typeColomn) {
+                ObjectTypes.getSTRING() -> " String "
+                ObjectTypes.getNUMBER() -> " BigDecimal "
+                ObjectTypes.getDATE() -> " Date "
+                ObjectTypes.getBOOLEAN() -> " Boolean "
+                ObjectTypes.getARRAY() -> " BigDecimal "
+                ObjectTypes.getREFERENCE() -> {
+                    val tVal = col.typeValue as VBdTableEntity
+                    " " + genCodeCommonFunction.getClassName(tVal.toType).toString() + " "
+                }
+                else -> throw ApplicationException("Невозможно преобразовать тип колонки ${col.typeValue.typeObject.code} ")
+            }
+
+
+    @Deprecated("dfasd")
     private fun genCodeTypeField(entity: VBdColomnsEntity): StringBuilder {
         val code = StringBuilder()
         when (entity.typeColomn) {
