@@ -4,6 +4,8 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import ru.vood.Plugin.admPlugin.BaseTest
+import ru.vood.Plugin.admPlugin.generateCode.impl.GenCodeCommonFunctionKT
+import ru.vood.Plugin.admPlugin.generateCode.impl.TypeOfGenClassKT
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes
 import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects
