@@ -84,12 +84,9 @@ public class AddColomnImpl implements StepsCreateAndDropServise {
             queryTable.add("commit ");
 
             stringBuffer = new StringBuffer();
-            /*stringBuffer.append(" ALTER TABLE " + tunes.getPrefixTable() + bdColomns.getParent().getCode());
-            stringBuffer.append(" ALTER COLUMN " + bdColomns.getCode() + " NUMBER not null");*/
-            stringBuffer.append(" ALTER TABLE " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdColomns.getParent().getCode());
-            stringBuffer.append(" MODIFY ( " + bdColomns.getCode() + " NUMBER not null) ");
-            //ALTER TABLE Employees MODIFY(ID int NOT NULL,Name nvarchar2(30) NOT NULL);
-            queryTable.add(stringBuffer.toString());
+//            stringBuffer.append(" ALTER TABLE " + tunes.getOwner() + "." + tunes.getPrefixTable() + bdColomns.getParent().getCode());
+//            stringBuffer.append(" MODIFY  " + bdColomns.getCode() + " NUMBER not null ");
+//            queryTable.add(stringBuffer.toString());
 
             stepsCreate.runQueryes(queryTable);
         }

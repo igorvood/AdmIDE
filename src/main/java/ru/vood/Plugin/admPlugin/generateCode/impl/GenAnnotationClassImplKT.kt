@@ -24,9 +24,9 @@ class GenAnnotationClassImplKT : GenAnnotationClassServiceKT {
     @Autowired
     private lateinit var pluginTunes: PluginTunes
 
-    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClass): StringBuilder {
         val code = StringBuilder("")
-        if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) code.append(genCodeEntity(entity))
+        if (typeOfGenClass == TypeOfGenClass.ENTITY_CLASS) code.append(genCodeEntity(entity))
         return code
     }
 
@@ -40,7 +40,7 @@ class GenAnnotationClassImplKT : GenAnnotationClassServiceKT {
 
         code.append(addAnnotationClass.getCode(Table::class.java, paramOfAnnotation))
 
-        if (genCodeCommonFunction.isRootEntity(entity, TypeOfGenClassKT.ENTITY_CLASS)) {
+        if (genCodeCommonFunction.isRootEntity(entity, TypeOfGenClass.ENTITY_CLASS)) {
             paramOfAnnotation.clear()
             paramOfAnnotation.put("strategy", "InheritanceType.JOINED")
             addAnnotationClass.getCode(InheritanceType::class.java)

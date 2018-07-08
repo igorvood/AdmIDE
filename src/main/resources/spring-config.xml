@@ -54,8 +54,8 @@
             <!--Propagation.NEVER — правило, которое явно запрещает исполнение в контексте транзакции. Если при входе в метод будет существовать транзакция, будет выброшено исключение.            -->
             <tx:method name="attributesType" propagation="REQUIRED"
                        rollback-for="java.lang.RuntimeException"
-            <!--no-rollback-for="ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException,TooManyRowsException"-->
-            <!--read-only="false"-->
+                       no-rollback-for="ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException,TooManyRowsException"
+                       read-only="false"
             />
         </tx:attributes>
     </tx:advice>
@@ -114,7 +114,6 @@
                 <prop key="hibernate.max_fetch_depth">3</prop>
                 <!--Какими пачками вычитывать из БД-->
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
-
 
 
                 <!--<prop key="hibernate.session_factory.statement_inspector">com.jeeconf.hibernate.performancetuning.sqltracker.StatementInspectorImpl</prop>-->

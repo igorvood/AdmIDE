@@ -2,7 +2,6 @@ package ru.vood.Plugin.admPlugin.sql.additionalSteps.oracle.stepFirstLoad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdColomnsEntityService;
@@ -10,24 +9,18 @@ import ru.vood.Plugin.admPlugin.spring.intf.VBdObjectEntityService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.ObjectTypes;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
-import ru.vood.Plugin.admPlugin.spring.referenceBook.Tables;
 import ru.vood.Plugin.admPlugin.sql.QueryTableNew;
 
 @Service
 public class LTableInsert {
 
-
     @Autowired
-    //@Qualifier("jpaVBdTableEntityService")
     private VBdTableEntityService bdTableEntityService;
 
     @Autowired
-    //@Qualifier("jpaVBdObjectEntityService")
     private VBdObjectEntityService objectEntityService;
 
-
     @Autowired
-    //@Qualifier("jpaVBdColomnsEntityService")
     private VBdColomnsEntityService colomnsEntityService;
 
     public QueryTableNew additionOne() throws CoreExeption {
@@ -57,129 +50,129 @@ public class LTableInsert {
         bdObject_num1_table.setJavaClass(VBdTableEntity.class.toString());
         VBdTableEntity newbdObject_num_table = bdTableEntityService.save(bdObject_num1_table);
 
-        VBdTableEntity bdObject_str_table = new VBdTableEntity();
-        bdObject_str_table.setCode("STR_160");
-        bdObject_str_table.setName("Стока(160)");
-        bdObject_str_table.setParent(RootObjects.getSTRING());
-        bdObject_str_table.setTypeObject(ObjectTypes.getSTRING());
-        bdObject_str_table.setLength(160L);
-        bdObject_str_table.setJavaClass(VBdTableEntity.class.toString());
-
-        VBdTableEntity bdObject_str_table_new = bdTableEntityService.save(bdObject_str_table);
-
-
-        VBdTableEntity bdObject_num_table = new VBdTableEntity();
-        bdObject_num_table.setCode("NUM_17_2");
-        bdObject_num_table.setName("Число(17,2)");
-        bdObject_num_table.setParent(RootObjects.getNUMBER());
-        bdObject_num_table.setTypeObject(ObjectTypes.getNUMBER());
-        bdObject_num_table.setLength(17L);
-        bdObject_num_table.setPrecision(2L);
-        bdObject_num_table.setJavaClass(VBdTableEntity.class.toString());
-
-        VBdTableEntity bdObject_num_table_new = bdTableEntityService.save(bdObject_num_table);
-
-
-        VBdTableEntity bdObject_table = new VBdTableEntity();
-        bdObject_table.setCode("CLIENT");
-        bdObject_table.setName("Клиенты");
-        bdObject_table.setParent(RootObjects.getTABLE());
-        bdObject_table.setTypeObject(ObjectTypes.getTABLE());
-        bdObject_table.setJavaClass(VBdTableEntity.class.toString());
-
-        VBdTableEntity bdObject_table_new = bdTableEntityService.save(bdObject_table);
-
-        VBdTableEntity bdObject_table_aderss = new VBdTableEntity();
-        bdObject_table_aderss.setCode("address");
-        bdObject_table_aderss.setName("Адреса");
-        bdObject_table_aderss.setParent(RootObjects.getTABLE());
-        bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
-        bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
-
-        bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
-
-        VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
-        colomnsEntity.setCode("CITY");
-        colomnsEntity.setName("Город");
-        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
-        colomnsEntity.setTypeValue(bdObject_str_table_new);
-        colomnsEntity.setParent(bdObject_table_aderss);
-        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
-        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
-        colomnsEntity = colomnsEntityService.save(colomnsEntity);
-
-        colomnsEntity = new VBdColomnsEntity();
-        colomnsEntity.setCode("STREET");
-        colomnsEntity.setName("Улица");
-        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
-        colomnsEntity.setTypeValue(bdObject_str_table_new);
-        colomnsEntity.setParent(bdObject_table_aderss);
-        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
-        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
-        colomnsEntity = colomnsEntityService.save(colomnsEntity);
-
-        VBdTableEntity table = new VBdTableEntity();
-        table.setCode(bdObject_table_aderss.getCode() + "_ARR");
-        table.setName("Массив <" + bdObject_table_aderss.getName() + ">");
-        table.setTypeObject(ObjectTypes.getARRAY());
-        table.setJavaClass(table.getClass().toString());
-        table.setParent(RootObjects.getARRAY());
-        table.setToType(bdObject_table_aderss);
-
-        table = bdTableEntityService.save(table);
-
-
-//        for (int i = 0; i <10000 ; i++) {
-//            bdObject_table_aderss = new VBdTableEntity();
-//            bdObject_table_aderss.setCode("TMP_"+i);
-//            bdObject_table_aderss.setName("Временно "+i);
-//            bdObject_table_aderss.setParent(Tables.getTABLE());
-//            bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
-//            bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
+//        VBdTableEntity bdObject_str_table = new VBdTableEntity();
+//        bdObject_str_table.setCode("STR_160");
+//        bdObject_str_table.setName("Стока(160)");
+//        bdObject_str_table.setParent(RootObjects.getSTRING());
+//        bdObject_str_table.setTypeObject(ObjectTypes.getSTRING());
+//        bdObject_str_table.setLength(160L);
+//        bdObject_str_table.setJavaClass(VBdTableEntity.class.toString());
 //
-//            bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
-//        }
-
-        VBdTableEntity bdObject_table_type_adress = new VBdTableEntity();
-        bdObject_table_type_adress.setCode("TYPE_ADRESS");
-        bdObject_table_type_adress.setName("Типы адресов");
-        bdObject_table_type_adress.setParent(objectEntityService.findByCode("TABLE"));
-        bdObject_table_type_adress.setTypeObject(ObjectTypes.getTABLE());
-        bdObject_table_type_adress.setJavaClass(VBdTableEntity.class.toString());
-
-        bdObject_table_type_adress = bdTableEntityService.save(bdObject_table_type_adress);
-
-
-        table = new VBdTableEntity();
-        table.setCode(bdObject_table_type_adress.getCode() + "_REF");
-        table.setName("Ссылка <" + bdObject_table_type_adress.getName() + ">");
-        table.setTypeObject(ObjectTypes.getREFERENCE());
-        table.setJavaClass(table.getClass().toString());
-        table.setParent(objectEntityService.findByCode("REFERENCE"));
-        table.setToType(bdObject_table_type_adress);
-
-        table = bdTableEntityService.save(table);
-
-
-        colomnsEntity = new VBdColomnsEntity();
-        colomnsEntity.setCode("NAME");
-        colomnsEntity.setName("ФИО");
-        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
-        colomnsEntity.setTypeValue(bdObject_str_table_new);
-        colomnsEntity.setParent(bdObject_table_new);
-        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
-        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
-        colomnsEntity = colomnsEntityService.save(colomnsEntity);
-
-        colomnsEntity = new VBdColomnsEntity();
-        colomnsEntity.setCode("DATE_BIRTH");
-        colomnsEntity.setName("Дата рождения");
-        colomnsEntity.setTypeColomn(ObjectTypes.getDATE());
-        colomnsEntity.setTypeValue(Tables.getAny("DATE"));
-        colomnsEntity.setParent(bdObject_table_new);
-        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
-        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
-        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+//        VBdTableEntity bdObject_str_table_new = bdTableEntityService.save(bdObject_str_table);
+//
+//
+//        VBdTableEntity bdObject_num_table = new VBdTableEntity();
+//        bdObject_num_table.setCode("NUM_17_2");
+//        bdObject_num_table.setName("Число(17,2)");
+//        bdObject_num_table.setParent(RootObjects.getNUMBER());
+//        bdObject_num_table.setTypeObject(ObjectTypes.getNUMBER());
+//        bdObject_num_table.setLength(17L);
+//        bdObject_num_table.setPrecision(2L);
+//        bdObject_num_table.setJavaClass(VBdTableEntity.class.toString());
+//
+//        VBdTableEntity bdObject_num_table_new = bdTableEntityService.save(bdObject_num_table);
+//
+//
+//        VBdTableEntity bdObject_table = new VBdTableEntity();
+//        bdObject_table.setCode("CLIENT");
+//        bdObject_table.setName("Клиенты");
+//        bdObject_table.setParent(RootObjects.getTABLE());
+//        bdObject_table.setTypeObject(ObjectTypes.getTABLE());
+//        bdObject_table.setJavaClass(VBdTableEntity.class.toString());
+//
+//        VBdTableEntity bdObject_table_new = bdTableEntityService.save(bdObject_table);
+//
+//        VBdTableEntity bdObject_table_aderss = new VBdTableEntity();
+//        bdObject_table_aderss.setCode("address");
+//        bdObject_table_aderss.setName("Адреса");
+//        bdObject_table_aderss.setParent(RootObjects.getTABLE());
+//        bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
+//        bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
+//
+//        bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
+//
+//        VBdColomnsEntity colomnsEntity = new VBdColomnsEntity();
+//        colomnsEntity.setCode("CITY");
+//        colomnsEntity.setName("Город");
+//        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
+//        colomnsEntity.setTypeValue(bdObject_str_table_new);
+//        colomnsEntity.setParent(bdObject_table_aderss);
+//        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+//        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+//        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+//
+//        colomnsEntity = new VBdColomnsEntity();
+//        colomnsEntity.setCode("STREET");
+//        colomnsEntity.setName("Улица");
+//        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
+//        colomnsEntity.setTypeValue(bdObject_str_table_new);
+//        colomnsEntity.setParent(bdObject_table_aderss);
+//        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+//        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+//        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+//
+//        VBdTableEntity table = new VBdTableEntity();
+//        table.setCode(bdObject_table_aderss.getCode() + "_ARR");
+//        table.setName("Массив <" + bdObject_table_aderss.getName() + ">");
+//        table.setTypeObject(ObjectTypes.getARRAY());
+//        table.setJavaClass(table.getClass().toString());
+//        table.setParent(RootObjects.getARRAY());
+//        table.setToType(bdObject_table_aderss);
+//
+//        table = bdTableEntityService.save(table);
+//
+//
+////        for (int i = 0; i <10000 ; i++) {
+////            bdObject_table_aderss = new VBdTableEntity();
+////            bdObject_table_aderss.setCode("TMP_"+i);
+////            bdObject_table_aderss.setName("Временно "+i);
+////            bdObject_table_aderss.setParent(Tables.getTABLE());
+////            bdObject_table_aderss.setTypeObject(ObjectTypes.getTABLE());
+////            bdObject_table_aderss.setJavaClass(VBdTableEntity.class.toString());
+////
+////            bdObject_table_aderss = bdTableEntityService.save(bdObject_table_aderss);
+////        }
+//
+//        VBdTableEntity bdObject_table_type_adress = new VBdTableEntity();
+//        bdObject_table_type_adress.setCode("TYPE_ADRESS");
+//        bdObject_table_type_adress.setName("Типы адресов");
+//        bdObject_table_type_adress.setParent(objectEntityService.findByCode("TABLE"));
+//        bdObject_table_type_adress.setTypeObject(ObjectTypes.getTABLE());
+//        bdObject_table_type_adress.setJavaClass(VBdTableEntity.class.toString());
+//
+//        bdObject_table_type_adress = bdTableEntityService.save(bdObject_table_type_adress);
+//
+//
+//        table = new VBdTableEntity();
+//        table.setCode(bdObject_table_type_adress.getCode() + "_REF");
+//        table.setName("Ссылка <" + bdObject_table_type_adress.getName() + ">");
+//        table.setTypeObject(ObjectTypes.getREFERENCE());
+//        table.setJavaClass(table.getClass().toString());
+//        table.setParent(objectEntityService.findByCode("REFERENCE"));
+//        table.setToType(bdObject_table_type_adress);
+//
+//        table = bdTableEntityService.save(table);
+//
+//
+//        colomnsEntity = new VBdColomnsEntity();
+//        colomnsEntity.setCode("NAME");
+//        colomnsEntity.setName("ФИО");
+//        colomnsEntity.setTypeColomn(ObjectTypes.getSTRING());
+//        colomnsEntity.setTypeValue(bdObject_str_table_new);
+//        colomnsEntity.setParent(bdObject_table_new);
+//        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+//        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+//        colomnsEntity = colomnsEntityService.save(colomnsEntity);
+//
+//        colomnsEntity = new VBdColomnsEntity();
+//        colomnsEntity.setCode("DATE_BIRTH");
+//        colomnsEntity.setName("Дата рождения");
+//        colomnsEntity.setTypeColomn(ObjectTypes.getDATE());
+//        colomnsEntity.setTypeValue(Tables.getAny("DATE"));
+//        colomnsEntity.setParent(bdObject_table_new);
+//        colomnsEntity.setTypeObject(ObjectTypes.getCOLOMN());
+//        colomnsEntity.setJavaClass(colomnsEntity.getClass().toString());
+//        colomnsEntity = colomnsEntityService.save(colomnsEntity);
 
 
         return null;

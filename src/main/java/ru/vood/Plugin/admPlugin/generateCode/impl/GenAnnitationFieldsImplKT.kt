@@ -17,7 +17,7 @@ class GenAnnitationFieldsImplKT : GenAnnitationFieldsServiceKT {
     private lateinit var addAnnotationClass: AddAnnotationClass
 
 
-    override fun genCode(entity: VBdColomnsEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdColomnsEntity, typeOfGenClass: TypeOfGenClass): StringBuilder {
         //val col = entity as VBdColomnsEntity
         when (entity.typeColomn) {
             ObjectTypes.getSTRING() -> return genSimple(entity)

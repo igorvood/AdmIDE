@@ -39,7 +39,7 @@ class GenClassServiceKTTest : BaseTest() {
         val vBdObjectEntityParent = RootObjects.getTABLE()
         val typeEntity = ObjectTypes.getTABLE()
 
-        vBdTableEntity = vBdTableEntityService.findByCode("address")
+
 //        val tabName = "TEST_CODE_TABLE"
 //        vBdTableEntity.setCode(tabName)
 //        vBdTableEntity.setName("$tabName Name")
@@ -83,12 +83,17 @@ class GenClassServiceKTTest : BaseTest() {
 
     @Test
     fun genCode1() {
+        val vBdTableEntity1 = vBdTableEntityService.findByCode("CLIENT")
         println("=====================================================")
-        println(genClassServiceKT.genCode(vBdTableEntity))
+        println(genClassServiceKT.genCode(vBdTableEntity1))
     }
 
     @Test
     fun genCode2() {
+        val vBdTableEntity1 = vBdTableEntityService.findByCode("CLIENT_ORG")
+        println("=====================================================")
+        println(genClassServiceKT.genCode(vBdTableEntity1))
+
     }
 
 }

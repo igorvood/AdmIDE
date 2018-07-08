@@ -17,24 +17,24 @@ class GenCodeCommonFunctionKT {
 
     @JvmOverloads
     fun getClassName(entity: VBdObjectEntity
-                     , typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
+                     , typeOfGenClassKT: TypeOfGenClass = TypeOfGenClass.ENTITY_CLASS): StringBuilder {
         return StringBuilder(toCamelCase(getTableName(entity).toString() + "_" + typeOfGenClassKT)!!)
     }
 
     @JvmOverloads
     fun getParametrName(entity: VBdObjectEntity
-                        , typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
+                        , typeOfGenClassKT: TypeOfGenClass = TypeOfGenClass.ENTITY_CLASS): StringBuilder {
         val parameterName = getClassName(entity, typeOfGenClassKT)
         return StringBuilder(parameterName.get(0).toLowerCase() + parameterName.substring(1) + "Val")
     }
 
-    fun getPackegeName(typeOfGenClassKT: TypeOfGenClassKT): StringBuilder {
+    fun getPackegeName(typeOfGenClassKT: TypeOfGenClass): StringBuilder {
         return StringBuilder(pluginTunes.packageIn + "." + typeOfGenClassKT.toString().toLowerCase())
     }
 
     @JvmOverloads
     fun getFullClassName(entity: VBdObjectEntity
-                         , typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
+                         , typeOfGenClassKT: TypeOfGenClass = TypeOfGenClass.ENTITY_CLASS): StringBuilder {
         val code = StringBuilder(getPackegeName(typeOfGenClassKT)).append(".")
         return code.append(getClassName(entity, typeOfGenClassKT))
     }
@@ -56,15 +56,15 @@ class GenCodeCommonFunctionKT {
     @JvmOverloads
     fun isRootEntity(
             entity: VBdObjectEntity,
-            typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS
+            typeOfGenClassKT: TypeOfGenClass = TypeOfGenClass.ENTITY_CLASS
     ): Boolean {
-        return if (typeOfGenClassKT == TypeOfGenClassKT.ENTITY_CLASS) {
+        return if (typeOfGenClassKT == TypeOfGenClass.ENTITY_CLASS) {
             entity.parent != null && RootObjects.isRoot(entity.parent) /*&& entity.parent.typeObject.equals(ObjectTypes.getTABLE())*/
         } else false
     }
 
     @JvmOverloads
-    fun getExtendsClassName(entity: VBdObjectEntity, typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
+    fun getExtendsClassName(entity: VBdObjectEntity, typeOfGenClassKT: TypeOfGenClass = TypeOfGenClass.ENTITY_CLASS): StringBuilder {
         val code = StringBuilder("")
         return if (!isRootEntity(entity, typeOfGenClassKT)) {
             code.append(" : ").append(getFullClassName(entity.parent, typeOfGenClassKT)).append("()")

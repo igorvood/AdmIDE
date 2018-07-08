@@ -23,17 +23,17 @@ class GenPackageImplKTTest : BaseTest() {
 
     @Test
     fun genCodeENTITY_CLASS1() {
-        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClassKT.ENTITY_CLASS).toString())
+        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClass.ENTITY_CLASS).toString())
     }
 
     @Test
     fun genCodeSERVICE_CLASS() {
-        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClassKT.SERVICE_CLASS).toString())
+        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClass.SERVICE_CLASS).toString())
     }
 
     @Test
     fun genCodeIMPL_CLASS() {
-        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClassKT.IMPL_CLASS).toString())
+        Assert.assertSame("package ru.tora.generatedEntity.entity;\n", genPackageImplKT.genCode(VBdObjectEntity(), TypeOfGenClass.IMPL_CLASS).toString())
     }
 
 }

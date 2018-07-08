@@ -12,11 +12,11 @@ public class QueryCountInfo {
     private int deleteCount;
     private int callCount;
 
-    private LinkedList<String> selectSQL;
-    private LinkedList<String> insertSQL;
-    private LinkedList<String> updateSQL;
-    private LinkedList<String> deleteSQL;
-    private LinkedList<String> callSQL;
+    private LinkedList<String> selectSQL = new LinkedList<>();
+    private LinkedList<String> insertSQL = new LinkedList<>();
+    private LinkedList<String> updateSQL = new LinkedList<>();
+    private LinkedList<String> deleteSQL = new LinkedList<>();
+    private LinkedList<String> callSQL = new LinkedList<>();
 
     public void incrementSelectCount(String sql) {
         selectCount++;

@@ -25,9 +25,9 @@ class GenFieldsImplKT : GenFieldsServiceKT {
     private lateinit var addJavaClass: AddJavaClass
 
 
-    override fun genCode(entity: VBdColomnsEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdColomnsEntity, typeOfGenClass: TypeOfGenClass): StringBuilder {
         val code = StringBuilder()
-        if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) {
+        if (typeOfGenClass == TypeOfGenClass.ENTITY_CLASS) {
             code.append("/*Наименование поля - ${entity.name}*/\n")
             code.append(genAnnitationFieldsService.genCode(entity, typeOfGenClass))
             code.append("lateinit var ")
@@ -72,7 +72,7 @@ class GenFieldsImplKT : GenFieldsServiceKT {
             ObjectTypes.getDATE() -> code.append(" Date ")
             ObjectTypes.getSTRING() -> code.append(" String ")
             ObjectTypes.getNUMBER() -> code.append(" BigDecimal ")
-            ObjectTypes.getREFERENCE() -> code.append(genCodeCommonFunction.getFullClassName(entity.typeValue, TypeOfGenClassKT.ENTITY_CLASS))
+            ObjectTypes.getREFERENCE() -> code.append(genCodeCommonFunction.getFullClassName(entity.typeValue, TypeOfGenClass.ENTITY_CLASS))
             ObjectTypes.getARRAY() -> code.append(" BigDecimal ")
             else -> code.append("genCodeTypeField: НЕ предусмотерна обработка ${entity.typeColomn}")
         }

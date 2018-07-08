@@ -42,7 +42,7 @@ class GenClassBodyImplKT : GenClassBodyServiceKT {
         val colomnsEntities = colomnsEntityService.findByParent(entity)
 
         for (colomn in colomnsEntities) {
-            code.append(genFieldsService.genCode(colomn, TypeOfGenClassKT.ENTITY_CLASS))
+            code.append(genFieldsService.genCode(colomn, TypeOfGenClass.ENTITY_CLASS))
         }
 
         return code
@@ -69,9 +69,9 @@ class GenClassBodyImplKT : GenClassBodyServiceKT {
     }
 
     @JvmOverloads
-    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClass): StringBuilder {
         val code = StringBuilder()
-        return if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) genCodeEntiy(entity) else code
+        return if (typeOfGenClass == TypeOfGenClass.ENTITY_CLASS) genCodeEntiy(entity) else code
     }
 
 

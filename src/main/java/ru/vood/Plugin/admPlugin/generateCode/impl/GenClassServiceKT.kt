@@ -26,7 +26,7 @@ class GenClassServiceKT : GenAnyPartKT<VBdTableEntity> {
     @Autowired
     private lateinit var genAnnotationClassService: GenAnnotationClassServiceKT
 
-    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClass): StringBuilder {
         val code = StringBuilder()
 
         code.append(genPackageImpl!!.genCode(entity, typeOfGenClass))
@@ -34,7 +34,7 @@ class GenClassServiceKT : GenAnyPartKT<VBdTableEntity> {
         val annotationClass = genAnnotationClassService!!.genCode(entity, typeOfGenClass)
 
         val clazz = "/*Наименование класса - ${entity.name}*/\n" +
-                "class " + commonFunction!!.getClassName(entity, typeOfGenClass) + commonFunction!!.getExtendsClassName(entity, typeOfGenClass)
+                "open class " + commonFunction!!.getClassName(entity, typeOfGenClass) + commonFunction!!.getExtendsClassName(entity, typeOfGenClass)
 
         val body = classBodyService!!.genCode(entity, typeOfGenClass)
 

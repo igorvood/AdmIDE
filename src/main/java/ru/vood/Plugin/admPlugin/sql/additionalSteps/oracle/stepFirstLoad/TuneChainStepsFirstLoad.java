@@ -45,6 +45,11 @@ public class TuneChainStepsFirstLoad {
     @Autowired
     private LTableInsert lTableInsert;
 
+    @Autowired
+    private LTableInsertForTests tableInsertForTests;
+
+
+
     public void run() throws CoreExeption {
         QueryTableNew queryTable = new QueryTableNew();
         // 1 создание таблицы типов объектов
@@ -81,5 +86,8 @@ public class TuneChainStepsFirstLoad {
 
         // 4.1 создание Таблиц, первоначальная заливка таблицы
         lTableInsert.additionOne();
+
+        // 100.1 создание Таблиц, для тестов
+        tableInsertForTests.additionOne();
     }
 }
