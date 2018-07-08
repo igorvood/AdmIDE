@@ -9,7 +9,7 @@ class AddAnnotationClass : AddJavaClass() {
     override fun getCode(type: Type): String = getCode(type, ParamOfAnnotation())
 
     fun getCode(type: Type, paramOfAnnotation: ParamOfAnnotation): String {
-        if (paramOfAnnotation.isEmpty()) return "@" + super.getCode(type)
+        if (paramOfAnnotation.isEmpty()) return "@" + super.getCode(type) + "\n"
         addingClassPublisher.publish(this, type)
         val par = paramOfAnnotation.asSequence()
                 .map { pp -> pp.key + if (!pp.value?.isEmpty()) "=" + pp.value else "" }

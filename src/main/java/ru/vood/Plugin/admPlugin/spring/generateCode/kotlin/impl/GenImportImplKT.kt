@@ -12,10 +12,14 @@ class GenImportImplKT : GenImportServiceKT, ApplicationListener<AddImportEvent> 
 
 
     override fun genCode(): StringBuilder {
-        var par = StringBuilder(listImports?.asSequence()
-                .map { q -> getOneImport(q) }
-                .reduce { s1, s2 -> s1 + s2 })
-        return par
+        if (listImports.size > 0) {
+            var par = StringBuilder(listImports?.asSequence()
+                    .sorted()
+                    .map { q -> getOneImport(q) }
+                    .reduce { s1, s2 -> s1 + s2 })
+            return par.append("\n\n")
+        }
+        return StringBuilder("")
     }
 
     private fun getOneImport(fullNameClass: String) = "import $fullNameClass;\n"

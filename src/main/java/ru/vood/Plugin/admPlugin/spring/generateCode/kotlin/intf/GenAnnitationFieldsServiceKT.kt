@@ -1,6 +1,8 @@
 package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf
 
-interface GenAnnitationFieldsServiceKT : GenAnyPartKT {
+import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity
+
+interface GenAnnitationFieldsServiceKT : GenAnyPartKT<VBdColomnsEntity> {
 
 
 }

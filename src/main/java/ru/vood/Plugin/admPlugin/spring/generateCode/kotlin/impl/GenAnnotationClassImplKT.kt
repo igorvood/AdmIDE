@@ -2,12 +2,17 @@ package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.impl
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.GenCodeCommonFunctionKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.GenAnnotationClassServiceKT
+import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.addingImport.AddAnnotationClass
+import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.addingImport.ParamOfAnnotation
 import ru.vood.Plugin.admPlugin.tune.PluginTunes
+import javax.persistence.Entity
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.Table
 
 @Component
 class GenAnnotationClassImplKT : GenAnnotationClassServiceKT {
@@ -16,23 +21,34 @@ class GenAnnotationClassImplKT : GenAnnotationClassServiceKT {
     private lateinit var genCodeCommonFunction: GenCodeCommonFunctionKT
 
     @Autowired
+    private lateinit var addAnnotationClass: AddAnnotationClass
+
+    @Autowired
     private lateinit var pluginTunes: PluginTunes
 
-    override fun genCode(entity: VBdObjectEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+    override fun genCode(entity: VBdTableEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
         val code = StringBuilder("")
-        if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) code.append(genCodeEntity(entity as VBdTableEntity))
+        if (typeOfGenClass == TypeOfGenClassKT.ENTITY_CLASS) code.append(genCodeEntity(entity))
         return code
     }
 
     private fun genCodeEntity(entity: VBdTableEntity): StringBuilder {
         val code = StringBuilder()
-        code.append("@Entity\n")
-        code.append("@Table(name = \"" + genCodeCommonFunction.getTableName(entity) + "\" , schema = \"" + pluginTunes.owner + "\")\n")
+        code.append(addAnnotationClass.getCode(Entity::class.java))
+
+        val paramOfAnnotation = ParamOfAnnotation()
+        paramOfAnnotation.put("name", "\"${genCodeCommonFunction.getTableName(entity)}\"")
+        paramOfAnnotation.put("schema", "\"${pluginTunes.owner}\"")
+
+        code.append(addAnnotationClass.getCode(Table::class.java, paramOfAnnotation))
+
         if (genCodeCommonFunction.isRootEntity(entity, TypeOfGenClassKT.ENTITY_CLASS)) {
-            code.append("@Inheritance(strategy = InheritanceType.JOINED)\n")
+            paramOfAnnotation.clear()
+            paramOfAnnotation.put("strategy", "InheritanceType.JOINED")
+            addAnnotationClass.getCode(InheritanceType::class.java)
+            code.append(addAnnotationClass.getCode(Inheritance::class.java, paramOfAnnotation))
         }
         return code
     }
-
 
 }

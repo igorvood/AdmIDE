@@ -8,7 +8,7 @@ import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.GenAnyPartKT
 
 @Component
-class GenPackageImplKT : GenAnyPartKT {
+class GenPackageImplKT : GenAnyPartKT<VBdObjectEntity> {
 
     @Autowired
     private lateinit var genCodeCommonFunction: GenCodeCommonFunctionKT

@@ -3,7 +3,6 @@ package ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.impl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.vood.Plugin.admPlugin.spring.entity.VBdColomnsEntity
-import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectEntity
 import ru.vood.Plugin.admPlugin.spring.except.ApplicationException
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.TypeOfGenClassKT
 import ru.vood.Plugin.admPlugin.spring.generateCode.kotlin.intf.GenAnnitationFieldsServiceKT
@@ -18,16 +17,17 @@ class GenAnnitationFieldsImplKT : GenAnnitationFieldsServiceKT {
     @Autowired
     private lateinit var addAnnotationClass: AddAnnotationClass
 
-    override fun genCode(entity: VBdObjectEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
-        val col = entity as VBdColomnsEntity
-        when (col.typeColomn) {
-            ObjectTypes.getSTRING() -> genSimple(col)
-            ObjectTypes.getNUMBER() -> genSimple(col)
-            ObjectTypes.getDATE() -> genDate(col)
-            ObjectTypes.getBOOLEAN() -> genSimple(col)
-            ObjectTypes.getARRAY() -> genSimple(col)
-            ObjectTypes.getREFERENCE() -> genRef(col)
-            else -> throw ApplicationException("Невозможно преобразовать тип колонки ${col.typeValue.typeObject.code} ")
+
+    override fun genCode(entity: VBdColomnsEntity, typeOfGenClass: TypeOfGenClassKT): StringBuilder {
+        //val col = entity as VBdColomnsEntity
+        when (entity.typeColomn) {
+            ObjectTypes.getSTRING() -> return genSimple(entity)
+            ObjectTypes.getNUMBER() -> return genSimple(entity)
+            ObjectTypes.getDATE() -> return genDate(entity)
+            ObjectTypes.getBOOLEAN() -> return genSimple(entity)
+            ObjectTypes.getARRAY() -> return genSimple(entity)
+            ObjectTypes.getREFERENCE() -> return genRef(entity)
+            else -> throw ApplicationException("Невозможно преобразовать тип колонки ${entity.typeColomn?.code} ")
         }
 
         return StringBuilder("")
@@ -35,8 +35,8 @@ class GenAnnitationFieldsImplKT : GenAnnitationFieldsServiceKT {
 
     private fun genSimple(col: VBdColomnsEntity): StringBuilder {
         var param = ParamOfAnnotation()
-        param.put("name ", "\"" + col.name + "\"")
-        val nullable = if (col.notNull) "true" else "false"
+        param.put("name ", "\"" + col.code + "\"")
+        val nullable = if (!col.notNull) "true" else "false"
         param.put("nullable ", nullable)
         return StringBuilder(addAnnotationClass.getCode(Column::class.java, param))
     }

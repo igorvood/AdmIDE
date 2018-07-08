@@ -11,6 +11,9 @@ import ru.vood.Plugin.admPlugin.spring.intf.CommonFunctionService;
 import ru.vood.Plugin.admPlugin.spring.intf.VBdTableEntityService;
 import ru.vood.Plugin.admPlugin.spring.repository.VBdTableEntityRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service//("jpaVBdTableEntityService")
@@ -23,6 +26,9 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
 
     @Autowired
     private CommonFunctionService commonFunction;
+
+    @Autowired
+    protected EntityManager em;
 
     @Override
     public VBdTableEntity save(VBdTableEntity entity) {
@@ -46,9 +52,21 @@ public class VBdTableEntityImpl /*extends VBdObjectEntityImpl/*ParentForAllImpl*
 
     @Override
     public VBdTableEntity findByCode(String code) throws CoreExeption {
-        List list = bdTableEntityRepository.findByCode(code);
-        commonFunction.checkOn(list);
-        return (VBdTableEntity) list.get(0);
+        Query query = em.createQuery("select a1 from VBdTableEntity a1 " +
+                //"  join fetch a1.typeObject a2 " + //" on a1.code in :codeTypeS  " +
+                " join fetch a1.parent " +
+                " join fetch a1.typeObject " +
+//                " join fetch a1.parent " +
+                " where a1.code in :codeTypeS " +
+                //        " order by a2.id "
+                "")
+                .setParameter("codeTypeS", code);
+
+
+        //List list = bdTableEntityRepository.findByCode(code);
+        List list1 = (ArrayList<VBdTableEntity>) query.getResultList();
+        commonFunction.checkOn(list1);
+        return (VBdTableEntity) list1.get(0);
     }
 
     /*

@@ -20,7 +20,7 @@ class GenFieldsImplKTTest : BaseTest() {
 
     @Before
     fun setUp() {
-        genFieldsImplKT = ctx.getBean(GenFieldsImplKT::class.java) c
+        genFieldsImplKT = ctx.getBean(GenFieldsImplKT::class.java)
 
         //pluginTunes = ctx.getBean(PluginTunes::class.java)
 
@@ -41,37 +41,63 @@ class GenFieldsImplKTTest : BaseTest() {
         vBdColomnsEntity.code = colName
         vBdColomnsEntity.name = colName + " Name"
         vBdColomnsEntity.typeValue = vBdTableEntity
-
-        //vBdColomnsEntity.typeValue =
-
     }
 
     @Test
-    fun genCode() {
+    fun genCodeSTRING() {
         vBdColomnsEntity.typeColomn = ObjectTypes.getSTRING()
         vBdColomnsEntity.typeValue = Tables.getAny("STR_160")
-        Assert.assertEquals("val testCodeColumn :  String \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  String \n"))
+
+        //Assert.assertEquals(, genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+    }
+
+    @Test
+    fun genCodeNUMBER() {
 
         vBdColomnsEntity.typeColomn = ObjectTypes.getNUMBER()
         vBdColomnsEntity.typeValue = Tables.getAny("NUM_17_2")
-        Assert.assertEquals("val testCodeColumn :  BigDecimal \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        //Assert.assertEquals("val testCodeColumn :  BigDecimal \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  BigDecimal \n"))
+    }
 
+    @Test
+    fun genCodeBOOLEAN() {
         vBdColomnsEntity.typeColomn = ObjectTypes.getBOOLEAN()
         vBdColomnsEntity.typeValue = Tables.getAny("BOOLEAN")
-        Assert.assertEquals("val testCodeColumn :  Boolean \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        //Assert.assertEquals("val testCodeColumn :  Boolean \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  Boolean \n"))
+    }
+
+    @Test
+    fun genCodeDATE() {
 
         vBdColomnsEntity.typeColomn = ObjectTypes.getDATE()
         vBdColomnsEntity.typeValue = Tables.getAny("DATE")
-        Assert.assertEquals("val testCodeColumn :  Date \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
-
-        vBdColomnsEntity.typeColomn = ObjectTypes.getARRAY()
-        vBdColomnsEntity.typeValue = Tables.getAny("address_ARR")
-        Assert.assertEquals("val testCodeColumn :  BigDecimal \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
-
-        vBdColomnsEntity.typeColomn = ObjectTypes.getREFERENCE()
-        vBdColomnsEntity.typeValue = vBdTableEntity
-        Assert.assertEquals("val testCodeColumn :  ZTestCodeTableEntity \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        //Assert.assertEquals("val testCodeColumn :  Date \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  Date \n"))
     }
 
+    @Test
+    fun genCodeARRAY() {
+        vBdColomnsEntity.typeColomn = ObjectTypes.getARRAY()
+        vBdColomnsEntity.typeValue = Tables.getAny("address_ARR")
+        //Assert.assertEquals("val testCodeColumn :  BigDecimal \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  BigDecimal \n"))
+    }
+
+    @Test
+    fun genCodeREFERENCE() {
+        vBdColomnsEntity.typeColomn = ObjectTypes.getREFERENCE()
+        vBdColomnsEntity.typeValue = vBdTableEntity
+        //Assert.assertEquals("val testCodeColumn :  ZTestCodeTableEntity \n", genFieldsImplKT.genCode(vBdColomnsEntity).toString())
+        println(genFieldsImplKT.genCode(vBdColomnsEntity))
+        Assert.assertTrue(genFieldsImplKT.genCode(vBdColomnsEntity).contains("val testCodeColumn :  ZTestCodeTableEntity \n"))
+    }
 
 }

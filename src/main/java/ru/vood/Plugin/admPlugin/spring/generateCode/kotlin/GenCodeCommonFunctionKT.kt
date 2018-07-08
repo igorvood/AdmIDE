@@ -39,6 +39,7 @@ class GenCodeCommonFunctionKT {
         return code.append(getClassName(entity, typeOfGenClassKT))
     }
 
+    @Deprecated("move to fields")
     fun getIdField(): StringBuilder = StringBuilder("    @Id\n" +
             "    @GenericGenerator(name = \"seqId\", strategy = \"ru.vood.Plugin.admPlugin.spring.entity.GeneratorId\")\n" +
             "    @GeneratedValue(generator = \"seqId\")\n" +
@@ -58,15 +59,15 @@ class GenCodeCommonFunctionKT {
             typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS
     ): Boolean {
         return if (typeOfGenClassKT == TypeOfGenClassKT.ENTITY_CLASS) {
-            entity.parent != null && !RootObjects.isRoot(entity.parent) /*&& entity.parent.typeObject.equals(ObjectTypes.getTABLE())*/
+            entity.parent != null && RootObjects.isRoot(entity.parent) /*&& entity.parent.typeObject.equals(ObjectTypes.getTABLE())*/
         } else false
     }
 
     @JvmOverloads
     fun getExtendsClassName(entity: VBdObjectEntity, typeOfGenClassKT: TypeOfGenClassKT = TypeOfGenClassKT.ENTITY_CLASS): StringBuilder {
         val code = StringBuilder("")
-        return if (isRootEntity(entity, typeOfGenClassKT)) {
-            code.append(" extends ").append(getFullClassName(entity.parent, typeOfGenClassKT))
+        return if (!isRootEntity(entity, typeOfGenClassKT)) {
+            code.append(" : ").append(getFullClassName(entity.parent, typeOfGenClassKT)).append("()")
         } else code
     }
 
