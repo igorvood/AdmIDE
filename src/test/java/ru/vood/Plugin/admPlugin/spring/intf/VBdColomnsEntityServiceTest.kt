@@ -21,8 +21,6 @@ class VBdColomnsEntityServiceTest : BaseTest() {
 
     private lateinit var vBdTableEntityService: VBdTableEntityService
 
-    private lateinit var pluginTunes: PluginTunes
-
     @Before
     fun bef() {
         vBdColomnsEntityService = ctx.getBean(VBdColomnsEntityService::class.java)

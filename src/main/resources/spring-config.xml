@@ -57,6 +57,8 @@
                        no-rollback-for="ru.vood.Plugin.admPlugin.spring.except.NoDataFoundException,TooManyRowsException"
                        read-only="false"
             />
+            <tx:method name="*" propagation="REQUIRED" read-only="true"/>
+
         </tx:attributes>
     </tx:advice>
 

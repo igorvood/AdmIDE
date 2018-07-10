@@ -18,8 +18,6 @@ class GenCodeCommonFunctionKTTest : BaseTest() {
     private lateinit var vBdTableEntity: VBdTableEntity
     private lateinit var vBdTableEntityWithParent: VBdTableEntity
 
-    private lateinit var pluginTunes: PluginTunes
-
     @Before
     fun setUp() {
         genCodeCommonFunctionKT = ctx.getBean(GenCodeCommonFunctionKT::class.java)

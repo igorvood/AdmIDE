@@ -23,8 +23,6 @@ class VBdIndexEntityServiceTest : BaseTest() {
 
     private lateinit var vBdTableEntityService: VBdTableEntityService
 
-    private lateinit var pluginTunes: PluginTunes
-
     private lateinit var col: VBdColomnsEntity
     private val colNames = listOf<String>("Test_col_CODE_INDEX_1".toUpperCase(), "Test_col_CODE_INDEX_2".toUpperCase())
 

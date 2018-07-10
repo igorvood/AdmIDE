@@ -11,7 +11,6 @@ import ru.vood.Plugin.admPlugin.spring.entity.VBdObjectTypeEntity;
 import ru.vood.Plugin.admPlugin.spring.entity.VBdTableEntity;
 import ru.vood.Plugin.admPlugin.spring.except.CoreExeption;
 import ru.vood.Plugin.admPlugin.spring.referenceBook.RootObjects;
-import ru.vood.Plugin.admPlugin.tune.PluginTunes;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -19,102 +18,81 @@ import java.util.List;
 
 public class VBdTableEntityServiceTest extends BaseTest {
 
-    private VBdTableEntityService vBdTableEntityService;
-
-    private VBdObjectTypeEntityService vBdObjectTypeEntityService;
-
-    private PluginTunes pluginTunes;
+//    private VBdTableEntityService vBdTableEntityService;
+//
+//    private VBdObjectTypeEntityService vBdObjectTypeEntityService;
+//
+//    private PluginTunes pluginTunes;
 
     @Before
     public void setVar() {
-        vBdTableEntityService = ctx.getBean(VBdTableEntityService.class);
-        vBdObjectTypeEntityService = ctx.getBean(VBdObjectTypeEntityService.class);
-        pluginTunes = ctx.getBean(PluginTunes.class);
+//        vBdTableEntityService = ctx.getBean(VBdTableEntityService.class);
+//        vBdObjectTypeEntityService = ctx.getBean(VBdObjectTypeEntityService.class);
+//        pluginTunes = ctx.getBean(PluginTunes.class);
     }
 
     @Test
     public void editTest() {
-        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
-        VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
-        if (vBdObjectEntityParent != null) {
-            VBdTableEntity bdTableEntity = new VBdTableEntity();
-            String tabName = "TEST_CODE_TABLE";
-            bdTableEntity.setCode(tabName);
-            bdTableEntity.setName("TEST_NAME_TABLE");
-            bdTableEntity.setJavaClass(VBdTableEntity.class.toString());
-            bdTableEntity.setParent(vBdObjectEntityParent);
-            bdTableEntity.setTypeObject(typeEntity);
+        VBdTableEntity bdTableEntity = tableEntityService.save(tableEntity);
 
-            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+        String checkTable = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + getTabName() + "'";
+        String checkTableRenamed = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + getTabName() + "1'";
+        Query query = em.createNativeQuery(checkTable);
+        List existsList = query.getResultList();
 
-            String checkTable = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + tabName + "'";
-            String checkTableRenamed = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + tabName + "1'";
-            Query query = em.createNativeQuery(checkTable);
-            List existsList = query.getResultList();
+        bdTableEntity.setCode(getTabName() + "1");
 
-            bdTableEntity.setCode(tabName + "1");
+        bdTableEntity = tableEntityService.save(bdTableEntity);
 
-            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+        List notExistsListRenamed = em.createNativeQuery(checkTableRenamed).getResultList();
+        tableEntityService.delete(bdTableEntity);
 
-            List notExistsListRenamed = em.createNativeQuery(checkTableRenamed).getResultList();
-            vBdTableEntityService.delete(bdTableEntity);
+        List notExistsList = em.createNativeQuery(checkTable).getResultList();
 
-            List notExistsList = em.createNativeQuery(checkTable).getResultList();
+        AssertSqlCount.assertInsertCount(2);
+        AssertSqlCount.assertUpdateCount(1);
+        AssertSqlCount.assertSelectCount(7);
+        Assert.assertNotNull(bdTableEntity.getId());
+        AssertSqlCount.assertDeleteCount(2);
 
-            AssertSqlCount.assertInsertCount(2);
-            AssertSqlCount.assertUpdateCount(1);
-            AssertSqlCount.assertSelectCount(7);
-            Assert.assertNotNull(bdTableEntity.getId());
-            AssertSqlCount.assertDeleteCount(2);
+        Assert.assertEquals(existsList.size(), 1);
+        Assert.assertEquals(notExistsListRenamed.size(), 1);
+        Assert.assertEquals(notExistsList.size(), 0);
 
-            Assert.assertEquals(existsList.size(), 1);
-            Assert.assertEquals(notExistsListRenamed.size(), 1);
-            Assert.assertEquals(notExistsList.size(), 0);
-        }
     }
 
     @Test
     public void saveTest() {
-        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
-        VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
-        if (vBdObjectEntityParent != null) {
-            VBdTableEntity bdTableEntity = new VBdTableEntity();
-            String tabName = "TEST_CODE_TABLE";
-            bdTableEntity.setCode(tabName);
-            bdTableEntity.setName("TEST_NAME_TABLE");
-            bdTableEntity.setJavaClass(VBdTableEntity.class.toString());
-            bdTableEntity.setParent(vBdObjectEntityParent);
-            bdTableEntity.setTypeObject(typeEntity);
 
-            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+        VBdTableEntity bdTableEntity = tableEntityService.save(tableEntity);
 
-            String checkTable = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + tabName + "'";
-            Query query = em.createNativeQuery(checkTable);
-            List existsList = query.getResultList();
+        String checkTable = "select allt.table_name from all_all_tables allt where allt.owner='" + pluginTunes.getOwner() + "' and allt.table_name='" + pluginTunes.getPrefixTable() + getTabName() + "'";
+        Query query = em.createNativeQuery(checkTable);
+        List existsList = query.getResultList();
 
-            vBdTableEntityService.delete(bdTableEntity);
+        tableEntityService.delete(bdTableEntity);
 
-            List notExistsList = em.createNativeQuery(checkTable).getResultList();
+        List notExistsList = em.createNativeQuery(checkTable).getResultList();
 
-            AssertSqlCount.assertInsertCount(2);
-            AssertSqlCount.assertUpdateCount(0);
-            AssertSqlCount.assertSelectCount(5);
-            Assert.assertNotNull(bdTableEntity.getId());
-            AssertSqlCount.assertDeleteCount(2);
+        AssertSqlCount.assertInsertCount(2);
+        AssertSqlCount.assertUpdateCount(0);
+        AssertSqlCount.assertSelectCount(5);
+        Assert.assertNotNull(bdTableEntity.getId());
+        AssertSqlCount.assertDeleteCount(2);
 
 
-            Assert.assertEquals(existsList.size(), 1);
-            Assert.assertEquals(notExistsList.size(), 0);
-        }
+        Assert.assertEquals(existsList.size(), 1);
+        Assert.assertEquals(notExistsList.size(), 0);
+
     }
 
     @Test
     public void findByParent() {
         VBdObjectEntity entityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
-        List list = vBdTableEntityService.findByParent(entityParent);
+        List list = tableEntityService.findByParent(entityParent);
         AssertSqlCount.assertSelectCount(2);
         Assert.assertEquals(list.size(), 3);
     }
@@ -138,7 +116,7 @@ public class VBdTableEntityServiceTest extends BaseTest {
 
     @Test
     public void rollBackTest() {
-        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
+        VBdObjectTypeEntity typeEntity = objectTypeEntityService.findByCode("TABLE");
         VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
         if (vBdObjectEntityParent != null) {
@@ -151,7 +129,7 @@ public class VBdTableEntityServiceTest extends BaseTest {
             bdTableEntity.setTypeObject(typeEntity);
             AssertSqlCount.reset();
             try {
-                bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+                bdTableEntity = tableEntityService.save(bdTableEntity);
             } catch (Exception e) {
                 System.out.println(QueryCountInfoHolder.getQueryInfo().getCallSQL());
                 System.out.println(QueryCountInfoHolder.getQueryInfo().getDeleteSQL());
@@ -167,13 +145,13 @@ public class VBdTableEntityServiceTest extends BaseTest {
             List existsList = query.getResultList();
 
             try {
-                bdTableEntity = vBdTableEntityService.findByCode(tabName);
+                bdTableEntity = tableEntityService.findByCode(tabName);
             } catch (CoreExeption coreExeption) {
                 bdTableEntity = null;
             }
 
             try {
-                vBdTableEntityService.delete(bdTableEntity);
+                tableEntityService.delete(bdTableEntity);
             } catch (Exception e) {
                 System.out.println("====нечего удалять для vBdTableEntityService.delete(bdTableEntity);===================================");
             }
@@ -195,7 +173,7 @@ public class VBdTableEntityServiceTest extends BaseTest {
 
     @Test
     public void modifyTooLongCode() {
-        VBdObjectTypeEntity typeEntity = vBdObjectTypeEntityService.findByCode("TABLE");
+        VBdObjectTypeEntity typeEntity = objectTypeEntityService.findByCode("TABLE");
         VBdObjectEntity vBdObjectEntityParent = RootObjects.getTABLE();
         AssertSqlCount.reset();
         if (vBdObjectEntityParent != null) {
@@ -208,9 +186,9 @@ public class VBdTableEntityServiceTest extends BaseTest {
             bdTableEntity.setParent(vBdObjectEntityParent);
             bdTableEntity.setTypeObject(typeEntity);
 
-            bdTableEntity = vBdTableEntityService.save(bdTableEntity);
+            bdTableEntity = tableEntityService.save(bdTableEntity);
 
-            vBdTableEntityService.delete(bdTableEntity);
+            tableEntityService.delete(bdTableEntity);
         }
 
     }
